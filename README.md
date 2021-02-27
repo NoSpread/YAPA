@@ -1,2 +1,2 @@
-# advanced_software_engineering
+# Yet Another Personal Assistent
 Repository for Advanced Software Engineering
