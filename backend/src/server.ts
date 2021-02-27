@@ -8,6 +8,9 @@ import loggerMiddleware from './middleware/logger'
 // import HomeController from './controllers/home/home.controller'
 
 import APITestController from './services/apitest/apitest.controller'
+import FortuneController from './services/fortune/fortune.controller'
+import JokeController from './services/joke/joke.controller'
+import TranslateController from './services/translate/translate.controller'
 
 const corsSettings = {
     origin: "http://localhost:5000"
@@ -16,7 +19,10 @@ const corsSettings = {
 const app = new App({
     port: 5000,
     controllers: [
-        new APITestController()
+        new APITestController(),
+        new FortuneController(),
+        new JokeController(),
+        new TranslateController()
         // new HomeController(),
         // new PostsController()
     ],
