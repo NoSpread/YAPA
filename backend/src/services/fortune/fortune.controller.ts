@@ -26,7 +26,7 @@ class FortuneController implements IControllerBase {
             .catch( e => {
                 const error = {
                     type: "REQUEST_ERROR",
-                    e: e
+                    e: e.name
                 }
                 
                 res.status(503).json(error)
