@@ -14,7 +14,7 @@ class JokeModel {
         const jsonJoke = JSON.parse(result.body)
         
         if (jsonJoke.error) {
-            throw `Error accessing fortune API (${jsonJoke.error})`
+            throw `Error accessing joke API (${jsonJoke.error})`
         }
 
         let stringReturn: string

@@ -2,10 +2,10 @@ import * as express from 'express'
 import { Request, Response } from 'express'
 import IControllerBase from '../../interfaces/IControllerBase'
 
-import JokeModel from './joke.model'
+import StocksModel from './stocks.model'
 
-class JokeController implements IControllerBase {
-    public path = '/joke'
+class StocksController implements IControllerBase {
+    public path = '/stock'
     public router = express.Router()
 
     constructor() {
@@ -13,25 +13,25 @@ class JokeController implements IControllerBase {
     }
 
     public initRoutes() {
-        this.router.get(this.path, this.getJoke)
+        this.router.post(this.path, this.postStocks)
     }
 
-    private getJoke = (req: Request, res: Response) => {
-        const joke = new JokeModel
+    private postStocks = (req: Request, res: Response) => {
+        const stocks = new StocksModel
+        const symbol = req.body.symbol
 
-        joke.getJoke()
-            .then(joke => {
-                res.send(joke)
+        stocks.getStocks(symbol)
+            .then(stock => {
+                res.send(stock)
             })
             .catch( e => {
                 const error = {
                     type: "REQUEST_ERROR",
                     e: e.name
                 }
-                
                 res.status(503).json(error)
             })
     }
 }
 
-export default JokeController
+export default StocksController

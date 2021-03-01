@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config({ path: __dirname + "\\..\\.env"})
+
 import App from './app'
 
 import cors from 'cors'
@@ -11,18 +14,20 @@ import APITestController from './services/apitest/apitest.controller'
 import FortuneController from './services/fortune/fortune.controller'
 import JokeController from './services/joke/joke.controller'
 import TranslateController from './services/translate/translate.controller'
+import StocksController from './services/stocks/stocks.controller'
 
 const corsSettings = {
-    origin: "http://localhost:5000"
+    origin: `${process.env.API_URL || "http://localhost"}:${process.env.API_PORT || 5000}`
 }
 
 const app = new App({
-    port: 5000,
+    port: Number(process.env.API_PORT) || 5000,
     controllers: [
         new APITestController(),
         new FortuneController(),
         new JokeController(),
-        new TranslateController()
+        new TranslateController(),
+        new StocksController()
         // new HomeController(),
         // new PostsController()
     ],

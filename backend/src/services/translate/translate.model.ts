@@ -15,10 +15,8 @@ class TranslateModel {
             json: requestObj
         })
 
-        console.log(result)
-
         if (result.statusCode != 200) {
-            throw `Error accessing joke API (${result.statusCode})`
+            throw `Error accessing translate API (${result.statusCode})`
         }
 
         const jsonTranslate = JSON.parse(result.body)
