@@ -12,7 +12,7 @@ FINNHUB_API_KEY=""
 ```
 
 # Color Schema
-![#e63946](https://placehold.it/15/e63946/000000?text=+) Imperial Red &nbsp[#e63946]<br>
+![#e63946](https://placehold.it/15/e63946/000000?text=+) Imperial Red &nbsp [#e63946]<br>
 ![#f1faee](https://placehold.it/15/f1faee/000000?text=+) Honeydew &nbsp&nbsp&nbsp&nbsp&nbsp[#f1faee]<br>
 ![#a8dadc](https://placehold.it/15/a8dadc/000000?text=+) Powder Blue &nbsp&nbsp[#a8dadc]<br>
 ![#457b9d](https://placehold.it/15/457b9d/000000?text=+) Celadon Blue &nbsp[#457b9d]<br>
