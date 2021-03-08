@@ -16,6 +16,16 @@ import JokeController from './services/joke/joke.controller'
 import TranslateController from './services/translate/translate.controller'
 import StocksController from './services/stocks/stocks.controller'
 
+import ActivityController from './services/activity/activity.controller'
+import DrivingController from './services/driving/driving.controller'
+import NewsController from './services/news/news.controller'
+import QuizController from './services/quiz/quiz.controller'
+import SightseeingController from './services/sightseeing/sightseeing.controller'
+import TransitController from './services/transit/transit.controller'
+
+
+
+
 const corsSettings = {
     origin: `${process.env.API_URL || "http://localhost"}:${process.env.API_PORT || 5000}`
 }
@@ -27,10 +37,17 @@ const app = new App({
         new FortuneController(),
         new JokeController(),
         new TranslateController(),
-        new StocksController()
+        new StocksController(),
         // new HomeController(),
         // new PostsController()
-    ],
+		
+		new  ActivityController(),
+		new  DrivingController(),
+		new  NewsController(),
+		new  QuizController(),
+		new  SightseeingController(),
+		new  TransitController()
+	],
     middleWares: [
         cors(corsSettings),
         bodyParser.json(),
