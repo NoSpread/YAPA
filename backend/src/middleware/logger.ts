@@ -1,8 +1,11 @@
 import { Request, Response, NextFunction } from 'express'
+import Logger from './../logger'
+
+const log = new Logger() 
 
 const loggerMiddleware = (req: Request, resp: Response, next: NextFunction) => {
 
-    console.log('Request logged:', req.method, req.path)
+    log.info(`${req.method} -> ${req.path}`)
     next()
 }
 
