@@ -1,5 +1,4 @@
 import got from 'got'
-
 class JokeModel {
 
     private endpoint = "https://v2.jokeapi.dev/joke/Any?lang=de"

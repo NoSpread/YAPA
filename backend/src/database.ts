@@ -1,31 +1,10 @@
 import Redis, { RedisClient } from 'redis'
-import MySQL, { Pool, RowDataPacket } from 'mysql2/promise'
+import MySQL, { Pool } from 'mysql2/promise'
 import { IRDBOptions, ISQLOptions } from './interfaces/IDBOptions'
 import Crypto from 'crypto'
 import Argon from 'argon2'
-
-interface IDBUser extends RowDataPacket {
-    id: number,
-    username: string,
-    password: string
-}
-
-interface IDBKey extends RowDataPacket {
-    id: number,
-    username: string,
-    key: string
-}
-
-interface ILogin {
-    id: number,
-    username: string,
-    api: string
-}
-
-interface IKey {
-    user: string,
-    db: string
-}
+import { IDBKey, IDBUser, IKey, ILogin } from "./interfaces/IDatabase";
+import Logger from './logger'
 
 class DB {
 
@@ -34,7 +13,11 @@ class DB {
     private _sqlOptions: ISQLOptions
     private _redisOptions: IRDBOptions
 
+    private logger
+
     constructor(redis_options?: IRDBOptions, mysql_options?: ISQLOptions) {
+
+        this.logger = new Logger()
 
         if (redis_options) {
             this._redisOptions = redis_options
@@ -64,6 +47,8 @@ class DB {
             port: this._redisOptions.port
         })
 
+        this.logger.info("Redis Server connected")
+
         this._mysql = null
     }
 
@@ -75,14 +60,15 @@ class DB {
             password: this._sqlOptions.pass,
             port: this._sqlOptions.port
         })
+        this.logger.info("MySQL Server connected")
     }
 
-    public writeToCache(key: string, value: string, ttl?: number): Promise<string> {
+    public writeToCache(key: string | number, value: string, ttl?: number): Promise<string> {
         return new Promise((resolve, reject) => {
-            this._redis.set(key, value, (err, reply) => {
+            this._redis.set(String(key), value, (err, reply) => {
                 if (err) reject(err)
                 if (ttl) {
-                    this._redis.expire(key, ttl, (err, treply) => {
+                    this._redis.expire(String(key), ttl, (err, treply) => {
                         if (err) reject(err)
                     })
                 }
@@ -91,18 +77,18 @@ class DB {
         })
     }
 
-    public getFromCache(key: string): Promise<string|null> {
+    public getFromCache(key: string | number): Promise<string|null> {
         return new Promise((resolve, reject) => {
-            this._redis.get(key, (err, reply) => {
+            this._redis.get(String(key), (err, reply) => {
                 if (err) reject(err)
                 resolve(reply)
             })
         })
     }
 
-    public delFromCache(key: string): Promise<number> {
+    public delFromCache(key: string | number): Promise<number> {
         return new Promise((resolve, reject) => {
-            this._redis.del(key, (err, reply) => {
+            this._redis.del(String(key), (err, reply) => {
                 if (err) reject(err)
                 resolve(reply)
             })
@@ -133,11 +119,11 @@ class DB {
         return false
     }
 
-    public async verifyUser(username: string, password: string): Promise<boolean | ILogin> {
+    public async verifyUser(username: string, password: string): Promise<null | ILogin> {
         if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
 
         try {
-            const [row] = await this._mysql.execute<IDBUser[]>('SELECT * FROM `users` WHERE `username` = ?', [username])
+            const [row] = await this._mysql.execute<IDBUser[]>('SELECT `id`, `username`, `password` FROM `users` WHERE `username` = ?', [username])
             
             if (row.length === 0) throw {code: "USER_NOT_FOUND"}
             const phash = row[0].password
@@ -153,11 +139,11 @@ class DB {
                         id: uid,
                         api: keys.db
                     }
-                    this.writeToCache(String(uid), JSON.stringify(user), 172800) // 48h lifetime
+                    this.writeToCache(uid, JSON.stringify(user), 172800) // 48h lifetime
                     user.api = keys.user // change to unhashed version for user
 
                     return user
-                } else return false
+                } else return null
                 
             } catch(err) {
                 if (!err.code) throw {code: "ARGON_FAIL"}
@@ -168,6 +154,23 @@ class DB {
             if (err.code) throw err.code
         }
 
+        return null
+    }
+
+    public async logoutUser(login: ILogin): Promise<boolean> {
+        if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
+
+        const validKey = await this.verifyAPIKey(login)
+        
+        if (validKey) {
+            try {
+                this._mysql.execute('DELETE FROM `keys` WHERE id = ?', [login.id])
+                this.delFromCache(login.id)
+                return true
+            } catch(err) {
+                if (err) throw err
+            }
+        }
         return false
     }
 
@@ -182,13 +185,13 @@ class DB {
         } catch(err) {
             if (err) throw err
         }
-        
+
         return { user: apikey, db: hapikey }
     }
 
     public async verifyAPIKey(login: ILogin): Promise<boolean> {
         if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
-
+        
         try {
             const cache = await this.getFromCache(String(login.id))
             let dbkey
@@ -228,3 +231,6 @@ class DB {
 }
 
 export default DB
+
+const database = new DB()
+export { database }

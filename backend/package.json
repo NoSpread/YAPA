@@ -10,6 +10,7 @@
     "@types/chalk": "^2.2.0",
     "@types/cors": "^2.8.10",
     "@types/express": "^4.17.11",
+    "@types/express-session": "^1.17.3",
     "@types/got": "^9.6.11",
     "@types/redis": "^2.8.28"
   },
@@ -19,6 +20,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "got": "^11.8.2",
     "mysql2": "^2.2.5",
     "redis": "^3.0.2",
