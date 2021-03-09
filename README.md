@@ -6,9 +6,10 @@ Repository for Advanced Software Engineering
 .env file in YAPPA/backend
 
 ```env
-API_URL="http://localhost"
+API_URL=http://localhost
 API_PORT=5000
-FINNHUB_API_KEY=""
+FINNHUB_API_KEY=
+COOKIE_SECRET=
 ```
 
 # Color Schema
