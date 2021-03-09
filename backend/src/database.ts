@@ -1,12 +1,30 @@
-import redis, { RedisClient } from 'redis'
-import mysql, { Pool, RowDataPacket } from 'mysql2/promise'
+import Redis, { RedisClient } from 'redis'
+import MySQL, { Pool, RowDataPacket } from 'mysql2/promise'
 import { IRDBOptions, ISQLOptions } from './interfaces/IDBOptions'
-import argon from 'argon2'
+import Crypto from 'crypto'
+import Argon from 'argon2'
 
-interface IUser extends RowDataPacket {
+interface IDBUser extends RowDataPacket {
     id: number,
     username: string,
     password: string
+}
+
+interface IDBKey extends RowDataPacket {
+    id: number,
+    username: string,
+    key: string
+}
+
+interface ILogin {
+    id: number,
+    username: string,
+    api: string
+}
+
+interface IKey {
+    user: string,
+    db: string
 }
 
 class DB {
@@ -40,7 +58,7 @@ class DB {
             }
         }
 
-        this._redis = redis.createClient({
+        this._redis = Redis.createClient({
             host: this._redisOptions.host,
             db: this._redisOptions.db,
             port: this._redisOptions.port
@@ -50,7 +68,7 @@ class DB {
     }
 
     public async initSQL() {
-        this._mysql = await mysql.createPool({
+        this._mysql = await MySQL.createPool({
             host: this._sqlOptions.host,
             database: this._sqlOptions.db,
             user: this._sqlOptions.user,
@@ -103,7 +121,7 @@ class DB {
     public async createUser(username: string, password: string): Promise<boolean> {
         if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
         
-        const hpassword = await argon.hash(password, { type: argon.argon2id, memoryCost: 2 ** 16, hashLength: 50})
+        const hpassword = await Argon.hash(password, { type: Argon.argon2id, memoryCost: 2 ** 16, hashLength: 50})
 
         try {
             await this._mysql.execute('INSERT INTO `users` (username, password) VALUES(?, ?)', [username, hpassword])
@@ -115,20 +133,35 @@ class DB {
         return false
     }
 
-    public async verifyUser(username: string, password: string): Promise<boolean> {
+    public async verifyUser(username: string, password: string): Promise<boolean | ILogin> {
         if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
 
         try {
-            const [row] = await this._mysql.execute<IUser[]>('SELECT * FROM `users` WHERE `username` = ?', [username])
+            const [row] = await this._mysql.execute<IDBUser[]>('SELECT * FROM `users` WHERE `username` = ?', [username])
             
-            if (row.length === 0) throw new Error("User not found")
+            if (row.length === 0) throw {code: "USER_NOT_FOUND"}
             const phash = row[0].password
+            const uid = row[0].id
 
             try {
-                const hverify = await argon.verify(phash, password)
-                return hverify
+                const hverify = await Argon.verify(phash, password)
+                const keys = await this.createAPIKey(uid)
+                
+                if (hverify) {
+                    const user: ILogin = {
+                        username: username,
+                        id: uid,
+                        api: keys.db
+                    }
+                    this.writeToCache(String(uid), JSON.stringify(user), 172800) // 48h lifetime
+                    user.api = keys.user // change to unhashed version for user
+
+                    return user
+                } else return false
+                
             } catch(err) {
-                if (err) throw {err: err, code: "ARGON_FAIL"}
+                if (!err.code) throw {code: "ARGON_FAIL"}
+                throw err
             }
 
         } catch(err) {
@@ -136,6 +169,61 @@ class DB {
         }
 
         return false
+    }
+
+    private async createAPIKey(id: number): Promise<IKey> {
+        if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
+        
+        const apikey = this.randomString()
+        const hapikey = await Argon.hash(apikey, { type: Argon.argon2id, memoryCost: 2 ** 16, hashLength: 50})
+
+        try {
+            await this._mysql.execute('INSERT INTO `keys` (`id`, `key`) VALUES(?, ?)', [id, hapikey])
+        } catch(err) {
+            if (err) throw err
+        }
+        
+        return { user: apikey, db: hapikey }
+    }
+
+    public async verifyAPIKey(login: ILogin): Promise<boolean> {
+        if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
+
+        try {
+            const cache = await this.getFromCache(String(login.id))
+            let dbkey
+
+            if (!cache) {
+                const [row] = await this._mysql.execute<IDBKey[]>('SELECT u.`id`, u.`username`, k.`key` FROM `keys`AS k, `users` AS u WHERE u.`username` = ?', [login.username])
+                if (row.length === 0) throw new Error("User not found")
+    
+                dbkey = row[0].key
+            } else {
+                const parsed: ILogin = JSON.parse(cache)
+                dbkey = parsed.api
+            }
+
+            try {
+                const hverify = await Argon.verify(dbkey, login.api)
+                return hverify
+                
+            } catch(err) {
+                if (!err.code) throw {code: "ARGON_FAIL"}
+                throw err
+            }
+
+        } catch(err) {
+            if (err.code) throw err.code
+        }
+
+        return false
+    }
+
+    private randomString(size = 50) {  
+        return Crypto
+            .randomBytes(size)
+            .toString('hex')
+            .slice(0, size)
     }
 }
 
