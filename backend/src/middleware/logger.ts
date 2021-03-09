@@ -5,7 +5,7 @@ const log = new Logger()
 
 const loggerMiddleware = (req: Request, resp: Response, next: NextFunction) => {
 
-    log.info(`${req.method} -> ${req.path}`)
+    log.log(`${req.method} -> ${req.path}`)
     next()
 }
 
