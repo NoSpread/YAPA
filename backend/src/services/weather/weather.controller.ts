@@ -19,7 +19,7 @@ class WeatherController implements IControllerBase {
     private getWeather = (req: Request, res: Response) => {
         const weather = new WeatherModel
 
-        Weather.getWeather()
+        weather.getWeather()
             .then(weather => {
                 res.send(weather)
             })
