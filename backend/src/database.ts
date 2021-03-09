@@ -189,10 +189,12 @@ class DB {
         return { user: apikey, db: hapikey }
     }
 
+    // TODO Make actually usefull -> actually check for the apikey
     public async verifyAPIKey(login: ILogin): Promise<boolean> {
         if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
         
         try {
+            // TODO Save API KEY as KEY in redis? 
             const cache = await this.getFromCache(String(login.id))
             let dbkey
 
