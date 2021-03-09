@@ -2,9 +2,10 @@ import dotenv from 'dotenv'
 dotenv.config({ path: __dirname + "\\..\\.env"})
 
 import App from './app'
-
+import express from 'express'
 import cors from 'cors'
-import * as bodyParser from 'body-parser'
+
+//import * as bodyParser from 'body-parser'
 import loggerMiddleware from './middleware/logger'
 
 // import PostsController from './controllers/posts/posts.controller'
@@ -23,8 +24,10 @@ import QuizController from './services/quiz/quiz.controller'
 import SightseeingController from './services/sightseeing/sightseeing.controller'
 import TransitController from './services/transit/transit.controller'
 
-
-
+process.on('uncaughtException', err => {
+    console.error('There was an uncaught error', err)
+    process.exit(1) //mandatory (as per the Node.js docs)
+  })
 
 const corsSettings = {
     origin: `${process.env.API_URL || "http://localhost"}:${process.env.API_PORT || 5000}`
@@ -50,8 +53,8 @@ const app = new App({
 	],
     middleWares: [
         cors(corsSettings),
-        bodyParser.json(),
-        bodyParser.urlencoded({ extended: true }),
+        express.urlencoded({extended: true}),
+        express.json(),
         loggerMiddleware
     ]
 })
