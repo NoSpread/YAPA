@@ -2,8 +2,7 @@
 type IRDBOptions = {
     host: string,
     port: number,
-    pass: string,
-    db: string,
+    db: number,
 }
 
 type ISQLOptions = {
