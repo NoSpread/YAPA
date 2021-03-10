@@ -16,7 +16,7 @@ import TranslateController from './services/translate/translate.controller'
 import StocksController from './services/stocks/stocks.controller'
 
 import ActivityController from './services/activity/activity.controller'
-import DrivingController from './services/driving/driving.controller'
+import RouteController from './services/routing/route.controller'
 import NewsController from './services/news/news.controller'
 import QuizController from './services/quiz/quiz.controller'
 import SightseeingController from './services/sightseeing/sightseeing.controller'
@@ -53,7 +53,7 @@ const app = new App({
         new TranslateController(),
         new StocksController(),
 		new ActivityController(),
-		new DrivingController(),
+		new RouteController(),
 		new NewsController(),
 		new QuizController(),
 		new SightseeingController(),
