@@ -36,11 +36,15 @@ class UserController implements IControllerBase {
     private login = async (req: Request, res: Response) => {
         const {username, password} = req.body
         if (username && password) {
-            const status = await this.user.login(username, password)
-            if (status) {
-              req.session.user = status
-              res.sendStatus(200)
-            } else res.sendStatus(401)
+            try {
+                const status = await this.user.login(username, password)
+                if (status) {
+                  req.session.user = status
+                  res.json(status)
+                } else res.sendStatus(401)
+            } catch(err) {
+                res.sendStatus(404) // user not found
+            }
         } else res.sendStatus(400)
     }
 
@@ -49,13 +53,17 @@ class UserController implements IControllerBase {
         const apikey: string | null = req.session.user ? req.session.user.api : req.body.apikey ? req.body.apikey : null
 
         if (apikey) {
-            const status = await this.user.logout(apikey)
-        
-            if (status) {
-                req.session.destroy( err => {
-                    res.sendStatus(200)
-                })
-            } else res.sendStatus(401)
+            try {
+                const status = await this.user.logout(apikey)
+                if (status) {
+                    req.session.destroy( err => {
+                        res.sendStatus(200)
+                    })
+                } else res.sendStatus(401)
+            } catch (err) {
+                res.sendStatus(500) // SQL ERROR
+            }
+
         } else res.sendStatus(401)
     }
 }
