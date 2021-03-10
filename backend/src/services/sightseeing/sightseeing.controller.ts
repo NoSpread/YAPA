@@ -18,8 +18,12 @@ class SightseeingController implements IControllerBase {
 
     private getSightseeing = (req: Request, res: Response) => {
         const sightseeing = new SightseeingModel
+		
+		const lat = req.body.lat
+		const lon = req.body.lon
+		const radius = req.body.radius
 
-        sightseeing.getSightseeing()
+        sightseeing.getSightseeing(lat,lon,radius)
             .then(sightseeing => {
                 res.send(sightseeing)
             })
