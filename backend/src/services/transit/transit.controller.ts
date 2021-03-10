@@ -8,8 +8,11 @@ class TransitController implements IControllerBase {
     public path = '/transit'
     public router = express.Router()
 
+    private transit
+
     constructor() {
         this.initRoutes()
+        this.transit = new TransitModel
     }
 
     public initRoutes() {
@@ -17,9 +20,8 @@ class TransitController implements IControllerBase {
     }
 
     private getTransit = (req: Request, res: Response) => {
-        const transit = new TransitModel
-
-        transit.getTransit()
+        
+        this.transit.getTransit()
             .then(transit => {
                 res.send(transit)
             })

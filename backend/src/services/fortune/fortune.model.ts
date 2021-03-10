@@ -4,8 +4,8 @@ class FortuneModel {
 
     private endpoint = "https://api.justyy.workers.dev/api/fortune"
 
-    public async getFortune(): Promise<string> {
-        const result = await got(this.endpoint)
+    public getFortune = async (): Promise<string> => {
+        const result = await got(this.endpoint, { responseType: 'text' })
 
         if (result.statusCode != 200) {
             throw `Error accessing fortune API (${result.statusCode})`

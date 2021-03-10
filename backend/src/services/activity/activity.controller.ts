@@ -8,8 +8,11 @@ class ActivityController implements IControllerBase {
     public path = '/activity'
     public router = express.Router()
 
+    private activity
+
     constructor() {
         this.initRoutes()
+        this.activity = new ActivityModel()
     }
 
     public initRoutes() {
@@ -17,20 +20,18 @@ class ActivityController implements IControllerBase {
     }
 
     private getActivity = (req: Request, res: Response) => {
-        const activity = new ActivityModel
-
-        activity.getActivity()
-            .then(activity => {
-                res.send(activity)
-            })
-            .catch( e => {
-                const error = {
-                    type: "REQUEST_ERROR",
-                    e: e.name
-                }
-                
-                res.status(503).json(error)
-            })
+        
+        this.activity.getActivity()
+        .then(activity => {
+            res.json(activity)
+        })
+        .catch( e => {
+            const error = {
+                type: "REQUEST_ERROR",
+                e: e.name
+            }
+            res.status(503).json(error)
+        })
     }
 }
 

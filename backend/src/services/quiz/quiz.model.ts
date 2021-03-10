@@ -1,14 +1,15 @@
 import got from 'got'
+import { Quiz } from './IQuiz'
 
 class QuizModel {
 
     private endpoint = "https://opentdb.com/api.php"
 
-    public async getQuiz(): Promise<string> {
-        const result = await got(this.endpoint)
+    public async getQuiz(amount: number): Promise<Quiz> {
+        const result = await got<Quiz>(this.endpoint, {searchParams: { amount: amount }, responseType: 'json'})
 
         if (result.statusCode != 200) {
-            throw `Error accessing quiz API (${result.statusCode})`
+            throw new Error(`Error accessing quiz API (${result.statusCode})`)
         }
         return result.body
     }

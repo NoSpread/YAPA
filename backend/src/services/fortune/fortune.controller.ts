@@ -8,8 +8,11 @@ class FortuneController implements IControllerBase {
     public path = '/fortune'
     public router = express.Router()
 
+    private fortune
+
     constructor() {
         this.initRoutes()
+        this.fortune = new FortuneModel()
     }
 
     public initRoutes() {
@@ -17,20 +20,18 @@ class FortuneController implements IControllerBase {
     }
 
     private getFortune = (req: Request, res: Response) => {
-        const fortune = new FortuneModel
-
-        fortune.getFortune()
-            .then(fortune => {
-                res.send(fortune)
-            })
-            .catch( e => {
-                const error = {
-                    type: "REQUEST_ERROR",
-                    e: e.name
-                }
-                
-                res.status(503).json(error)
-            })
+        
+        this.fortune.getFortune()
+        .then(fortune => {
+            res.send(fortune)
+        })
+        .catch( e => {
+            const error = {
+                type: "REQUEST_ERROR",
+                e: e.name
+            }
+            res.status(503).json(error)
+        })
     }
 }
 

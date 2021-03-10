@@ -1,29 +1,23 @@
 import got from 'got'
+import { Joke } from './IJoke'
 class JokeModel {
 
     private endpoint = "https://v2.jokeapi.dev/joke/Any?lang=de"
 
-    public async getJoke(): Promise<string> {
-        const result = await got(this.endpoint)
+    public getJoke = async (): Promise<Joke> => {
+        const result = await got<Joke>(this.endpoint, {responseType: 'json'})
 
         if (result.statusCode != 200) {
-            throw `Error accessing joke API (${result.statusCode})`
+            throw new Error(`Error accessing joke API (${result.statusCode})`)
         }
 
-        const jsonJoke = JSON.parse(result.body)
+        const joke = result.body
         
-        if (jsonJoke.error) {
-            throw `Error accessing joke API (${jsonJoke.error})`
+        if (joke.error) {
+            throw new Error(`Error accessing joke API (${joke.error})`)
         }
 
-        let stringReturn: string
-        if (jsonJoke.type === "twopart") {
-            stringReturn = `${jsonJoke.setup}\n${jsonJoke.delivery}`
-        } else {
-            stringReturn = jsonJoke.joke
-        }
-
-        return stringReturn
+        return joke
     }
 }
 

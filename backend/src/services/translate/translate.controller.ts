@@ -8,8 +8,11 @@ class TranslateController implements IControllerBase {
     public path = '/translate'
     public router = express.Router()
 
+    private translate
+
     constructor() {
         this.initRoutes()
+        this.translate = new TranslateModel
     }
 
     public initRoutes() {
@@ -17,13 +20,12 @@ class TranslateController implements IControllerBase {
     }
 
     private postTranslation = (req: Request, res: Response) => {
-        const translate = new TranslateModel
-        const { query, source, target } = req.body.source
+        const { query, source, target } = req.body
 
         if (query && source && target) {
-            translate.postTranslate(query, source, target)
+            this.translate.postTranslate(query, source, target)
             .then(translation => {
-                res.send(translation)
+                res.json(translation)
             })
             .catch( e => {
                 const error = {
