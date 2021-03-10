@@ -5,7 +5,7 @@ class SightseeingModel {
     private endpoint = "http://api.opentripmap.com/0.1/en/places/radius"
 
     public async getSightseeing(): Promise<string> {
-        const result = await got(this.endpoint)
+        const result = await got<any>(this.endpoint, {responseType: "json"})
 
         if (result.statusCode != 200) {
             throw `Error accessing sightseeing API (${result.statusCode})`
