@@ -20,17 +20,16 @@ class FortuneController implements IControllerBase {
         const fortune = new FortuneModel
 
         fortune.getFortune()
-            .then(fortune => {
-                res.send(fortune)
-            })
-            .catch( e => {
-                const error = {
-                    type: "REQUEST_ERROR",
-                    e: e.name
-                }
-                
-                res.status(503).json(error)
-            })
+        .then(fortune => {
+            res.send(fortune)
+        })
+        .catch( e => {
+            const error = {
+                type: "REQUEST_ERROR",
+                e: e.name
+            }
+            res.status(503).json(error)
+        })
     }
 }
 
