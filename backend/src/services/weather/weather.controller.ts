@@ -18,8 +18,11 @@ class WeatherController implements IControllerBase {
 
     private getWeather = (req: Request, res: Response) => {
         const weather = new WeatherModel
+		
+		const q = req.body.q
+		const days = req.body.days
 
-        weather.getWeather()
+        weather.getWeather(q,days,aqi,alerts)
             .then(weather => {
                 res.send(weather)
             })
