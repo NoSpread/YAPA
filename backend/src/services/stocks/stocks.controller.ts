@@ -20,9 +20,10 @@ class StocksController implements IControllerBase {
         const stocks = new StocksModel
         const symbol = req.body.symbol
 
-        stocks.getStocks(symbol)
+        if (symbol) {
+            stocks.getStocks(symbol)
             .then(stock => {
-                res.send(stock)
+                res.json(stock)
             })
             .catch( e => {
                 const error = {
@@ -31,6 +32,7 @@ class StocksController implements IControllerBase {
                 }
                 res.status(503).json(error)
             })
+        } else res.sendStatus(400)
     }
 }
 

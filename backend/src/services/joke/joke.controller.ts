@@ -20,17 +20,17 @@ class JokeController implements IControllerBase {
         const joke = new JokeModel
 
         joke.getJoke()
-            .then(joke => {
-                res.send(joke)
-            })
-            .catch( e => {
-                const error = {
-                    type: "REQUEST_ERROR",
-                    e: e.name
-                }
-                
-                res.status(503).json(error)
-            })
+        .then(joke => {
+            res.json(joke)
+        })
+        .catch( e => {
+            const error = {
+                type: "REQUEST_ERROR",
+                e: e.name
+            }
+            
+            res.status(503).json(error)
+        })
     }
 }
 
