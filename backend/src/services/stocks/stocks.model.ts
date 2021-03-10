@@ -5,7 +5,7 @@ class StocksModel {
     private endpoint = "https://finnhub.io/api/v1/quote"
     private apikey = process.env.FINNHUB_API_KEY || ""
 
-    public async getStocks(symbol: string): Promise<string> {
+    public getStocks = async (symbol: string): Promise<string> => {
         const result = await got(this.endpoint, {searchParams: {token: this.apikey, symbol: symbol}})
 
         if (result.statusCode != 200) {
