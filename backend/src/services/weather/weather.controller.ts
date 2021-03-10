@@ -22,7 +22,7 @@ class WeatherController implements IControllerBase {
 		const q = req.body.q
 		const days = req.body.days
 
-        weather.getWeather(q,days,aqi,alerts)
+        weather.getWeather(q,days)
             .then(weather => {
                 res.send(weather)
             })

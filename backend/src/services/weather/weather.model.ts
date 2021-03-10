@@ -8,8 +8,8 @@ class WeatherModel {
     public async getWeather(query: string, days: string ): Promise<string> {
         const requestObj = {
 			q: query,
-			day: day,
-			key: apikey,
+			day: days,
+			key: this.apikey,
 			aqi: "no",
 			alerts: "no"
 		}
@@ -21,25 +21,26 @@ class WeatherModel {
         if (result.statusCode != 200) {
             throw `Error accessing weather API (${result.statusCode})`
         }
+		const resultObj = JSON.parse(result.body);
 		const resultData = {
 			current: {
-				temp: result.body.current.temp_c,
-				text: result.body.current.text,
-				wind: result.body.current.wind_kph,
-				humidity: result.body.current.humidity,
-				feel: result.body.current.feelslike_c
+				temp: resultObj.current.temp_c,
+				text: resultObj.current.text,
+				wind: resultObj.current.wind_kph,
+				humidity: resultObj.current.humidity,
+				feel: resultObj.current.feelslike_c
 			},
 			forecast: {
-				avg_temp: result.body.forecast.forecastday[0].day.avgtemp_c,
-				text: result.body.forecast.forecastday[0].day.condition.text,
-				max_wind: result.body.forecast.forecastday[0].day.maxwind_kph,
-				avg_humidity: result.body.forecast.forecastday[0].day.avghumidity,
-				will_it_rain: result.body.current.forecast.forecastday[0].day.daily_will_it_snow || 
-					result.body.current.forecast.forecastday[0].day.daily_will_it_rain
+				avg_temp: resultObj.forecast.forecastday[0].day.avgtemp_c,
+				text: resultObj.forecast.forecastday[0].day.condition.text,
+				max_wind: resultObj.forecast.forecastday[0].day.maxwind_kph,
+				avg_humidity: resultObj.forecast.forecastday[0].day.avghumidity,
+				will_it_rain: resultObj.current.forecast.forecastday[0].day.daily_will_it_snow || 
+				resultObj.current.forecast.forecastday[0].day.daily_will_it_rain
 			}
 		}
 
-        return resultData
+        return JSON.stringify(resultData)
     }
 }
 
