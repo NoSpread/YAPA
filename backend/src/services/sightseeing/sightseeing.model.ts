@@ -13,7 +13,7 @@ class SightseeingModel {
 			apikey: apikey
 		}
 
-        const result = await got(this.endpoint, requestObj)
+        const result = await got<any>(this.endpoint, requestObj)
 
         if (result.statusCode != 200) {
             throw `Error accessing sightseeing API (${result.statusCode})`

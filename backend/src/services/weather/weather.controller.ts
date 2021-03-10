@@ -5,7 +5,8 @@ import IControllerBase from '../../interfaces/IControllerBase'
 import WeatherModel from './weather.model'
 
 class WeatherController implements IControllerBase {
-    public path = '/weather'
+    public pathNow = '/weather/now'
+    public pathFuture = '/weather/forecast'
     public router = express.Router()
 
     constructor() {
@@ -13,16 +14,16 @@ class WeatherController implements IControllerBase {
     }
 
     public initRoutes() {
-        this.router.get(this.path, this.getWeather)
+        this.router.post(this.pathNow, this.getCurrentWeather)
+        this.router.post(this.pathFuture, this.getForecastWeather)
     }
 
-    private getWeather = (req: Request, res: Response) => {
+    private getCurrentWeather = (req: Request, res: Response) => {
         const weather = new WeatherModel
-		
-		const q = req.body.q
-		const days = req.body.days
+        const location = req.body.loc
 
-        weather.getWeather(q,days)
+        if (location) {
+            weather.getCurrentWeather(location)
             .then(weather => {
                 res.send(weather)
             })
@@ -31,9 +32,28 @@ class WeatherController implements IControllerBase {
                     type: "REQUEST_ERROR",
                     e: e.name
                 }
-                
                 res.status(503).json(error)
             })
+        } else res.sendStatus(400)
+    }
+
+    private getForecastWeather = (req: Request, res: Response) => {
+        const weather = new WeatherModel
+        const { loc: location, days} = req.body
+
+        if (location && days) {
+            weather.getForecastWaether(location, days)
+            .then(weather => {
+                res.send(weather)
+            })
+            .catch( e => {
+                const error = {
+                    type: "REQUEST_ERROR",
+                    e: e.name
+                }
+                res.status(503).json(error)
+            })
+        } else res.sendStatus(400)
     }
 }
 

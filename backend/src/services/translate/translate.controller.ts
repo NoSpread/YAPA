@@ -18,12 +18,10 @@ class TranslateController implements IControllerBase {
 
     private postTranslation = (req: Request, res: Response) => {
         const translate = new TranslateModel
+        const { query, source, target } = req.body.source
 
-        const query = req.body.query
-        const source = req.body.source
-        const target = req.body.target
-
-        translate.postTranslate(query, source, target)
+        if (query && source && target) {
+            translate.postTranslate(query, source, target)
             .then(translation => {
                 res.send(translation)
             })
@@ -32,9 +30,9 @@ class TranslateController implements IControllerBase {
                     type: "REQUEST_ERROR",
                     e: e.name
                 }
-                
                 res.status(503).json(error)
             })
+        } else res.sendStatus(400)
     }
 }
 
