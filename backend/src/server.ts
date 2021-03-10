@@ -19,8 +19,8 @@ import ActivityController from './services/activity/activity.controller'
 import RouteController from './services/routing/route.controller'
 import NewsController from './services/news/news.controller'
 import QuizController from './services/quiz/quiz.controller'
-import SightseeingController from './services/sightseeing/sightseeing.controller'
-import TransitController from './services/transit/transit.controller'
+import WeatherController from './services/weather/weather.controller'
+//import SightseeingController from './services/sightseeing/sightseeing.controller'
 //import UserController from './services/user/user.controller'
 import UserController from './services/user/user.controller'
 
@@ -56,8 +56,8 @@ const app = new App({
 		new RouteController(),
 		new NewsController(),
 		new QuizController(),
-		new SightseeingController(),
-		new TransitController()
+        new WeatherController()
+		//new SightseeingController()
 	],
     middleWares: [
         cors(corsSettings),

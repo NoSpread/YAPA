@@ -1,12 +1,7 @@
-export interface WeatherForecast {
-    location: Location;
-    current:  Current;
-    forecast: Forecast;
-}
-
-export interface WeatherCurrent {
-    location: Location,
-    current: Current
+export interface Weather {
+    location:  Location;
+    current:   Current;
+    forecast?: Forecast;
 }
 
 export interface Current {
@@ -14,7 +9,7 @@ export interface Current {
     temp_c:       number;
     condition:    CurrentCondition;
     wind_kph:     number;
-    wind_dir:     WindDir;
+    wind_dir:     string;
     pressure_mb:  number;
     pressure_in:  number;
     precip_mm:    number;
@@ -29,25 +24,6 @@ export interface Current {
 export interface CurrentCondition {
     text: string;
     code: number;
-}
-
-export enum WindDir {
-    s = "S",
-    o = "O",
-    w = "W",
-    n = "N",
-    nno = "NNO",
-    no = "NO",
-    ono = "ONO",
-    oso = "OSO",
-    so = "SO",
-    sso = "SSO",
-    ssw = "SSW",
-    sw = "SW",
-    wsw = "WSW",
-    wnw = "WNW",
-    nw = "NW",
-    nnw = "NNW"
 }
 
 export interface Forecast {
@@ -102,7 +78,7 @@ export interface Hour {
     wind_mph:       number;
     wind_kph:       number;
     wind_degree:    number;
-    wind_dir:       WindDir;
+    wind_dir:       string;
     pressure_mb:    number;
     precip_mm:      number;
     precip_in:      number;
@@ -137,7 +113,6 @@ export interface Location {
     localtime_epoch: number;
     localtime:       string;
 }
-
 
 export interface ICurrWeatherSelected {
     location: {

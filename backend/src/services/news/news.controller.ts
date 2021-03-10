@@ -17,8 +17,8 @@ class NewsController implements IControllerBase {
     }
 
     public initRoutes() {
-        this.router.get(this.path, this.getNews)
-        this.router.get(this.pathHeadlines, this.getHeadlines)
+        this.router.post(this.path, this.getNews)
+        this.router.post(this.pathHeadlines, this.getHeadlines)
     }
 
     private getNews = (req: Request, res: Response) => {

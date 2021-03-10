@@ -16,7 +16,7 @@ class QuizController implements IControllerBase {
     }
 
     public initRoutes() {
-        this.router.get(this.path, this.getQuiz)
+        this.router.post(this.path, this.getQuiz)
     }
 
     private getQuiz = (req: Request, res: Response) => {
