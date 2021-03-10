@@ -23,7 +23,7 @@ class QuizController implements IControllerBase {
         const amount = req.body.amount
 
         if (amount) {
-            this.quiz.getQuiz(Number(amount))
+            this.quiz.getQuiz(amount)
             .then(quiz => {
                 res.send(quiz)
             })

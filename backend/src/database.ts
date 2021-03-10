@@ -47,7 +47,7 @@ class DB {
             port: this._redisOptions.port
         })
 
-        this.logger.info("pRedis Server connected")
+        this.logger.info("Redis Server connected")
 
         this._mysql = null
     }

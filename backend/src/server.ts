@@ -14,14 +14,12 @@ import FortuneController from './services/fortune/fortune.controller'
 import JokeController from './services/joke/joke.controller'
 import TranslateController from './services/translate/translate.controller'
 import StocksController from './services/stocks/stocks.controller'
-
 import ActivityController from './services/activity/activity.controller'
 import RouteController from './services/routing/route.controller'
 import NewsController from './services/news/news.controller'
 import QuizController from './services/quiz/quiz.controller'
 import WeatherController from './services/weather/weather.controller'
-//import SightseeingController from './services/sightseeing/sightseeing.controller'
-//import UserController from './services/user/user.controller'
+import SightseeingController from './services/sightseeing/sightseeing.controller'
 import UserController from './services/user/user.controller'
 
 process.on('uncaughtException', err => {
@@ -56,8 +54,8 @@ const app = new App({
 		new RouteController(),
 		new NewsController(),
 		new QuizController(),
-        new WeatherController()
-		//new SightseeingController()
+        new WeatherController(),
+		new SightseeingController()
 	],
     middleWares: [
         cors(corsSettings),

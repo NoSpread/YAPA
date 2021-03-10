@@ -1,24 +1,55 @@
 import got from 'got'
+import { Geoname, Sightseeing, SError} from './ISightseeing'
 
 class SightseeingModel {
 
-    private endpoint = "http://api.opentripmap.com/0.1/en/places/radius"
+    private endpoint = "https://api.opentripmap.com/0.1/en/places/"
 	private apikey = process.env.OPENTRIMAP_API_KEY || ""
 
-    public async getSightseeing(lat:string, lon: string, radius: string): Promise<string> {
-		const requestObj {
-			lat: lat,
-			lon: lon,
-			radius: radius,
-			apikey: apikey
-		}
+    public getGeoname = async (geoname: string, radius: string): Promise<Sightseeing[]> => {
 
-        const result = await got<any>(this.endpoint, requestObj)
+        const result = await got<Geoname>(this.endpoint + "geoname", { searchParams: {apikey: this.apikey, format: "json", name: geoname}, responseType: 'json'})
 
         if (result.statusCode != 200) {
-            throw `Error accessing sightseeing API (${result.statusCode})`
+            throw new Error(`Error accessing sightseeing API (${result.statusCode})`)
         }
-        return result.body
+
+        if (result.body.error) {
+            throw new Error(`Error accessing sightseeing API (${result.body.error.status})`)
+        }
+
+        const { lat, lon } = result.body
+
+        if (lat && lon) {
+            try {
+                const sightseeings = await this.getSightseeing(lon, lat, radius)
+                return sightseeings
+            } catch (err) {
+                throw err
+            }
+        } else {
+            throw new Error(`Error accessing sightseeing API (Missing Lat / Lon)`)
+        }
+    }
+
+    private getSightseeing = async (lon: number, lat: number, radius: string): Promise<Sightseeing[]> => {
+        const result = await got<Sightseeing[] | SError>(this.endpoint + "radius", { searchParams: {apikey: this.apikey, format: "json", lon: lon, lat: lat, radius: radius }, responseType: 'json'})
+        
+        if (result.statusCode != 200) {
+            throw new Error(`Error accessing sightseeing API (${result.statusCode})`)
+        }
+
+        const isSightseeing = (sightseeing: Sightseeing[] | SError): sightseeing is Sightseeing[] => {
+            return true
+        }
+
+        const response = result.body
+        if (isSightseeing(response)) {
+            return response
+        } else {
+            throw new Error(`Error accessing sightseeing API (${response.error})`)
+        }
+        
     }
 }
 

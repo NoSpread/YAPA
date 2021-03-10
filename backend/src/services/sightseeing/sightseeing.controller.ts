@@ -1,7 +1,6 @@
 import * as express from 'express'
 import { Request, Response } from 'express'
 import IControllerBase from '../../interfaces/IControllerBase'
-
 import SightseeingModel from './sightseeing.model'
 
 class SightseeingController implements IControllerBase {
@@ -16,23 +15,27 @@ class SightseeingController implements IControllerBase {
     }
 
     public initRoutes() {
-        this.router.get(this.path, this.getSightseeing)
+        this.router.post(this.path, this.getSightseeing)
     }
 
     private getSightseeing = (req: Request, res: Response) => {
 
-        this.sightseeing.getSightseeing()
-        .then(sightseeing => {
-            res.send(sightseeing)
-        })
-        .catch( e => {
-            const error = {
-                type: "REQUEST_ERROR",
-                e: e.name
-            }
-            
-            res.status(503).json(error)
-        })
+        const { city, radius } = req.body
+
+        if (city && radius) {
+            this.sightseeing.getGeoname(city, radius)
+            .then( sightseeing => {
+                res.json(sightseeing)
+            })
+            .catch( e => {
+                const error = {
+                    type: "REQUEST_ERROR",
+                    e: e.name
+                }
+                
+                res.status(503).json(error)
+            })
+        } else res.sendStatus(400)        
     }
 }
 
