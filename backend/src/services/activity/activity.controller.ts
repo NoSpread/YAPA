@@ -8,8 +8,11 @@ class ActivityController implements IControllerBase {
     public path = '/activity'
     public router = express.Router()
 
+    private activity
+
     constructor() {
         this.initRoutes()
+        this.activity = new ActivityModel()
     }
 
     public initRoutes() {
@@ -17,9 +20,8 @@ class ActivityController implements IControllerBase {
     }
 
     private getActivity = (req: Request, res: Response) => {
-        const activity = new ActivityModel
-
-        activity.getActivity()
+        
+        this.activity.getActivity()
         .then(activity => {
             res.json(activity)
         })

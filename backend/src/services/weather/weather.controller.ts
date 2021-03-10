@@ -9,8 +9,11 @@ class WeatherController implements IControllerBase {
     public pathFuture = '/weather/forecast'
     public router = express.Router()
 
+    private weather
+
     constructor() {
         this.initRoutes()
+        this.weather = new WeatherModel
     }
 
     public initRoutes() {
@@ -19,11 +22,10 @@ class WeatherController implements IControllerBase {
     }
 
     private getCurrentWeather = (req: Request, res: Response) => {
-        const weather = new WeatherModel
         const location = req.body.loc
 
         if (location) {
-            weather.getCurrentWeather(location)
+            this.weather.getCurrentWeather(location)
             .then(weather => {
                 res.json(weather)
             })
@@ -38,11 +40,10 @@ class WeatherController implements IControllerBase {
     }
 
     private getForecastWeather = (req: Request, res: Response) => {
-        const weather = new WeatherModel
         const { loc: location, days} = req.body
 
         if (location && days) {
-            weather.getForecastWaether(location, days)
+            this.weather.getForecastWaether(location, days)
             .then(weather => {
                 res.json(weather)
             })

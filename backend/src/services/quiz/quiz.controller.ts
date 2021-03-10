@@ -8,8 +8,11 @@ class QuizController implements IControllerBase {
     public path = '/quiz'
     public router = express.Router()
 
+    private quiz
+
     constructor() {
         this.initRoutes()
+        this.quiz = new QuizModel()
     }
 
     public initRoutes() {
@@ -17,11 +20,10 @@ class QuizController implements IControllerBase {
     }
 
     private getQuiz = (req: Request, res: Response) => {
-        const quiz = new QuizModel
         const amount = req.body.amount
 
         if (amount) {
-            quiz.getQuiz(Number(amount))
+            this.quiz.getQuiz(Number(amount))
             .then(quiz => {
                 res.send(quiz)
             })

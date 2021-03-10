@@ -8,8 +8,11 @@ class JokeController implements IControllerBase {
     public path = '/joke'
     public router = express.Router()
 
+    private joke
+
     constructor() {
         this.initRoutes()
+        this.joke = new JokeModel()
     }
 
     public initRoutes() {
@@ -17,9 +20,8 @@ class JokeController implements IControllerBase {
     }
 
     private getJoke = (req: Request, res: Response) => {
-        const joke = new JokeModel
 
-        joke.getJoke()
+        this.joke.getJoke()
         .then(joke => {
             res.json(joke)
         })

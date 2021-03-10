@@ -8,8 +8,11 @@ class StocksController implements IControllerBase {
     public path = '/stock'
     public router = express.Router()
 
+    private stocks
+
     constructor() {
         this.initRoutes()
+        this.stocks = new StocksModel
     }
 
     public initRoutes() {
@@ -17,11 +20,11 @@ class StocksController implements IControllerBase {
     }
 
     private postStocks = (req: Request, res: Response) => {
-        const stocks = new StocksModel
+        
         const symbol = req.body.symbol
 
         if (symbol) {
-            stocks.getStocks(symbol)
+            this.stocks.getStocks(symbol)
             .then(stock => {
                 res.json(stock)
             })
