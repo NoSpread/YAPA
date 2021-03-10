@@ -1,7 +1,6 @@
 import * as express from 'express'
 import { Request, Response } from 'express'
 import IControllerBase from '../../interfaces/IControllerBase'
-import { ILogin } from '../../interfaces/IDatabase'
 import authentication from '../../middleware/authentication'
 import UserModel from './user.model'
 
@@ -46,15 +45,18 @@ class UserController implements IControllerBase {
     }
 
     private logout = async (req: Request, res: Response) => {
-        const user: ILogin = req.session.user!
-        const status = await this.user.logout(user)
+
+        const apikey: string | null = req.session.user ? req.session.user.api : req.body.apikey ? req.body.apikey : null
+
+        if (apikey) {
+            const status = await this.user.logout(apikey)
         
-        if (status) {
-            req.session.destroy( err => {
-                res.sendStatus(200)
-            })
-        }
-        else res.sendStatus(401)
+            if (status) {
+                req.session.destroy( err => {
+                    res.sendStatus(200)
+                })
+            } else res.sendStatus(401)
+        } else res.sendStatus(401)
     }
 }
 

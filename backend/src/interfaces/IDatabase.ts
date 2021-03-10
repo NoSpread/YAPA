@@ -3,7 +3,8 @@ import { RowDataPacket } from 'mysql2/promise'
 interface IDBUser extends RowDataPacket {
     id: number,
     username: string,
-    password: string
+    password: string,
+    key: any
 }
 
 interface IDBKey extends RowDataPacket {

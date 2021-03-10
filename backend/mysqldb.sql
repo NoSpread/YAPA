@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `keys` (
   `id` int(11) NOT NULL,
   `key` varchar(500) NOT NULL,
   `timestamp` timestamp NULL DEFAULT current_timestamp(),
-  KEY `uid` (`id`),
+  UNIQUE KEY `id` (`id`),
   CONSTRAINT `uid` FOREIGN KEY (`id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `timestamp` timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
 

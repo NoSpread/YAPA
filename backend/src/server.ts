@@ -21,6 +21,7 @@ import NewsController from './services/news/news.controller'
 import QuizController from './services/quiz/quiz.controller'
 import SightseeingController from './services/sightseeing/sightseeing.controller'
 import TransitController from './services/transit/transit.controller'
+//import UserController from './services/user/user.controller'
 import UserController from './services/user/user.controller'
 
 process.on('uncaughtException', err => {
@@ -46,11 +47,11 @@ const corsSettings = {
 const app = new App({
     port: Number(process.env.API_PORT) || 5000,
     controllers: [
+        new UserController(),
         new FortuneController(),
         new JokeController(),
         new TranslateController(),
         new StocksController(),
-        new UserController(),
 		new ActivityController(),
 		new DrivingController(),
 		new NewsController(),

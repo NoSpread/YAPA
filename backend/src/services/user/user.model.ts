@@ -28,8 +28,8 @@ class UserModel {
         else return null
     }
 
-    public logout = async (login: ILogin): Promise<boolean> => {
-        const status = await database.logoutUser(login)
+    public logout = async (apikey: string): Promise<boolean> => {
+        const status = await database.logoutUser(apikey)
         if (status) return true
         else return false
     }

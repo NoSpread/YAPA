@@ -3,7 +3,7 @@ import MySQL, { Pool } from 'mysql2/promise'
 import { IRDBOptions, ISQLOptions } from './interfaces/IDBOptions'
 import Crypto from 'crypto'
 import Argon from 'argon2'
-import { IDBKey, IDBUser, IKey, ILogin } from "./interfaces/IDatabase";
+import { IDBKey, IDBUser, ILogin } from "./interfaces/IDatabase";
 import Logger from './logger'
 
 class DB {
@@ -47,7 +47,7 @@ class DB {
             port: this._redisOptions.port
         })
 
-        this.logger.info("Redis Server connected")
+        this.logger.info("pRedis Server connected")
 
         this._mysql = null
     }
@@ -123,24 +123,22 @@ class DB {
         if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
 
         try {
-            const [row] = await this._mysql.execute<IDBUser[]>('SELECT `id`, `username`, `password` FROM `users` WHERE `username` = ?', [username])
+            const [row] = await this._mysql.execute<IDBUser[]>('SELECT u.`id`, u.`username`, u.`password`, k.`key` FROM `users` AS u LEFT JOIN `keys` AS k ON u.`id` = k.`id` WHERE u.`username` = ?', [username])
             
             if (row.length === 0) throw {code: "USER_NOT_FOUND"}
             const phash = row[0].password
             const uid = row[0].id
 
             try {
-                const hverify = await Argon.verify(phash, password)
-                const keys = await this.createAPIKey(uid)
-                
+                const hverify = await Argon.verify(phash, password)                
                 if (hverify) {
+                    const key = row[0].key ? row[0].key : await this.createAPIKey(uid)  
                     const user: ILogin = {
                         username: username,
                         id: uid,
-                        api: keys.db
+                        api: key
                     }
-                    this.writeToCache(uid, JSON.stringify(user), 172800) // 48h lifetime
-                    user.api = keys.user // change to unhashed version for user
+                    this.writeToCache(key, JSON.stringify(user), 172800) // 48h lifetime
 
                     return user
                 } else return null
@@ -157,15 +155,15 @@ class DB {
         return null
     }
 
-    public async logoutUser(login: ILogin): Promise<boolean> {
+    public async logoutUser(apikey: string): Promise<boolean> {
         if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
 
-        const validKey = await this.verifyAPIKey(login)
+        const validKey = await this.verifyAPIKey(apikey)
         
         if (validKey) {
             try {
-                this._mysql.execute('DELETE FROM `keys` WHERE id = ?', [login.id])
-                this.delFromCache(login.id)
+                this._mysql.execute('DELETE FROM `keys` WHERE `key` = ?', [apikey])
+                this.delFromCache(apikey)
                 return true
             } catch(err) {
                 if (err) throw err
@@ -174,53 +172,36 @@ class DB {
         return false
     }
 
-    private async createAPIKey(id: number): Promise<IKey> {
+    private async createAPIKey(id: number): Promise<string> {
         if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
         
         const apikey = this.randomString()
-        const hapikey = await Argon.hash(apikey, { type: Argon.argon2id, memoryCost: 2 ** 16, hashLength: 50})
 
         try {
-            await this._mysql.execute('INSERT INTO `keys` (`id`, `key`) VALUES(?, ?)', [id, hapikey])
+            await this._mysql.execute('INSERT INTO `keys` (`id`, `key`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `id` = ?, `key` = ?', [id, apikey, id, apikey])
         } catch(err) {
             if (err) throw err
         }
 
-        return { user: apikey, db: hapikey }
+        return apikey
     }
 
-    // TODO Make actually usefull -> actually check for the apikey
-    public async verifyAPIKey(login: ILogin): Promise<boolean> {
+    public async verifyAPIKey(apikey: string): Promise<boolean> {
         if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
         
         try {
-            // TODO Save API KEY as KEY in redis? 
-            const cache = await this.getFromCache(String(login.id))
-            let dbkey
+            const cache = await this.getFromCache(apikey)
 
             if (!cache) {
-                const [row] = await this._mysql.execute<IDBKey[]>('SELECT u.`id`, u.`username`, k.`key` FROM `keys`AS k, `users` AS u WHERE u.`username` = ?', [login.username])
-                if (row.length === 0) throw new Error("User not found")
-    
-                dbkey = row[0].key
+                const [row] = await this._mysql.execute<IDBKey[]>('SELECT u.`id`, u.`username`, k.`key` FROM `keys`AS k, `users` AS u WHERE k.`key` = ?', [apikey])
+                if (row.length === 0) throw new Error("Key not found")
+                return true
             } else {
-                const parsed: ILogin = JSON.parse(cache)
-                dbkey = parsed.api
+                return true
             }
-
-            try {
-                const hverify = await Argon.verify(dbkey, login.api)
-                return hverify
-                
-            } catch(err) {
-                if (!err.code) throw {code: "ARGON_FAIL"}
-                throw err
-            }
-
         } catch(err) {
             if (err.code) throw err.code
         }
-
         return false
     }
 
