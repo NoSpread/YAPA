@@ -18,8 +18,10 @@ class QuizController implements IControllerBase {
 
     private getQuiz = (req: Request, res: Response) => {
         const quiz = new QuizModel
+        const amount = req.body.amount
 
-        quiz.getQuiz()
+        if (amount) {
+            quiz.getQuiz(Number(amount))
             .then(quiz => {
                 res.send(quiz)
             })
@@ -31,6 +33,7 @@ class QuizController implements IControllerBase {
                 
                 res.status(503).json(error)
             })
+        } else res.sendStatus(400)
     }
 }
 
