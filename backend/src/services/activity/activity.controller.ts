@@ -20,17 +20,16 @@ class ActivityController implements IControllerBase {
         const activity = new ActivityModel
 
         activity.getActivity()
-            .then(activity => {
-                res.send(activity)
-            })
-            .catch( e => {
-                const error = {
-                    type: "REQUEST_ERROR",
-                    e: e.name
-                }
-                
-                res.status(503).json(error)
-            })
+        .then(activity => {
+            res.json(activity)
+        })
+        .catch( e => {
+            const error = {
+                type: "REQUEST_ERROR",
+                e: e.name
+            }
+            res.status(503).json(error)
+        })
     }
 }
 
