@@ -1,5 +1,5 @@
 import got from 'got'
-import { WeatherCurrent, WeatherForecast, IDaySelected, ICurrWeatherSelected, IDayForecastSelected } from './IWeather'
+import { WeatherCurrent, WeatherForecast, IDaySelected, IDayForecastSelected } from './IWeather'
 
 class WeatherModel {
 
@@ -47,7 +47,7 @@ class WeatherModel {
         const { location: locationObj, current: currentObj, forecast: { forecastday: forecastObj }} = result.body
 
         const getDayObject = (): IDaySelected[] => {
-            
+
             const dayarr: IDaySelected[] = []
             for (const day of forecastObj) {
                 const dayObj: IDaySelected = {
