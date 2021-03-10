@@ -1,5 +1,5 @@
 import got from 'got'
-import { IRealTime, IForeCast, IDay, IDayForecast} from './IWeather'
+import { WeatherCurrent, WeatherForecast, IDaySelected, ICurrWeatherSelected, IDayForecastSelected } from './IWeather'
 
 class WeatherModel {
 
@@ -8,7 +8,7 @@ class WeatherModel {
 
 
     public getCurrentWeather = async (location: string): Promise<string> => {
-        const result = await got<IRealTime>(this.endpoint, {searchParams: {key: this.apikey, q: location, aqi: "no"}})
+        const result = await got<WeatherCurrent>(this.endpoint, {searchParams: {key: this.apikey, q: location, aqi: "no"}})
 
         if (result.statusCode != 200) {
             throw `Error accessing weather API (${result.statusCode})`
@@ -37,8 +37,8 @@ class WeatherModel {
 
     }
 
-    public getForecastWaether = async (location: string, days: number): Promise<string> => {
-        const result = await got<IForeCast>(this.endpoint, {searchParams: {key: this.apikey, q: location, aqi: "no", days: days, alerts: "no"}, responseType: "json"})
+    public getForecastWaether = async (location: string, days: number): Promise<IDayForecastSelected> => {
+        const result = await got<WeatherForecast>(this.endpoint, {searchParams: {key: this.apikey, q: location, aqi: "no", days: days, alerts: "no"}, responseType: "json"})
 
         if (result.statusCode != 200) {
             throw `Error accessing weather API (${result.statusCode})`
@@ -46,10 +46,11 @@ class WeatherModel {
 
         const { location: locationObj, current: currentObj, forecast: { forecastday: forecastObj }} = result.body
 
-        const getDayObject = (): IDay[] => {
-            const dayarr: IDay[] = []
+        const getDayObject = (): IDaySelected[] => {
+            
+            const dayarr: IDaySelected[] = []
             for (const day of forecastObj) {
-                const dayObj: IDay = {
+                const dayObj: IDaySelected = {
                     date: day.date,
                     avg_temp: day.day.avgtemp_c,
                     cond: day.day.condition.text,
@@ -62,7 +63,7 @@ class WeatherModel {
             return dayarr
         }
 
-        const weatherData: IDayForecast = {
+        const weatherData: IDayForecastSelected = {
             location: {
                 name: locationObj.name,
                 region: locationObj.region,
@@ -80,7 +81,7 @@ class WeatherModel {
             forecast: getDayObject()
         }
 
-        return JSON.stringify(weatherData)
+        return weatherData
     }
 }
 

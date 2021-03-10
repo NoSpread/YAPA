@@ -4,7 +4,7 @@ class TranslateModel {
 
     private endpoint = "https://libretranslate.com/translate"
 
-    public async postTranslate(query: string, source: string, target: string): Promise < string > {
+    public async postTranslate(query: string, source: string, target: string): Promise<string> {
 
         const requestObj = {
             q: query,

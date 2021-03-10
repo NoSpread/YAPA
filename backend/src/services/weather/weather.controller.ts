@@ -25,7 +25,7 @@ class WeatherController implements IControllerBase {
         if (location) {
             weather.getCurrentWeather(location)
             .then(weather => {
-                res.send(weather)
+                res.json(weather)
             })
             .catch( e => {
                 const error = {
@@ -44,7 +44,7 @@ class WeatherController implements IControllerBase {
         if (location && days) {
             weather.getForecastWaether(location, days)
             .then(weather => {
-                res.send(weather)
+                res.json(weather)
             })
             .catch( e => {
                 const error = {
