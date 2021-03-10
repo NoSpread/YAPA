@@ -18,7 +18,7 @@ class TranslateController implements IControllerBase {
 
     private postTranslation = (req: Request, res: Response) => {
         const translate = new TranslateModel
-        const { query, source, target } = req.body.source
+        const { query, source, target } = req.body
 
         if (query && source && target) {
             translate.postTranslate(query, source, target)
