@@ -23,7 +23,7 @@ class TranslateController implements IControllerBase {
         if (query && source && target) {
             translate.postTranslate(query, source, target)
             .then(translation => {
-                res.send(translation)
+                res.json(translation)
             })
             .catch( e => {
                 const error = {
