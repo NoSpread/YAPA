@@ -9,6 +9,10 @@ Repository for Advanced Software Engineering
 API_URL=http://localhost
 API_PORT=5000
 FINNHUB_API_KEY=
+WEATHER_API_KEY=
+NEWS_API_KEY=
+BING_API_KEY=
+OPENTRIMAP_API_KEY=
 COOKIE_SECRET=
 ```
 
