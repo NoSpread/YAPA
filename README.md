@@ -1,4 +1,4 @@
-# Yet Another Personal Assistent
+# Yet Another Personal Assistent &nbsp;![YAPA Logo](https://github.com/NoSpread/YAPA/blob/master/yapa/images/icon-72x72.png)
 Repository for Advanced Software Engineering
 
 # Environment (backend)
