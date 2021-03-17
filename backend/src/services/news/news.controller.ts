@@ -22,10 +22,10 @@ class NewsController implements IControllerBase {
     }
 
     private getNews = (req: Request, res: Response) => {
-        const query = req.body.query
+        const topic = req.body.topic
 
-        if (query) {
-            this.news.getNews(query)
+        if (topic) {
+            this.news.getNews(topic)
             .then(news => {
                 res.send(news)
             })
@@ -41,10 +41,10 @@ class NewsController implements IControllerBase {
     }
 
     private getHeadlines = (req: Request, res: Response) => {
-        const query = req.body.query
+        const topic = req.body.topic
 
-        if (query) {
-            this.news.getHeadlines(query)
+        if (topic) {
+            this.news.getHeadlines(topic)
             .then(news => {
                 res.send(news)
             })

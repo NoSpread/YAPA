@@ -8,7 +8,11 @@ const authentication = async (req: Request, res: Response, next: NextFunction) =
             if (valid) {
                 next()
             } else {
-                res.sendStatus(401)
+                const err = {
+                    type: "PERMISSION_ERROR",
+                    e: "InvalidSession"
+                }
+                res.status(401).json(err)
             }
         } catch (error) {
             res.sendStatus(500)
@@ -21,13 +25,21 @@ const authentication = async (req: Request, res: Response, next: NextFunction) =
                 req.body.apikey = key
                 next()
             } else {
-                res.sendStatus(401)
+                const err = {
+                    type: "PERMISSION_ERROR",
+                    e: "InvalidAPIKey"
+                }
+                res.status(401).json(err)
             }
         } catch (error) {
             res.sendStatus(500)
         }
     } else {
-        res.sendStatus(401)
+        const err = {
+            type: "PERMISSION_ERROR",
+            e: "MissingSessionOrAPIKey"
+        }
+        res.status(401).json(err)
     }
 }
 
