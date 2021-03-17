@@ -13,10 +13,12 @@ const authentication = async (req: Request, res: Response, next: NextFunction) =
         } catch (error) {
             res.sendStatus(500)
         }
-    } else if (req.body.apikey) {
+    } else if (req.headers['x-api-key']) {
         try {
-            const valid = await database.verifyAPIKey(req.body.apikey)
+            const key = req.headers['x-api-key'].toString()
+            const valid = await database.verifyAPIKey(key)
             if (valid) {
+                req.body.apikey = key
                 next()
             } else {
                 res.sendStatus(401)
