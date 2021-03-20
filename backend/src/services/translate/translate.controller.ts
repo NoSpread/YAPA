@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { Request, Response } from 'express'
+import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 
 import TranslateModel from './translate.model'
@@ -16,7 +17,7 @@ class TranslateController implements IControllerBase {
     }
 
     public initRoutes() {
-        this.router.post(this.path, this.postTranslation)
+        this.router.post(this.path, authentication, this.postTranslation)
     }
 
     private postTranslation = (req: Request, res: Response) => {

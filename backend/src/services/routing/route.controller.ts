@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { Request, Response } from 'express'
+import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 import { Mode, TimeType } from './IRoute'
 
@@ -17,7 +18,7 @@ class RouteController implements IControllerBase {
     }
 
     public initRoutes() {
-        this.router.post(this.path, this.getRoute)
+        this.router.post(this.path, authentication, this.getRoute)
     }
 
     private getRoute = (req: Request, res: Response) => {

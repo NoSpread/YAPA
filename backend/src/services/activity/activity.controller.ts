@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { Request, Response } from 'express'
+import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 
 import ActivityModel from './activity.model'
@@ -16,7 +17,7 @@ class ActivityController implements IControllerBase {
     }
 
     public initRoutes() {
-        this.router.get(this.path, this.getActivity)
+        this.router.get(this.path, authentication, this.getActivity)
     }
 
     private getActivity = (req: Request, res: Response) => {

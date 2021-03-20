@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { Request, Response } from 'express'
+import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 
 import WeatherModel from './weather.model'
@@ -17,8 +18,8 @@ class WeatherController implements IControllerBase {
     }
 
     public initRoutes() {
-        this.router.post(this.pathNow, this.getCurrentWeather)
-        this.router.post(this.pathFuture, this.getForecastWeather)
+        this.router.post(this.pathNow, authentication, this.getCurrentWeather)
+        this.router.post(this.pathFuture, authentication, this.getForecastWeather)
     }
 
     private getCurrentWeather = (req: Request, res: Response) => {

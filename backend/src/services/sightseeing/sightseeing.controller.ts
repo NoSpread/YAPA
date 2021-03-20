@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { Request, Response } from 'express'
+import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 import SightseeingModel from './sightseeing.model'
 
@@ -15,7 +16,7 @@ class SightseeingController implements IControllerBase {
     }
 
     public initRoutes() {
-        this.router.post(this.path, this.getSightseeing)
+        this.router.post(this.path, authentication, this.getSightseeing)
     }
 
     private getSightseeing = (req: Request, res: Response) => {
