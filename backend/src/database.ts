@@ -215,5 +215,19 @@ class DB {
 
 export default DB
 
-const database = new DB()
+const redis_options: IRDBOptions = {
+    db: Number(process.env.REDIS_DB!),
+    host: process.env.REDIS_HOST!,
+    port: Number(process.env.REDIS_PORT!)
+}
+
+const sql_options: ISQLOptions = {
+    db: process.env.SQL_DB!,
+    host: process.env.SQL_HOST!,
+    pass: process.env.SQL_PASS!,
+    port: Number(process.env.SQL_PORT!),
+    user: process.env.SQL_USER!
+}
+
+const database = new DB(redis_options, sql_options)
 export { database }
