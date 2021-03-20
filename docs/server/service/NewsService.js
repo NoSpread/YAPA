@@ -12,7 +12,29 @@ exports.news = function(topic) {
     var examples = {};
     examples['application/json'] = {
   "totalResults" : 0,
-  "articles" : [ "{}", "{}" ],
+  "articles" : [ {
+    "publishedAt" : "2000-01-23T04:56:07.000+00:00",
+    "author" : "author",
+    "urlToImage" : "urlToImage",
+    "description" : "description",
+    "source" : {
+      "id" : "id"
+    },
+    "title" : "title",
+    "url" : "url",
+    "content" : "content"
+  }, {
+    "publishedAt" : "2000-01-23T04:56:07.000+00:00",
+    "author" : "author",
+    "urlToImage" : "urlToImage",
+    "description" : "description",
+    "source" : {
+      "id" : "id"
+    },
+    "title" : "title",
+    "url" : "url",
+    "content" : "content"
+  } ],
   "status" : "status"
 };
     if (Object.keys(examples).length > 0) {
@@ -35,7 +57,29 @@ exports.newsHeadlines = function(topic) {
     var examples = {};
     examples['application/json'] = {
   "totalResults" : 0,
-  "articles" : [ "{}", "{}" ],
+  "articles" : [ {
+    "publishedAt" : "2000-01-23T04:56:07.000+00:00",
+    "author" : "author",
+    "urlToImage" : "urlToImage",
+    "description" : "description",
+    "source" : {
+      "id" : "id"
+    },
+    "title" : "title",
+    "url" : "url",
+    "content" : "content"
+  }, {
+    "publishedAt" : "2000-01-23T04:56:07.000+00:00",
+    "author" : "author",
+    "urlToImage" : "urlToImage",
+    "description" : "description",
+    "source" : {
+      "id" : "id"
+    },
+    "title" : "title",
+    "url" : "url",
+    "content" : "content"
+  } ],
   "status" : "status"
 };
     if (Object.keys(examples).length > 0) {

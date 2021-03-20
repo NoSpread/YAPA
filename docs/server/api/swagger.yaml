@@ -303,7 +303,6 @@ paths:
           - "arrival"
           - "departure"
           - "lastavailable"
-        collectionFormat: "multi"
       - name: "time"
         in: "formData"
         description: "The time your searching a transit"
@@ -673,95 +672,57 @@ definitions:
     type: "object"
     properties:
       location:
-        type: "object"
-        properties:
-          name:
-            type: "string"
-          region:
-            type: "string"
-          country:
-            type: "string"
+        $ref: "#/definitions/WeatherNow_location"
       weather:
-        type: "object"
-        properties:
-          update:
-            type: "string"
-            format: "date-time"
-          temp:
-            type: "number"
-            format: "float"
-          cond:
-            type: "string"
-          wind:
-            type: "object"
-            properties:
-              dir:
-                type: "string"
-              speed:
-                type: "number"
-                format: "float"
+        $ref: "#/definitions/WeatherNow_weather"
     example:
-      weather: "{}"
-      location: "{}"
+      weather:
+        temp: 0.8008282
+        update: "2000-01-23T04:56:07.000+00:00"
+        cond: "cond"
+        wind:
+          dir: "dir"
+          speed: 6.0274563
+      location:
+        country: "country"
+        name: "name"
+        region: "region"
   WeatherForecast:
     type: "object"
     properties:
       location:
-        type: "object"
-        properties:
-          name:
-            type: "string"
-          region:
-            type: "string"
-          country:
-            type: "string"
+        $ref: "#/definitions/WeatherNow_location"
       weather:
-        type: "object"
-        properties:
-          update:
-            type: "string"
-            format: "date-time"
-          temp:
-            type: "number"
-            format: "float"
-          cond:
-            type: "string"
-          wind:
-            type: "object"
-            properties:
-              dir:
-                type: "string"
-              speed:
-                type: "number"
-                format: "float"
+        $ref: "#/definitions/WeatherNow_weather"
       forecast:
         type: "array"
         items:
-          type: "object"
-          properties:
-            date:
-              type: "string"
-              format: "date-time"
-            avg_temp:
-              type: "number"
-              format: "float"
-            cond:
-              type: "string"
-            wind:
-              type: "number"
-              format: "float"
-            snow:
-              type: "integer"
-              format: "int64"
-            rain:
-              type: "integer"
-              format: "int64"
+          $ref: "#/definitions/WeatherForecast_forecast"
     example:
-      weather: "{}"
-      location: "{}"
+      weather:
+        temp: 0.8008282
+        update: "2000-01-23T04:56:07.000+00:00"
+        cond: "cond"
+        wind:
+          dir: "dir"
+          speed: 6.0274563
+      location:
+        country: "country"
+        name: "name"
+        region: "region"
       forecast:
-      - "{}"
-      - "{}"
+      - date: "2000-01-23T04:56:07.000+00:00"
+        rain: 5
+        avg_temp: 0.8008282
+        snow: 1
+        cond: "cond"
+        wind: 6.0274563
+      - date: "2000-01-23T04:56:07.000+00:00"
+        rain: 5
+        avg_temp: 0.8008282
+        snow: 1
+        cond: "cond"
+        wind: 6.0274563
   Route:
     type: "object"
     properties:
@@ -789,36 +750,28 @@ definitions:
       articles:
         type: "array"
         items:
-          type: "object"
-          properties:
-            source:
-              type: "object"
-              properties:
-                id:
-                  type: "string"
-                  description: "Might be null"
-            author:
-              type: "string"
-              description: "Might be null"
-            title:
-              type: "string"
-            description:
-              type: "string"
-            url:
-              type: "string"
-            urlToImage:
-              type: "string"
-            publishedAt:
-              type: "string"
-              format: "date-time"
-            content:
-              type: "string"
-              description: "Might be null"
+          $ref: "#/definitions/News_articles"
     example:
       totalResults: 0
       articles:
-      - "{}"
-      - "{}"
+      - publishedAt: "2000-01-23T04:56:07.000+00:00"
+        author: "author"
+        urlToImage: "urlToImage"
+        description: "description"
+        source:
+          id: "id"
+        title: "title"
+        url: "url"
+        content: "content"
+      - publishedAt: "2000-01-23T04:56:07.000+00:00"
+        author: "author"
+        urlToImage: "urlToImage"
+        description: "description"
+        source:
+          id: "id"
+        title: "title"
+        url: "url"
+        content: "content"
       status: "status"
   Stock:
     type: "object"
@@ -866,27 +819,26 @@ definitions:
       results:
         type: "array"
         items:
-          type: "object"
-          properties:
-            category:
-              type: "string"
-            type:
-              type: "string"
-            difficulty:
-              type: "string"
-            question:
-              type: "string"
-            correct_answer:
-              type: "string"
-            incorrect_answers:
-              type: "array"
-              items:
-                type: "string"
+          $ref: "#/definitions/Quiz_results"
     example:
       response_code: 0
       results:
-      - "{}"
-      - "{}"
+      - difficulty: "difficulty"
+        question: "question"
+        correct_answer: "correct_answer"
+        incorrect_answers:
+        - "incorrect_answers"
+        - "incorrect_answers"
+        category: "category"
+        type: "type"
+      - difficulty: "difficulty"
+        question: "question"
+        correct_answer: "correct_answer"
+        incorrect_answers:
+        - "incorrect_answers"
+        - "incorrect_answers"
+        category: "category"
+        type: "type"
   Sightseeing:
     type: "object"
     properties:
@@ -905,14 +857,7 @@ definitions:
       kinds:
         type: "string"
       point:
-        type: "object"
-        properties:
-          lon:
-            type: "number"
-            format: "float"
-          lat:
-            type: "number"
-            format: "float"
+        $ref: "#/definitions/Sightseeing_point"
       osm:
         type: "string"
     example:
@@ -923,7 +868,9 @@ definitions:
       dist: 0.8008282
       kinds: "kinds"
       wikidata: "wikidata"
-      point: "{}"
+      point:
+        lon: 1.4658129
+        lat: 5.962134
   Activity:
     type: "object"
     properties:
@@ -972,20 +919,7 @@ definitions:
         type: "string"
         description: "Might be undefined"
       flags:
-        type: "object"
-        properties:
-          nswf:
-            type: "boolean"
-          racist:
-            type: "boolean"
-          sexist:
-            type: "boolean"
-          religious:
-            type: "boolean"
-          political:
-            type: "boolean"
-          explicit:
-            type: "boolean"
+        $ref: "#/definitions/Joke_flags"
       id:
         type: "integer"
         format: "int64"
@@ -995,7 +929,13 @@ definitions:
         type: "string"
     example:
       delivery: "delivery"
-      flags: "{}"
+      flags:
+        sexist: true
+        explicit: true
+        religious: true
+        nswf: true
+        political: true
+        racist: true
       safe: true
       setup: "setup"
       id: 0
@@ -1006,3 +946,174 @@ definitions:
       joke: "joke"
   Fortune:
     type: "string"
+  WeatherNow_location:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      region:
+        type: "string"
+      country:
+        type: "string"
+    example:
+      country: "country"
+      name: "name"
+      region: "region"
+  WeatherNow_weather_wind:
+    type: "object"
+    properties:
+      dir:
+        type: "string"
+      speed:
+        type: "number"
+        format: "float"
+    example:
+      dir: "dir"
+      speed: 6.0274563
+  WeatherNow_weather:
+    type: "object"
+    properties:
+      update:
+        type: "string"
+        format: "date-time"
+      temp:
+        type: "number"
+        format: "float"
+      cond:
+        type: "string"
+      wind:
+        $ref: "#/definitions/WeatherNow_weather_wind"
+    example:
+      temp: 0.8008282
+      update: "2000-01-23T04:56:07.000+00:00"
+      cond: "cond"
+      wind:
+        dir: "dir"
+        speed: 6.0274563
+  WeatherForecast_forecast:
+    type: "object"
+    properties:
+      date:
+        type: "string"
+        format: "date-time"
+      avg_temp:
+        type: "number"
+        format: "float"
+      cond:
+        type: "string"
+      wind:
+        type: "number"
+        format: "float"
+      snow:
+        type: "integer"
+        format: "int64"
+      rain:
+        type: "integer"
+        format: "int64"
+    example:
+      date: "2000-01-23T04:56:07.000+00:00"
+      rain: 5
+      avg_temp: 0.8008282
+      snow: 1
+      cond: "cond"
+      wind: 6.0274563
+  News_source:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Might be null"
+    example:
+      id: "id"
+  News_articles:
+    type: "object"
+    properties:
+      source:
+        $ref: "#/definitions/News_source"
+      author:
+        type: "string"
+        description: "Might be null"
+      title:
+        type: "string"
+      description:
+        type: "string"
+      url:
+        type: "string"
+      urlToImage:
+        type: "string"
+      publishedAt:
+        type: "string"
+        format: "date-time"
+      content:
+        type: "string"
+        description: "Might be null"
+    example:
+      publishedAt: "2000-01-23T04:56:07.000+00:00"
+      author: "author"
+      urlToImage: "urlToImage"
+      description: "description"
+      source:
+        id: "id"
+      title: "title"
+      url: "url"
+      content: "content"
+  Quiz_results:
+    type: "object"
+    properties:
+      category:
+        type: "string"
+      type:
+        type: "string"
+      difficulty:
+        type: "string"
+      question:
+        type: "string"
+      correct_answer:
+        type: "string"
+      incorrect_answers:
+        type: "array"
+        items:
+          type: "string"
+    example:
+      difficulty: "difficulty"
+      question: "question"
+      correct_answer: "correct_answer"
+      incorrect_answers:
+      - "incorrect_answers"
+      - "incorrect_answers"
+      category: "category"
+      type: "type"
+  Sightseeing_point:
+    type: "object"
+    properties:
+      lon:
+        type: "number"
+        format: "float"
+      lat:
+        type: "number"
+        format: "float"
+    example:
+      lon: 1.4658129
+      lat: 5.962134
+  Joke_flags:
+    type: "object"
+    properties:
+      nswf:
+        type: "boolean"
+      racist:
+        type: "boolean"
+      sexist:
+        type: "boolean"
+      religious:
+        type: "boolean"
+      political:
+        type: "boolean"
+      explicit:
+        type: "boolean"
+    example:
+      sexist: true
+      explicit: true
+      religious: true
+      nswf: true
+      political: true
+      racist: true

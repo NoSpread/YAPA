@@ -4,7 +4,7 @@
   "description": "The perfect docs for the perfect api",
   "main": "index.js",
   "scripts": {
-    "prestart": "yarn install",
+    "prestart": "npm install",
     "start": "node index.js"
   },
   "keywords": [

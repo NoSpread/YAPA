@@ -55,7 +55,14 @@ exports.joke = function() {
     var examples = {};
     examples['application/json'] = {
   "delivery" : "delivery",
-  "flags" : "{}",
+  "flags" : {
+    "sexist" : true,
+    "explicit" : true,
+    "religious" : true,
+    "nswf" : true,
+    "political" : true,
+    "racist" : true
+  },
   "safe" : true,
   "setup" : "setup",
   "id" : 0,
@@ -85,7 +92,21 @@ exports.quiz = function(amount) {
     var examples = {};
     examples['application/json'] = {
   "response_code" : 0,
-  "results" : [ "{}", "{}" ]
+  "results" : [ {
+    "difficulty" : "difficulty",
+    "question" : "question",
+    "correct_answer" : "correct_answer",
+    "incorrect_answers" : [ "incorrect_answers", "incorrect_answers" ],
+    "category" : "category",
+    "type" : "type"
+  }, {
+    "difficulty" : "difficulty",
+    "question" : "question",
+    "correct_answer" : "correct_answer",
+    "incorrect_answers" : [ "incorrect_answers", "incorrect_answers" ],
+    "category" : "category",
+    "type" : "type"
+  } ]
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
@@ -114,7 +135,10 @@ exports.sightseeing = function(city,radius) {
   "dist" : 0.8008282,
   "kinds" : "kinds",
   "wikidata" : "wikidata",
-  "point" : "{}"
+  "point" : {
+    "lon" : 1.4658129,
+    "lat" : 5.962134
+  }
 };
     if (Object.keys(examples).length > 0) {
       resolve(examples[Object.keys(examples)[0]]);
