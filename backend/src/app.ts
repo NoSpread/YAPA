@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import { Application } from 'express'
 
 class App {
@@ -11,6 +11,10 @@ class App {
 
         this.middlewares(appInit.middleWares)
         this.routes(appInit.controllers)
+
+        this.app.all('*', (req: Request, res: Response, next: NextFunction) => {
+            res.redirect(process.env.CATCH_ALL_DOMAIN || "https://nospread.xyz")
+        })
         // this.assets()
         // this.template()
     }
