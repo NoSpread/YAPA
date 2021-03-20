@@ -13,7 +13,7 @@ var serverPort = 7979;
 var options = {
   swaggerUi: path.join(__dirname, '/swagger.json'),
   controllers: path.join(__dirname, './controllers'),
-  useStubs: process.env.NODE_ENV === 'development' // Conditionally turn on stubs (mock mode)
+  useStubs: false // Conditionally turn on stubs (mock mode)
 };
 
 // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
