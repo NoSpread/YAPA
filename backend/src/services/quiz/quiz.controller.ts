@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { Request, Response } from 'express'
+import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 
 import QuizModel from './quiz.model'
@@ -16,7 +17,7 @@ class QuizController implements IControllerBase {
     }
 
     public initRoutes() {
-        this.router.post(this.path, this.getQuiz)
+        this.router.post(this.path, authentication, this.getQuiz)
     }
 
     private getQuiz = (req: Request, res: Response) => {

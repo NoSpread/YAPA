@@ -5,6 +5,13 @@ class TranslateModel {
 
     private endpoint = "https://libretranslate.com/translate"
 
+    /**
+     * Translate the given sentence in the target language.
+     * @param query The word/sentence to translate
+     * @param source Source language
+     * @param target Target Language
+     * @returns The translation object
+     */
     public async postTranslate(query: string, source: string, target: string): Promise<TranslationOutput> {
 
         const requestObj = {

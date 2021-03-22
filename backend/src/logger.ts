@@ -1,6 +1,9 @@
 import chalk from 'chalk'
 import moment from 'moment'
 
+/**
+ * This is the logger class, it simplefies the use of a logger
+ */
 class pLogger {
 
     public log(text: string): void {

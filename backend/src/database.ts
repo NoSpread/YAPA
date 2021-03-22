@@ -6,6 +6,10 @@ import Argon from 'argon2'
 import { IDBKey, IDBUser, ILogin } from "./interfaces/IDatabase";
 import Logger from './logger'
 
+/**
+ * The main database class.
+ * It holds all db commands needed for the REST API.
+ */
 class DB {
 
     private _redis: RedisClient
@@ -15,6 +19,11 @@ class DB {
 
     private logger
 
+    /**
+     * This constructur initiated the DB class, sets the basic options and connects to the Redis DB
+     * @param redis_options An object with redis specific options
+     * @param mysql_options An object with mysql specific options
+     */
     constructor(redis_options?: IRDBOptions, mysql_options?: ISQLOptions) {
 
         this.logger = new Logger()
@@ -52,6 +61,9 @@ class DB {
         this._mysql = null
     }
 
+    /**
+     * This is initizialize the mysql pool
+     */
     public async initSQL() {
         this._mysql = await MySQL.createPool({
             host: this._sqlOptions.host,
@@ -63,6 +75,13 @@ class DB {
         this.logger.info("MySQL Server connected")
     }
 
+    /**
+     * This function takes a key, value and a ttl value and stores it in the redis db as a cached value
+     * @param key Key value for redis
+     * @param value Value to store in the redis DB
+     * @param ttl Time to live for an entry in the DB
+     * @returns Returs a string from the redis db, eg. "OK"
+     */
     public writeToCache(key: string | number, value: string, ttl?: number): Promise<string> {
         return new Promise((resolve, reject) => {
             this._redis.set(String(key), value, (err, reply) => {
@@ -77,6 +96,11 @@ class DB {
         })
     }
 
+    /**
+     * Read a value from the redis db
+     * @param key Key value for redis
+     * @returns The value associated with the key or null
+     */
     public getFromCache(key: string | number): Promise<string|null> {
         return new Promise((resolve, reject) => {
             this._redis.get(String(key), (err, reply) => {
@@ -86,6 +110,11 @@ class DB {
         })
     }
 
+    /**
+     * Remove a key and its value from the cache (redis db)
+     * @param key Key value for redis
+     * @returns Value from redis delete
+     */
     public delFromCache(key: string | number): Promise<number> {
         return new Promise((resolve, reject) => {
             this._redis.del(String(key), (err, reply) => {
@@ -95,6 +124,11 @@ class DB {
         })
     }
 
+    /**
+     * Read values from the redis db using a pattern
+     * @param pattern A pattern to search for in the redis db
+     * @returns A list of keys matched that pattern
+     */
     public getKeysFromCache(pattern: string): Promise<string[]> {
         return new Promise((resolve, reject) => {
             this._redis.keys(pattern, (err, reply) => {
@@ -104,6 +138,12 @@ class DB {
         })
     }
 
+    /**
+     * Creates a new user in the mysql db
+     * @param username Username of a user, needs to be unique
+     * @param password Password from a user
+     * @returns True if succsessfull, false if not
+     */
     public async createUser(username: string, password: string): Promise<boolean> {
         if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
         
@@ -119,6 +159,12 @@ class DB {
         return false
     }
 
+    /**
+     * This is the login function, it takes the username and his password and confirmes the argon hash
+     * @param username Username of an already exsiting user
+     * @param password Password of the given user in plain text
+     * @returns null or and Login Interface with an API Key, Username and UID
+     */
     public async verifyUser(username: string, password: string): Promise<null | ILogin> {
         if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
 
@@ -155,6 +201,11 @@ class DB {
         return null
     }
 
+    /**
+     * Remove the API key from redis and the DB, invalidates the key
+     * @param apikey Valid and active API key
+     * @returns Boolean value according to its succsess
+     */
     public async logoutUser(apikey: string): Promise<boolean> {
         if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
 
@@ -172,6 +223,11 @@ class DB {
         return false
     }
 
+    /**
+     * Create a new API key
+     * @param id The UID of an user
+     * @returns A valid API key
+     */
     private async createAPIKey(id: number): Promise<string> {
         if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
         
@@ -186,6 +242,11 @@ class DB {
         return apikey
     }
 
+    /**
+     * Confirmes that the given key is really in the cache or db
+     * @param apikey A given API key
+     * @returns True if its a valid key, false if not
+     */
     public async verifyAPIKey(apikey: string): Promise<boolean> {
         if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
         
@@ -213,7 +274,25 @@ class DB {
     }
 }
 
+/**
+ * Setup of the global DB object.
+ * Take options from the process environment and pass it to the DB class
+ */
 export default DB
 
-const database = new DB()
+const redis_options: IRDBOptions = {
+    db: Number(process.env.REDIS_DB!),
+    host: process.env.REDIS_HOST!,
+    port: Number(process.env.REDIS_PORT!)
+}
+
+const sql_options: ISQLOptions = {
+    db: process.env.SQL_DB!,
+    host: process.env.SQL_HOST!,
+    pass: process.env.SQL_PASS!,
+    port: Number(process.env.SQL_PORT!),
+    user: process.env.SQL_USER!
+}
+
+const database = new DB(redis_options, sql_options)
 export { database }

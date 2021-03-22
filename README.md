@@ -8,12 +8,23 @@ Repository for Advanced Software Engineering
 ```env
 API_URL=http://localhost
 API_PORT=5000
+
 FINNHUB_API_KEY=
 WEATHER_API_KEY=
 NEWS_API_KEY=
 BING_API_KEY=
 OPENTRIMAP_API_KEY=
 COOKIE_SECRET=
+
+REDIS_DB=1
+REDIS_HOST=localhost
+REDIS_PORT=6379
+
+SQL_DB=yapa
+SQL_HOST=localhost
+SQL_PASS=
+SQL_PORT=3306
+SQL_USER=yapa
 ```
 
 # Color Schema

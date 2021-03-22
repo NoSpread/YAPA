@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { Request, Response } from 'express'
+import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 
 import FortuneModel from './fortune.model'
@@ -16,7 +17,7 @@ class FortuneController implements IControllerBase {
     }
 
     public initRoutes() {
-        this.router.get(this.path, this.getFortune)
+        this.router.get(this.path, authentication, this.getFortune)
     }
 
     private getFortune = (req: Request, res: Response) => {

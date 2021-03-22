@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { Request, Response } from 'express'
+import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 
 import NewsModel from './news.model'
@@ -18,7 +19,7 @@ class NewsController implements IControllerBase {
 
     public initRoutes() {
         this.router.post(this.path, this.getNews)
-        this.router.post(this.pathHeadlines, this.getHeadlines)
+        this.router.post(this.pathHeadlines, authentication, this.getHeadlines)
     }
 
     private getNews = (req: Request, res: Response) => {

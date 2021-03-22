@@ -5,6 +5,10 @@ class ActivityModel {
 
     private endpoint = "http://www.boredapi.com/api/activity"
 
+    /**
+     * Request a random possible activity from the boredapi
+     * @returns Activity Object
+     */
     public async getActivity(): Promise<Activity> {
         const result = await got<Activity>(this.endpoint, {responseType: 'json'})
 

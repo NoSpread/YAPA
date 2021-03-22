@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { Request, Response } from 'express'
+import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 
 import StocksModel from './stocks.model'
@@ -16,7 +17,7 @@ class StocksController implements IControllerBase {
     }
 
     public initRoutes() {
-        this.router.post(this.path, this.postStocks)
+        this.router.post(this.path, authentication, this.postStocks)
     }
 
     private postStocks = (req: Request, res: Response) => {
