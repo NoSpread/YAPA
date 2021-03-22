@@ -4,6 +4,10 @@ class JokeModel {
 
     private endpoint = "https://v2.jokeapi.dev/joke/Any?lang=de"
 
+    /**
+     * Request a new joke from the jokeapi
+     * @returns Joke Object
+     */
     public getJoke = async (): Promise<Joke> => {
         const result = await got<Joke>(this.endpoint, {responseType: 'json'})
 

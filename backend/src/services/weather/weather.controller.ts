@@ -22,6 +22,11 @@ class WeatherController implements IControllerBase {
         this.router.post(this.pathFuture, authentication, this.getForecastWeather)
     }
 
+    /**
+     * Get the current weather for a location
+     * @param req Express
+     * @param res Express
+     */
     private getCurrentWeather = (req: Request, res: Response) => {
         const location = req.body.loc
 
@@ -40,6 +45,11 @@ class WeatherController implements IControllerBase {
         } else res.sendStatus(400)
     }
 
+    /**
+     * Get a weather forecast for a location
+     * @param req Express
+     * @param res Express
+     */
     private getForecastWeather = (req: Request, res: Response) => {
         const { loc: location, days} = req.body
 
