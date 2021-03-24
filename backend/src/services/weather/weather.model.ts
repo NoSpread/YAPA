@@ -8,6 +8,8 @@ class WeatherModel {
 
 
     public getCurrentWeather = async (location: string): Promise<ICurrWeatherSelected> => {
+
+        // request the current weather from the weatherapi
         const result = await got<Weather>(this.endpoint + "current.json", {searchParams: {key: this.apikey, q: location, aqi: "no"}, responseType: 'json'})
         if (result.statusCode != 200) {
             throw new Error(`Error accessing weather API (${result.statusCode})`)
@@ -15,6 +17,7 @@ class WeatherModel {
         
         const { location: locationObj, current: currentObj } = result.body
 
+        // The output strcuture of the current weather
         const weatherData: ICurrWeatherSelected = {
             location: {
                 name: locationObj.name,
@@ -37,6 +40,8 @@ class WeatherModel {
     }
 
     public getForecastWaether = async (location: string, days: number): Promise<IDayForecastSelected> => {
+
+        // request the weather forecast
         const result = await got<Weather>(this.endpoint + "forecast.json", {searchParams: {key: this.apikey, q: location, aqi: "no", days: days, alerts: "no"}, responseType: "json"})
 
         if (result.statusCode != 200) {
@@ -63,6 +68,7 @@ class WeatherModel {
             return dayarr
         }
 
+        // The output strcuture of the weather forecast
         const weatherData: IDayForecastSelected = {
             location: {
                 name: locationObj.name,

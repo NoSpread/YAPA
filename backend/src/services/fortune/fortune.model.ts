@@ -4,6 +4,10 @@ class FortuneModel {
 
     private endpoint = "https://api.justyy.workers.dev/api/fortune"
 
+    /**
+     * Request a fortune from the justyy api
+     * @returns A simple fortune string
+     */
     public getFortune = async (): Promise<string> => {
         const result = await got(this.endpoint, { responseType: 'text' })
 

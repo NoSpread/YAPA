@@ -6,6 +6,15 @@ class RouteModel {
     private endpoint = "http://dev.virtualearth.net/REST/v1/Routes/"
     private apikey = process.env.BING_API_KEY || ""
 
+    /**
+     * Calculate the travel time, distance and durration based on traffic
+     * @param start start waypoint
+     * @param end end waypoint
+     * @param method the method of travel
+     * @param timeType Either arrivial or depature
+     * @param dateTime A time in a string format
+     * @returns Route statistics
+     */
     public getRoute = async (start: string, end: string, method: Mode, timeType?: TimeType, dateTime?: string): Promise<RouteOutput> => {
 
         const searchParams = timeType && dateTime ? {

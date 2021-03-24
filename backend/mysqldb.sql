@@ -2,7 +2,7 @@
 -- Host:                         127.0.0.1
 -- Server version:               10.4.11-MariaDB - mariadb.org binary distribution
 -- Server OS:                    Win64
--- HeidiSQL Version:             11.1.0.6116
+-- HeidiSQL Version:             11.2.0.6213
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -17,13 +17,34 @@
 CREATE DATABASE IF NOT EXISTS `yapa` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `yapa`;
 
+-- Dumping structure for table yapa.information
+CREATE TABLE IF NOT EXISTS `information` (
+  `id` int(11) NOT NULL,
+  `fullname` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `stocks` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
+  `movement_type` varchar(20) CHARACTER SET utf8 DEFAULT NULL,
+  `workplaceCity` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `workplaceCode` int(11) DEFAULT NULL,
+  `workplaceStreet` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `jokequality` int(11) DEFAULT NULL,
+  `voice` int(11) DEFAULT NULL,
+  `residenceCity` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `residenceCode` int(11) DEFAULT NULL,
+  `residenceStreet` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
+  `workstart` time DEFAULT NULL,
+  UNIQUE KEY `id` (`id`),
+  CONSTRAINT `uid_info` FOREIGN KEY (`id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Data exporting was unselected.
+
 -- Dumping structure for table yapa.keys
 CREATE TABLE IF NOT EXISTS `keys` (
   `id` int(11) NOT NULL,
   `key` varchar(500) NOT NULL,
   `timestamp` timestamp NULL DEFAULT current_timestamp(),
   UNIQUE KEY `id` (`id`),
-  CONSTRAINT `uid` FOREIGN KEY (`id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `uid_key` FOREIGN KEY (`id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
@@ -36,11 +57,11 @@ CREATE TABLE IF NOT EXISTS `users` (
   `timestamp` timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

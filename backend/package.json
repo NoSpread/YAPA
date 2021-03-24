@@ -2,7 +2,7 @@
   "name": "backend_yapa",
   "version": "1.0.0",
   "description": "Backend for the YAPA",
-  "main": "server.js",
+  "main": "build/server.js",
   "author": "Lucas Schneider",
   "license": "MIT",
   "devDependencies": {

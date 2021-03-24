@@ -27,6 +27,15 @@ process.on('uncaughtException', err => {
     process.exit(1) //mandatory (as per the Node.js docs)
 })
 
+process.on('SIGINT', function() {
+    console.log('Closing server');
+    process.exit(0)
+})
+
+/**
+ * The declaration of an express session is needed to store values
+ * in a custom object, its also needed for typescript type declarations
+ */
 declare module 'express-session' {
     export interface SessionData {
       user: {
@@ -42,6 +51,10 @@ const corsSettings = {
     origin: `${process.env.API_URL || "http://localhost"}:${process.env.API_PORT || 5000}`
 }
 
+/**
+ * This is the main instance of the REST API.
+ * It includes all used controllers and middleware.
+ */
 const app = new App({
     port: Number(process.env.API_PORT) || 5000,
     controllers: [
@@ -71,6 +84,9 @@ const app = new App({
     ]
 })
 
+/**
+ * When the mysql database is ready, the server can start listening to requests
+ */
 database.initSQL().then(() => {
     app.listen()
 })

@@ -11,6 +11,12 @@ class UserModel {
         this.logger = new Logger()
     }
 
+    /**
+     * Register a user in the DB
+     * @param username Username to register
+     * @param password Password to use for the account
+     * @returns Status code
+     */
     public register = async (username: string, password: string): Promise<number> => {
         try {
             const success = await database.createUser(username, password)
@@ -22,12 +28,23 @@ class UserModel {
         }
     }
 
+    /**
+     * Login a user
+     * @param username Username to login
+     * @param password Password of the username
+     * @returns Login Object or null if failed
+     */
     public login = async (username: string, password: string): Promise<ILogin | null> => {
         const user = await database.verifyUser(username, password)
         if (user) return user
         else return null
     }
 
+    /**
+     * Logout a user
+     * @param apikey Valid API Key
+     * @returns Boolean depended on succsess
+     */
     public logout = async (apikey: string): Promise<boolean> => {
         const status = await database.logoutUser(apikey)
         if (status) return true
