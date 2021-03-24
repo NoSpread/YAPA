@@ -27,6 +27,11 @@ process.on('uncaughtException', err => {
     process.exit(1) //mandatory (as per the Node.js docs)
 })
 
+process.on('SIGINT', function() {
+    console.log('Closing server');
+    process.exit(0)
+})
+
 /**
  * The declaration of an express session is needed to store values
  * in a custom object, its also needed for typescript type declarations
