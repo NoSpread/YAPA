@@ -91,3 +91,4 @@ database.initSQL().then(() => {
     app.listen()
 })
 
+console.log("STARTING - VERSION 1.0.2")

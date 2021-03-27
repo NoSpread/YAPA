@@ -26,7 +26,6 @@ CREATE TABLE IF NOT EXISTS `information` (
   `workplaceCity` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
   `workplaceCode` int(11) DEFAULT NULL,
   `workplaceStreet` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
-  `jokequality` int(11) DEFAULT NULL,
   `voice` int(11) DEFAULT NULL,
   `residenceCity` varchar(50) CHARACTER SET utf8 DEFAULT NULL,
   `residenceCode` int(11) DEFAULT NULL,

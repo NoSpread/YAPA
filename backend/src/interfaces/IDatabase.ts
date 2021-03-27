@@ -7,6 +7,22 @@ interface IDBUser extends RowDataPacket {
     key: any
 }
 
+interface IUserinformation extends RowDataPacket {
+    id: number,
+    fullname: string | null,
+    stocks: string | null,
+    movement_type: string | null,
+    workplaceCity: string | null,
+    workplaceCode: string | null,
+    workplaceStreet: string | null,
+    jokequality: string | null,
+    voice: string | null,
+    residenceCity: string | null,
+    residenceCode: string | null,
+    residenceStreet: string | null,
+    workstart: string | null
+}
+
 interface IDBKey extends RowDataPacket {
     id: number,
     username: string,
@@ -24,4 +40,4 @@ interface IKey {
     db: string
 }
 
-export {IDBUser, IDBKey, ILogin, IKey}
+export {IDBUser, IDBKey, ILogin, IKey, IUserinformation}
