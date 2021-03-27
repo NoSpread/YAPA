@@ -1,652 +1,689 @@
----
 swagger: "2.0"
 info:
-  description: "The perfect docs for the perfect api"
-  version: "1.0.1"
   title: "YAPA API"
-  termsOfService: "https://tos.nospread.xyz/yapa"
+  description: "The perfect docs for the perfect api"
+  termsOfService: 'https://tos.nospread.xyz/yapa'
   contact:
     name: "API Support"
     email: "yapa@nospread.xyz"
   license:
     name: "Apache 2.0"
-    url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+  version: "1.0.1"
 host: "api.nospread.xyz"
 basePath: "/yapa/v1"
-tags:
-- name: "user"
-  description: "User operations"
-- name: "weather"
-  description: "Weather information"
-- name: "route"
-  description: "Route planning"
-- name: "news"
-  description: "Current news"
-- name: "tools"
-  description: "Helpful things"
-- name: "freetime"
-  description: "Things to use when bored"
 schemes:
-- "https"
+  - "https"
+tags:
+  - name: "user"
+    description: "User operations"
+  - name: "weather"
+    description: "Weather information"
+  - name: "route"
+    description: "Route planning"
+  - name: "news"
+    description: "Current news"
+  - name: "tools"
+    description: "Helpful things"
+  - name: "freetime"
+    description: "Things to use when bored"
 paths:
   /user/register:
     post:
       tags:
-      - "user"
+        - "user"
       summary: "Add a new user to the db"
       operationId: "addUser"
       consumes:
-      - "application/x-www-form-urlencoded"
+        - "application/x-www-form-urlencoded"
       parameters:
-      - name: "username"
-        in: "formData"
-        description: "Username of the new user"
-        required: true
-        type: "string"
-      - name: "password"
-        in: "formData"
-        description: "Password of the new user"
-        required: true
-        type: "string"
-        format: "password"
+        - name: "username"
+          in: "formData"
+          description: "Username of the new user"
+          required: true
+          type: "string"
+        - name: "password"
+          in: "formData"
+          description: "Password of the new user"
+          required: true
+          type: "string"
+          format: "password"
       responses:
-        "201":
+        201:
           description: "User created"
-        "400":
+        400:
           description: "Missing username or password"
-        "409":
+        409:
           description: "Failed to create user"
-        "500":
+        500:
           description: "Database returned an error"
-      x-swagger-router-controller: "User"
+  
   /user/login:
     post:
       tags:
-      - "user"
+        - "user"
       summary: "Login as a user"
       operationId: "loginUser"
       consumes:
-      - "application/x-www-form-urlencoded"
+        - "application/x-www-form-urlencoded"
       parameters:
-      - name: "username"
-        in: "formData"
-        description: "Username of the user"
-        required: true
-        type: "string"
-      - name: "password"
-        in: "formData"
-        description: "Password of the user"
-        required: true
-        type: "string"
-        format: "password"
+        - name: "username"
+          in: "formData"
+          description: "Username of the user"
+          required: true
+          type: "string"
+        - name: "password"
+          in: "formData"
+          description: "Password of the user"
+          required: true
+          type: "string"
+          format: "password"
       responses:
-        "200":
+        200:
           description: "Successful login"
           schema:
             $ref: "#/definitions/LoginResponse"
-        "400":
-          description: "Missing username or password"
-        "404":
+        404:
           description: "User not found"
-      x-swagger-router-controller: "User"
+        400:
+          description: "Missing username or password"
+          
   /user/logout:
     post:
       tags:
-      - "user"
+        - "user"
       summary: "Logout as a user"
       operationId: "logoutUser"
       consumes:
-      - "application/x-www-form-urlencoded"
-      parameters: []
+        - "application/x-www-form-urlencoded"
       responses:
-        "200":
+        200:
           description: "Successful logout"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "User"
+        - api_auth: []
+  
+  /user:
+    get:
+      tags:
+        - "user"
+      summary: "Get informations about you"
+      operationId: "getUser"
+      responses:
+        200:
+          description: "Informations about you"
+          schema:
+            $ref: "#/definitions/UserInformation"
+        401:
+          description: "Cookie or key missing"
+          schema: 
+            $ref: "#/definitions/RequestError"
+        500:
+          description: "Error while processing your request"
+          schema: 
+            $ref: "#/definitions/RequestError"
+      security:
+        - api_auth: []
+    
+    put:
+      tags:
+        - "user"
+      summary: "Update informations about you"
+      operationId: "updateUser"
+      consumes:
+        - "application/json"
+      parameters:
+        - name: "information"
+          in: "body"
+          schema:
+            $ref: "#/definitions/UserInformation"
+      responses:
+        200:
+          description: "Information updated"
+        401:
+          description: "Cookie or key missing"
+          schema: 
+            $ref: "#/definitions/RequestError"
+        500:
+          description: "Error while processing your request"
+          schema: 
+            $ref: "#/definitions/RequestError"
+      security:
+        - api_auth: []
+        
   /weather/now:
     post:
       tags:
-      - "weather"
+        - "weather"
       summary: "Get the current weather for your location"
       operationId: "weatherNow"
       consumes:
-      - "application/x-www-form-urlencoded"
+        - "application/x-www-form-urlencoded"
       parameters:
-      - name: "loc"
-        in: "formData"
-        description: "The location you are requesting the weather from"
-        required: true
-        type: "string"
+        - name: "loc"
+          in: "formData"
+          description: "The location you are requesting the weather from"
+          required: true
+          type: "string"
       responses:
-        "200":
+        200:
           description: "Successful"
-          schema:
+          schema: 
             $ref: "#/definitions/WeatherNow"
-        "400":
+        400:
           description: "Missing parameter loc"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "503":
+        503:
           description: "Error while make the request"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "Weather"
+        - api_auth: []
+        
   /weather/forecast:
     post:
       tags:
-      - "weather"
+        - "weather"
       summary: "Get the future weather for your location"
       operationId: "weatherForcast"
       consumes:
-      - "application/x-www-form-urlencoded"
+        - "application/x-www-form-urlencoded"
       parameters:
-      - name: "loc"
-        in: "formData"
-        description: "The location you are requesting the weather from"
-        required: true
-        type: "string"
-      - name: "days"
-        in: "formData"
-        description: "The location you are requesting the weather from"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: "loc"
+          in: "formData"
+          description: "The location you are requesting the weather from"
+          required: true
+          type: "string"
+        - name: "days"
+          in: "formData"
+          description: "The location you are requesting the weather from"
+          required: true
+          type: "integer"
+          format: "int64"
       responses:
-        "200":
+        200:
           description: "Successful"
-          schema:
+          schema: 
             $ref: "#/definitions/WeatherForecast"
-        "400":
+        400:
           description: "Missing parameter loc and/or days"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "503":
+        503:
           description: "Error while make the request"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "Weather"
+        - api_auth: []
+
   /route/driving:
     post:
       tags:
-      - "route"
+        - "route"
       summary: "Get route informations between two waypoints while driving"
       operationId: "routeDriving"
       consumes:
-      - "application/x-www-form-urlencoded"
+        - "application/x-www-form-urlencoded"
       parameters:
-      - name: "start"
-        in: "formData"
-        description: "The start waypoint"
-        required: true
-        type: "string"
-      - name: "end"
-        in: "formData"
-        description: "The end waypoint"
-        required: true
-        type: "string"
+        - name: "start"
+          in: "formData"
+          description: "The start waypoint"
+          required: true
+          type: "string"
+        - name: "end"
+          in: "formData"
+          description: "The end waypoint"
+          required: true
+          type: "string"
       responses:
-        "200":
+        200:
           description: "Successful"
-          schema:
+          schema: 
             $ref: "#/definitions/Route"
-        "400":
+        400:
           description: "Missing parameter start and/or end"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "503":
+        503:
           description: "Error while make the request"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "Route"
+        - api_auth: []
+        
   /route/walking:
     post:
       tags:
-      - "route"
+        - "route"
       summary: "Get route informations between two waypoints while walking"
       operationId: "routeWalking"
       consumes:
-      - "application/x-www-form-urlencoded"
+        - "application/x-www-form-urlencoded"
       parameters:
-      - name: "start"
-        in: "formData"
-        description: "The start waypoint"
-        required: true
-        type: "string"
-      - name: "end"
-        in: "formData"
-        description: "The end waypoint"
-        required: true
-        type: "string"
+        - name: "start"
+          in: "formData"
+          description: "The start waypoint"
+          required: true
+          type: "string"
+        - name: "end"
+          in: "formData"
+          description: "The end waypoint"
+          required: true
+          type: "string"
       responses:
-        "200":
+        200:
           description: "Successful"
-          schema:
+          schema: 
             $ref: "#/definitions/Route"
-        "400":
+        400:
           description: "Missing parameter start and/or end"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "503":
+        503:
           description: "Error while make the request"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "Route"
+        - api_auth: []
+        
   /route/transit:
     post:
       tags:
-      - "route"
+        - "route"
       summary: "Get route informations between two waypoints while using transit"
       operationId: "routeTransit"
       consumes:
-      - "application/x-www-form-urlencoded"
+        - "application/x-www-form-urlencoded"
       parameters:
-      - name: "start"
-        in: "formData"
-        description: "The start waypoint"
-        required: true
-        type: "string"
-      - name: "end"
-        in: "formData"
-        description: "The end waypoint"
-        required: true
-        type: "string"
-      - name: "timetype"
-        in: "formData"
-        description: "What kind of time you are looking for"
-        required: true
-        type: "array"
-        items:
+        - name: "start"
+          in: "formData"
+          description: "The start waypoint"
+          required: true
           type: "string"
-          default: "departure"
-          enum:
-          - "arrival"
-          - "departure"
-          - "lastavailable"
-        collectionFormat: "multi"
-      - name: "time"
-        in: "formData"
-        description: "The time your searching a transit"
-        required: true
-        type: "string"
+        - name: "end"
+          in: "formData"
+          description: "The end waypoint"
+          required: true
+          type: "string"
+        - name: "timetype"
+          in: "formData"
+          description: "What kind of time you are looking for"
+          required: true
+          type: "array"
+          items:
+            type: "string"
+            enum:
+            - "arrival"
+            - "departure"
+            - "lastavailable"
+            default: "departure"
+        - name: "time"
+          in: "formData"
+          description: "The time your searching a transit"
+          required: true
+          type: "string"
       responses:
-        "200":
+        200:
           description: "Successful"
-          schema:
+          schema: 
             $ref: "#/definitions/Route"
-        "400":
+        400:
           description: "Missing parameter"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "503":
+        503:
           description: "Error while make the request"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "Route"
+        - api_auth: []
+        
   /news:
     post:
       tags:
-      - "news"
+        - "news"
       summary: "Get the current news about a topic"
       operationId: "news"
       consumes:
-      - "application/x-www-form-urlencoded"
+        - "application/x-www-form-urlencoded"
       parameters:
-      - name: "topic"
-        in: "formData"
-        description: "The topic you want to have news about"
-        required: true
-        type: "string"
+        - name: "topic"
+          in: "formData"
+          description: "The topic you want to have news about"
+          required: true
+          type: "string"
       responses:
-        "200":
+        200:
           description: "Successful"
-          schema:
+          schema: 
             $ref: "#/definitions/News"
-        "400":
+        400:
           description: "Missing parameter topic"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "503":
+        503:
           description: "Error while make the request"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "News"
+        - api_auth: []
+        
   /news/headlines:
     post:
       tags:
-      - "news"
+        - "news"
       summary: "Get the current headlines about a topic"
       operationId: "newsHeadlines"
       consumes:
-      - "application/x-www-form-urlencoded"
+        - "application/x-www-form-urlencoded"
       parameters:
-      - name: "topic"
-        in: "formData"
-        description: "The topic you want to have news about"
-        required: true
-        type: "string"
+        - name: "topic"
+          in: "formData"
+          description: "The topic you want to have news about"
+          required: true
+          type: "string"
       responses:
-        "200":
+        200:
           description: "Successful"
-          schema:
+          schema: 
             $ref: "#/definitions/News"
-        "400":
+        400:
           description: "Missing parameter topic"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "503":
+        503:
           description: "Error while make the request"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "News"
+        - api_auth: []
+        
   /stock:
     post:
       tags:
-      - "tools"
+        - "tools"
       summary: "Get the current stock prices"
       operationId: "stock"
       consumes:
-      - "application/x-www-form-urlencoded"
+        - "application/x-www-form-urlencoded"
       parameters:
-      - name: "symbol"
-        in: "formData"
-        description: "The symbol you want to have updates about"
-        required: true
-        type: "string"
+        - name: "symbol"
+          in: "formData"
+          description: "The symbol you want to have updates about"
+          required: true
+          type: "string"
       responses:
-        "200":
+        200:
           description: "Successful"
-          schema:
+          schema: 
             $ref: "#/definitions/Stock"
-        "400":
+        400:
           description: "Missing parameter symbol"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "503":
+        503:
           description: "Error while make the request"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "Tools"
+        - api_auth: []
+        
   /translate:
     post:
       tags:
-      - "tools"
+        - "tools"
       summary: "Get a translation"
       operationId: "translate"
       consumes:
-      - "application/x-www-form-urlencoded"
+        - "application/x-www-form-urlencoded"
       parameters:
-      - name: "query"
-        in: "formData"
-        description: "The text you want to translate"
-        required: true
-        type: "string"
-      - name: "source"
-        in: "formData"
-        description: "The source language"
-        required: true
-        type: "string"
-      - name: "target"
-        in: "formData"
-        description: "The target language"
-        required: true
-        type: "string"
+        - name: "query"
+          in: "formData"
+          description: "The text you want to translate"
+          required: true
+          type: "string"
+        - name: "source"
+          in: "formData"
+          description: "The source language"
+          required: true
+          type: "string"
+        - name: "target"
+          in: "formData"
+          description: "The target language"
+          required: true
+          type: "string"
       responses:
-        "200":
+        200:
           description: "Successful"
-          schema:
+          schema: 
             $ref: "#/definitions/Translation"
-        "400":
+        400:
           description: "Missing parameters"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "503":
+        503:
           description: "Error while make the request"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "Tools"
+        - api_auth: []
+        
   /quiz:
     post:
       tags:
-      - "freetime"
+        - "freetime"
       summary: "Get some questions and answers"
       operationId: "quiz"
       consumes:
-      - "application/x-www-form-urlencoded"
+        - "application/x-www-form-urlencoded"
       parameters:
-      - name: "amount"
-        in: "formData"
-        description: "The amount of questions you want to receive"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: "amount"
+          in: "formData"
+          description: "The amount of questions you want to receive"
+          required: true
+          type: "integer"
+          format: "int64"
       responses:
-        "200":
+        200:
           description: "Successful"
-          schema:
+          schema: 
             $ref: "#/definitions/Quiz"
-        "400":
+        400:
           description: "Missing parameter amount"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "503":
+        503:
           description: "Error while make the request"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "Freetime"
+        - api_auth: []
+        
   /sightseeing:
     post:
       tags:
-      - "freetime"
+        - "freetime"
       summary: "Get some sightseeing in a radius"
       operationId: "sightseeing"
       consumes:
-      - "application/x-www-form-urlencoded"
+        - "application/x-www-form-urlencoded"
       parameters:
-      - name: "city"
-        in: "formData"
-        description: "The city you want to look up"
-        required: true
-        type: "string"
-      - name: "radius"
-        in: "formData"
-        description: "The search radius"
-        required: true
-        type: "string"
+        - name: "city"
+          in: "formData"
+          description: "The city you want to look up"
+          required: true
+          type: "string"
+        - name: "radius"
+          in: "formData"
+          description: "The search radius"
+          required: true
+          type: "string"
       responses:
-        "200":
+        200:
           description: "Successful"
-          schema:
+          schema: 
             $ref: "#/definitions/Sightseeing"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "503":
+        503:
           description: "Error while make the request"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "Freetime"
+        - api_auth: []
+
   /activity:
     get:
       tags:
-      - "freetime"
+        - "freetime"
       summary: "Get an activity"
       operationId: "activity"
-      parameters: []
       responses:
-        "200":
+        200:
           description: "Successful"
-          schema:
+          schema: 
             $ref: "#/definitions/Activity"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "503":
+        503:
           description: "Error while make the request"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "Freetime"
+        - api_auth: []
+
   /joke:
     get:
       tags:
-      - "freetime"
+        - "freetime"
       summary: "Get a joke"
       operationId: "joke"
-      parameters: []
       responses:
-        "200":
+        200:
           description: "Successful"
-          schema:
+          schema: 
             $ref: "#/definitions/Joke"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "503":
+        503:
           description: "Error while make the request"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "Freetime"
+        - api_auth: []
+  
   /fortune:
     get:
       tags:
-      - "freetime"
+        - "freetime"
       summary: "Get a fortune"
       operationId: "fortune"
-      parameters: []
       responses:
-        "200":
+        200:
           description: "Successful"
-          schema:
+          schema: 
             $ref: "#/definitions/Fortune"
-        "401":
+        401:
           description: "Cookie or key missing"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "500":
+        500:
           description: "Error while confirming the key"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
-        "503":
+        503:
           description: "Error while make the request"
-          schema:
+          schema: 
             $ref: "#/definitions/RequestError"
       security:
-      - api_auth: []
-      x-swagger-router-controller: "Freetime"
-securityDefinitions:
-  api_auth:
-    type: "apiKey"
-    name: "X-API-KEY"
-    in: "header"
+        - api_auth: []
+      
 definitions:
   LoginResponse:
     type: "object"
@@ -658,10 +695,7 @@ definitions:
         format: "int64"
       api:
         type: "string"
-    example:
-      id: 0
-      api: "api"
-      username: "username"
+        
   RequestError:
     type: "object"
     properties:
@@ -669,13 +703,45 @@ definitions:
         type: "string"
       e:
         type: "string"
+        
+  UserInformation:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      fullname:
+        type: "string"
+      stocks:
+        type: "string"
+      movement_type:
+        type: "string"
+      workplaceCity:
+        type: "string"
+      workplaceCode:
+        type: "string"
+      workplaceStreet: 
+        type: "string"
+      voice: 
+        type: "integer"
+        format: "int64"
+      residenceCity:
+        type: "string"
+      residenceCode:
+        type: "string"
+      residenceStreet:
+        type: "string"
+      workstart:
+        type: "string"
+        format: "time"
+        
   WeatherNow:
     type: "object"
     properties:
       location:
         type: "object"
         properties:
-          name:
+          name: 
             type: "string"
           region:
             type: "string"
@@ -700,16 +766,14 @@ definitions:
               speed:
                 type: "number"
                 format: "float"
-    example:
-      weather: "{}"
-      location: "{}"
+                
   WeatherForecast:
     type: "object"
     properties:
       location:
         type: "object"
         properties:
-          name:
+          name: 
             type: "string"
           region:
             type: "string"
@@ -756,12 +820,6 @@ definitions:
             rain:
               type: "integer"
               format: "int64"
-    example:
-      weather: "{}"
-      location: "{}"
-      forecast:
-      - "{}"
-      - "{}"
   Route:
     type: "object"
     properties:
@@ -774,10 +832,7 @@ definitions:
       travelDistance:
         type: "number"
         format: "float"
-    example:
-      travelDuration: 0
-      travelDistance: 1.4658129
-      travelDurationTraffic: 6
+        
   News:
     type: "object"
     properties:
@@ -814,12 +869,7 @@ definitions:
             content:
               type: "string"
               description: "Might be null"
-    example:
-      totalResults: 0
-      articles:
-      - "{}"
-      - "{}"
-      status: "status"
+    
   Stock:
     type: "object"
     properties:
@@ -840,13 +890,7 @@ definitions:
         description: "Previous close price"
       t:
         type: "string"
-    example:
-      c: "c"
-      pc: "pc"
-      t: "t"
-      h: "h"
-      l: "l"
-      o: "o"
+        
   Translation:
     type: "object"
     properties:
@@ -854,9 +898,7 @@ definitions:
         type: "string"
       output:
         type: "string"
-    example:
-      output: "output"
-      input: "input"
+        
   Quiz:
     type: "object"
     properties:
@@ -882,11 +924,7 @@ definitions:
               type: "array"
               items:
                 type: "string"
-    example:
-      response_code: 0
-      results:
-      - "{}"
-      - "{}"
+  
   Sightseeing:
     type: "object"
     properties:
@@ -915,15 +953,7 @@ definitions:
             format: "float"
       osm:
         type: "string"
-    example:
-      xid: "xid"
-      rate: 6
-      name: "name"
-      osm: "osm"
-      dist: 0.8008282
-      kinds: "kinds"
-      wikidata: "wikidata"
-      point: "{}"
+        
   Activity:
     type: "object"
     properties:
@@ -945,18 +975,11 @@ definitions:
       accessibility:
         type: "number"
         format: "float"
-    example:
-      activity: "activity"
-      accessibility: 5.962134
-      price: 6
-      link: "link"
-      type: "type"
-      key: 1
-      participants: 0
+        
   Joke:
     type: "object"
     properties:
-      error:
+      error: 
         type: "boolean"
       category:
         type: "string"
@@ -993,16 +1016,12 @@ definitions:
         type: "boolean"
       lang:
         type: "string"
-    example:
-      delivery: "delivery"
-      flags: "{}"
-      safe: true
-      setup: "setup"
-      id: 0
-      error: true
-      category: "category"
-      type: "type"
-      lang: "lang"
-      joke: "joke"
+  
   Fortune:
     type: "string"
+        
+securityDefinitions:
+  api_auth:
+    type: "apiKey"
+    name: "X-API-KEY"
+    in: "header"
