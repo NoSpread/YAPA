@@ -166,6 +166,81 @@
         ]
       }
     },
+    "/user": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get informations about you",
+        "operationId": "getUser",
+        "responses": {
+          "200": {
+            "description": "Informations about you",
+            "schema": {
+              "$ref": "#/definitions/UserInformation"
+            }
+          },
+          "401": {
+            "description": "Cookie or key missing",
+            "schema": {
+              "$ref": "#/definitions/RequestError"
+            }
+          },
+          "500": {
+            "description": "Error while processing your request",
+            "schema": {
+              "$ref": "#/definitions/RequestError"
+            }
+          }
+        },
+        "security": [
+          {
+            "api_auth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Update informations about you",
+        "operationId": "updateUser",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "information",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UserInformation"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Information updated"
+          },
+          "401": {
+            "description": "Cookie or key missing",
+            "schema": {
+              "$ref": "#/definitions/RequestError"
+            }
+          },
+          "500": {
+            "description": "Error while processing your request",
+            "schema": {
+              "$ref": "#/definitions/RequestError"
+            }
+          }
+        },
+        "security": [
+          {
+            "api_auth": []
+          }
+        ]
+      }
+    },
     "/weather/now": {
       "post": {
         "tags": [
@@ -987,6 +1062,50 @@
         },
         "e": {
           "type": "string"
+        }
+      }
+    },
+    "UserInformation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "fullname": {
+          "type": "string"
+        },
+        "stocks": {
+          "type": "string"
+        },
+        "movement_type": {
+          "type": "string"
+        },
+        "workplaceCity": {
+          "type": "string"
+        },
+        "workplaceCode": {
+          "type": "string"
+        },
+        "workplaceStreet": {
+          "type": "string"
+        },
+        "voice": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "residenceCity": {
+          "type": "string"
+        },
+        "residenceCode": {
+          "type": "string"
+        },
+        "residenceStreet": {
+          "type": "string"
+        },
+        "workstart": {
+          "type": "string",
+          "format": "time"
         }
       }
     },

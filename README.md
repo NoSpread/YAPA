@@ -1,7 +1,8 @@
 # Yet Another Personal Assistent &nbsp;![YAPA Logo](https://github.com/NoSpread/YAPA/blob/master/yapa/images/icon-72x72.png)
+
 Repository for Advanced Software Engineering
 
-# Environment (backend)
+## Environment (backend)
 
 .env file in YAPPA/backend
 
@@ -27,7 +28,54 @@ SQL_PORT=3306
 SQL_USER=yapa
 ```
 
-# Color Schema
+## Docker
+
+```yaml
+version: '3'
+services: 
+  mysql:
+    hostname: 'mysql'
+    image: "mariadb:latest"
+    environment: 
+        MYSQL_ROOT_PASSWORD: password
+        MYSQL_DATABASE: yapa
+    volumes: 
+        - mysql_data:/var/lib/mysql
+        - ./mysqldb.sql:/docker-entrypoint-initdb.d/mysqldb.sql
+
+  redis:
+    hostname: 'redis'
+    image: "redis:latest"
+
+  api:
+    hostname: 'api'
+    build: .
+    ports:
+      - "5000:5000"
+    environment: 
+      API_URL: http://localhost
+      API_PORT: 5000
+      CATCH_ALL_DOMAIN: 
+      FINNHUB_API_KEY: 
+      WEATHER_API_KEY: 
+      NEWS_API_KEY: 
+      BING_API_KEY: 
+      OPENTRIMAP_API_KEY: 
+      COOKIE_SECRET: 
+      REDIS_DB: 0
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      SQL_DB: yapa
+      SQL_HOST: mysql
+      SQL_PASS: password
+      SQL_PORT: 3306
+      SQL_USER: root
+
+volumes: 
+  mysql_data:
+```
+
+## Color Schema
 
 ![#e63946](https://placehold.it/15/e63946/000000?text=+) `#e63946` Imperial Red<br>
 ![#f1faee](https://placehold.it/15/f1faee/000000?text=+) `#f1faee` Honeydew<br>

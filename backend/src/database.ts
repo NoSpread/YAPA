@@ -3,7 +3,7 @@ import MySQL, { Pool } from 'mysql2/promise'
 import { IRDBOptions, ISQLOptions } from './interfaces/IDBOptions'
 import Crypto from 'crypto'
 import Argon from 'argon2'
-import { IDBKey, IDBUser, ILogin } from "./interfaces/IDatabase";
+import { IDBKey, IDBUser, ILogin, IUserinformation } from "./interfaces/IDatabase";
 import Logger from './logger'
 
 /**
@@ -145,7 +145,7 @@ class DB {
      * @returns True if succsessfull, false if not
      */
     public async createUser(username: string, password: string): Promise<boolean> {
-        if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
+        if (!this._mysql) throw new Error("MYSQL_NOTINITIALIZED")
         
         const hpassword = await Argon.hash(password, { type: Argon.argon2id, memoryCost: 2 ** 16, hashLength: 50})
 
@@ -160,18 +160,73 @@ class DB {
     }
 
     /**
+     * Gets a user and returns all personal informations
+     * @param userid UserID of the user to update
+     * @returns IUserinformation - all personal informations
+     */
+    public async getUser(apikey: string): Promise<IUserinformation> {
+        if (!this._mysql) throw new Error("MYSQL_NOTINITIALIZED")
+
+        try {
+            const [row] = await this._mysql.execute<IUserinformation[]>('SELECT i.* FROM `information`AS i, `keys` AS k WHERE k.`key` = ?', [apikey])
+            
+            if (row.length === 0) throw new Error("NO_INFORMATION")
+            const user = row[0]
+
+            return user
+
+        } catch(err) {
+            throw err
+        }
+    }
+
+    public async getUserID(apikey: string): Promise<number> {
+        if (!this._mysql) throw new Error("MYSQL_NOTINITIALIZED")
+
+        try {
+            const [row] = await this._mysql.execute<IUserinformation[]>('SELECT id FROM `keys` WHERE `key` = ?', [apikey])
+            
+            if (row.length === 0) throw new Error("USER_NOT_FOUND")
+            const uid = row[0].id
+
+            return uid
+
+        } catch(err) {
+            throw err
+        }
+    }
+
+    /**
+     * Updates the user information
+     * @param info IUserinformation - all personal informations
+     * @returns True if successfull
+     */
+    public async updateUser(info: IUserinformation): Promise<boolean> {
+        if (!this._mysql) throw new Error("MYSQL_NOTINITIALIZED")
+        if (!info.id) throw new Error("NO_USER_ID")
+
+        try {
+            await this._mysql.execute<IUserinformation[]>('INSERT INTO `information` (id, fullname, stocks, movement_type, workplaceCity, workplaceCode, workplaceStreet, voice, residenceCity, residenceCode, residenceStreet, workstart) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE fullname = ?, stocks = ?, movement_type = ?, workplaceCity = ?, workplaceCode = ?, workplaceStreet = ?, voice = ?, residenceCity = ?, residenceCode = ?, residenceStreet = ?, workstart = ?', [info.id, info.fullname, info.stocks, info.movement_type, info.workplaceCity, info.workplaceCode, info.workplaceStreet, info.voice, info.residenceCity, info.residenceCode, info.residenceStreet, info.workstart, info.fullname, info.stocks, info.movement_type, info.workplaceCity, info.workplaceCode, info.workplaceStreet, info.voice, info.residenceCity, info.residenceCode, info.residenceStreet, info.workstart])
+            return true
+
+        } catch(err) {
+            throw err
+        }
+    }
+
+    /**
      * This is the login function, it takes the username and his password and confirmes the argon hash
      * @param username Username of an already exsiting user
      * @param password Password of the given user in plain text
      * @returns null or and Login Interface with an API Key, Username and UID
      */
     public async verifyUser(username: string, password: string): Promise<null | ILogin> {
-        if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
+        if (!this._mysql) throw new Error("MYSQL_NOTINITIALIZED")
 
         try {
             const [row] = await this._mysql.execute<IDBUser[]>('SELECT u.`id`, u.`username`, u.`password`, k.`key` FROM `users` AS u LEFT JOIN `keys` AS k ON u.`id` = k.`id` WHERE u.`username` = ?', [username])
             
-            if (row.length === 0) throw {code: "USER_NOT_FOUND"}
+            if (row.length === 0) throw new Error("USER_NOT_FOUND")
             const phash = row[0].password
             const uid = row[0].id
 
@@ -190,7 +245,7 @@ class DB {
                 } else return null
                 
             } catch(err) {
-                if (!err.code) throw {code: "ARGON_FAIL"}
+                if (!err.code) throw new Error("ARGON_FAIL")
                 throw err
             }
 
@@ -207,7 +262,7 @@ class DB {
      * @returns Boolean value according to its succsess
      */
     public async logoutUser(apikey: string): Promise<boolean> {
-        if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
+        if (!this._mysql) throw new Error("MYSQL_NOTINITIALIZED")
 
         const validKey = await this.verifyAPIKey(apikey)
         
@@ -229,12 +284,12 @@ class DB {
      * @returns A valid API key
      */
     private async createAPIKey(id: number): Promise<string> {
-        if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
+        if (!this._mysql) throw new Error("MYSQL_NOTINITIALIZED")
         
         const apikey = this.randomString()
 
         try {
-            await this._mysql.execute('INSERT INTO `keys` (`id`, `key`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `id` = ?, `key` = ?', [id, apikey, id, apikey])
+            await this._mysql.execute('INSERT INTO `keys` (`id`, `key`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `key` = ?', [id, apikey, apikey])
         } catch(err) {
             if (err) throw err
         }
@@ -248,14 +303,14 @@ class DB {
      * @returns True if its a valid key, false if not
      */
     public async verifyAPIKey(apikey: string): Promise<boolean> {
-        if (!this._mysql) throw new Error("MYSQL ERROR: not initialized")
+        if (!this._mysql) throw new Error("MYSQL_NOTINITIALIZED")
         
         try {
             const cache = await this.getFromCache(apikey)
 
             if (!cache) {
                 const [row] = await this._mysql.execute<IDBKey[]>('SELECT u.`id`, u.`username`, k.`key` FROM `keys`AS k, `users` AS u WHERE k.`key` = ?', [apikey])
-                if (row.length === 0) throw new Error("Key not found")
+                if (row.length === 0) throw new Error("KEY_NOT_FOUND")
                 return true
             } else {
                 return true

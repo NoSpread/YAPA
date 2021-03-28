@@ -1,11 +1,43 @@
-import React from 'react';
-import { Hello } from './Hello.jsx';
-import { Info } from './Info.jsx';
+import React, { Component } from 'react';
+import Dashboard from './Dashboard';
+import Settings from './Settings';
 
-export const App = () => (
-  <div>
-    <h1>Welcome to Meteor!</h1>
-    <Hello/>
-    <Info/>
-  </div>
-);
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {page: true};
+  };
+
+  
+
+
+  
+
+  render() {
+    const changeView = () => {
+      this.setState({page: !this.state.page});
+    };
+
+    const centerStyle = {
+      display: "flex", 
+      justifyContent: "center", 
+      alignItems: "center"
+    };
+
+    return (
+      <div className="app" style={centerStyle}>
+        <header>
+          <div className="app-bar">
+            <button id="changeViewButton" onClick={changeView} hidden></button>
+          </div>
+        </header>
+        <div className="main">
+          {this.state.page? (<Dashboard />) : (<Settings />)}
+        </div>
+      </div>
+    );
+  }
+}
+
+export default App;

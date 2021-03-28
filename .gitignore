@@ -7,3 +7,5 @@
 */yarn-error.log
 */**/yarn-error.log
 */package-lock.json
+backend/docker-compose.yml
+backend/.vscode/launch.json

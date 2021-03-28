@@ -1,6 +1,7 @@
 import * as express from 'express'
 import { Request, Response } from 'express'
 import IControllerBase from '../../interfaces/IControllerBase'
+import { IUserinformation } from '../../interfaces/IDatabase'
 import authentication from '../../middleware/authentication'
 import UserModel from './user.model'
 
@@ -9,6 +10,7 @@ class UserController implements IControllerBase {
     public registerPath = '/user/register'
     public loginPath = '/user/login'
     public logoutPath = '/user/logout'
+    public userPath = '/user'
 
     public router = express.Router()
 
@@ -23,6 +25,8 @@ class UserController implements IControllerBase {
         this.router.post(this.registerPath, this.register)
         this.router.post(this.loginPath, this.login)
         this.router.post(this.logoutPath, authentication, this.logout)
+        this.router.get(this.userPath, authentication, this.getUser)
+        this.router.put(this.userPath, authentication, this.updateUser)
     }
 
     private register = async (req: Request, res: Response) => {
@@ -64,6 +68,49 @@ class UserController implements IControllerBase {
                 res.sendStatus(500) // SQL ERROR
             }
 
+        } else res.sendStatus(401)
+    }
+
+    private getUser = async (req: Request, res: Response) => {
+
+        const apikey: string | null = req.session.user ? req.session.user.api : req.body.apikey ? req.body.apikey : null
+
+        if (apikey) {
+            try {
+                const information = await this.user.get(apikey)
+                res.json(information)
+            } catch (e) {
+                const err = {
+                    type: e.code || "USER_ERROR",
+                    e: e.message
+                }
+                res.status(500).json(err)
+            }
+
+        } else res.sendStatus(401)
+    }
+
+    private updateUser = async (req: Request, res: Response) => {
+
+        const info = req.body
+        const apikey: string | null = req.session.user ? req.session.user.api : req.body.apikey ? req.body.apikey : null
+
+        const isInfo = (body: IUserinformation | any): body is IUserinformation => {
+            return true
+        }
+
+        if (isInfo(info) && apikey) {
+            try {
+                const information = await this.user.update(info, apikey)
+                if (information) res.sendStatus(200)
+                else res.sendStatus(401)
+            } catch (e) {
+                const err = {
+                    type: e.code || "UPDATE_ERROR",
+                    e: e.message
+                }
+                res.status(500).json(err)
+            }
         } else res.sendStatus(401)
     }
 }
