@@ -168,7 +168,7 @@ class DB {
         if (!this._mysql) throw new Error("MYSQL_NOTINITIALIZED")
 
         try {
-            const [row] = await this._mysql.execute<IUserinformation[]>('SELECT i.* FROM `information`AS i, `keys` AS k WHERE k.`key` = ?', [apikey])
+            const [row] = await this._mysql.execute<IUserinformation[]>('SELECT i.* FROM `information`AS i LEFT JOIN `keys` AS k ON i.`id` = k.`id` WHERE k.`key` = ?', [apikey])
             
             if (row.length === 0) throw new Error("NO_INFORMATION")
             const user = row[0]
