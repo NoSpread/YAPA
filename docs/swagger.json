@@ -239,6 +239,35 @@
             "api_auth": []
           }
         ]
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Delete yourself",
+        "operationId": "deleteUser",
+        "responses": {
+          "200": {
+            "description": "User deleted"
+          },
+          "401": {
+            "description": "Cookie or key missing",
+            "schema": {
+              "$ref": "#/definitions/RequestError"
+            }
+          },
+          "500": {
+            "description": "Error while processing your request",
+            "schema": {
+              "$ref": "#/definitions/RequestError"
+            }
+          }
+        },
+        "security": [
+          {
+            "api_auth": []
+          }
+        ]
       }
     },
     "/weather/now": {
