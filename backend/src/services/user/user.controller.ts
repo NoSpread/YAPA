@@ -27,6 +27,7 @@ class UserController implements IControllerBase {
         this.router.post(this.logoutPath, authentication, this.logout)
         this.router.get(this.userPath, authentication, this.getUser)
         this.router.put(this.userPath, authentication, this.updateUser)
+        this.router.delete(this.userPath, authentication, this.deleteUser)
     }
 
     private register = async (req: Request, res: Response) => {
@@ -111,6 +112,25 @@ class UserController implements IControllerBase {
                 }
                 res.status(500).json(err)
             }
+        } else res.sendStatus(401)
+    }
+
+    private deleteUser = async (req: Request, res: Response) => {
+
+        const apikey: string | null = req.session.user ? req.session.user.api : req.body.apikey ? req.body.apikey : null
+
+        if (apikey) {
+            try {
+                const status = await this.user.delete(apikey)
+                if (status) {
+                    req.session.destroy( err => {
+                        res.sendStatus(200)
+                    })
+                } else res.sendStatus(401)
+            } catch (err) {
+                res.sendStatus(500) // SQL ERROR
+            }
+
         } else res.sendStatus(401)
     }
 }

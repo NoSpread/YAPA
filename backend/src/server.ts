@@ -91,4 +91,4 @@ database.initSQL().then(() => {
     app.listen()
 })
 
-console.log("STARTING - VERSION 1.0.4")
+console.log("STARTING - VERSION 1.0.5")

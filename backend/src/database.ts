@@ -268,13 +268,33 @@ class DB {
         
         if (validKey) {
             try {
-                this._mysql.execute('DELETE FROM `keys` WHERE `key` = ?', [apikey])
-                this.delFromCache(apikey)
+                await this._mysql.execute('DELETE FROM `keys` WHERE `key` = ?', [apikey])
+                await this.delFromCache(apikey)
                 return true
             } catch(err) {
                 if (err) throw err
             }
         }
+        return false
+    }
+
+    public async deleteUser(apikey: string): Promise<boolean> {
+        if (!this._mysql) throw new Error("MYSQL_NOTINITIALIZED")
+
+        const validKey = await this.verifyAPIKey(apikey)
+
+        if (validKey) {
+            try {
+
+                await this._mysql.execute('DELETE u FROM `users` AS u LEFT JOIN `keys` AS k ON u.`id` = k.`id` WHERE k.`key` = ?', [apikey])
+                await this.delFromCache(apikey)
+                return true
+
+            } catch(err) {
+                if (err) throw err
+            }
+        }
+
         return false
     }
 

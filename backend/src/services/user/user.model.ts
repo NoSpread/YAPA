@@ -51,9 +51,14 @@ class UserModel {
      * @returns Boolean depended on succsess
      */
     public logout = async (apikey: string): Promise < boolean > => {
-        const status = await database.logoutUser(apikey)
-        if (status) return true
-        else return false
+        try {
+            const status = await database.logoutUser(apikey)
+            if (status) return true
+            else return false
+        } catch(e) {
+            this.logger.error(e)
+            throw e
+        }
     }
 
     /**
@@ -79,6 +84,17 @@ class UserModel {
                 if (success) return true
             } return false
         } catch (e) {
+            this.logger.error(e)
+            throw e
+        }
+    }
+
+    public delete = async (apikey: string): Promise < boolean > => {
+        try {
+            const status = await database.deleteUser(apikey)
+            if (status) return true
+            else return false
+        } catch(e) {
             this.logger.error(e)
             throw e
         }
