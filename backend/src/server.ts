@@ -52,7 +52,7 @@ declare module 'express-session' {
 
 
 const corsSettings = {
-    origin: `${process.env.API_URL || "http://localhost"}`
+    origin: "*"
 }
 
 /**
