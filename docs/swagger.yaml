@@ -1,1027 +1,1013 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  title: "YAPA API"
-  description: "The perfect docs for the perfect api"
+  title: YAPA API
+  description: The perfect docs for the perfect api
   termsOfService: 'https://tos.nospread.xyz/yapa'
   contact:
-    name: "API Support"
-    email: "yapa@nospread.xyz"
+    name: API Support
+    email: yapa@nospread.xyz
   license:
-    name: "Apache 2.0"
+    name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
-  version: "1.0.1"
-host: "api.nospread.xyz"
-basePath: "/yapa/v1"
+  version: 1.0.5
+host: api.nospread.xyz
+basePath: /yapa/v1
 schemes:
-  - "https"
+  - https
 tags:
-  - name: "user"
-    description: "User operations"
-  - name: "weather"
-    description: "Weather information"
-  - name: "route"
-    description: "Route planning"
-  - name: "news"
-    description: "Current news"
-  - name: "tools"
-    description: "Helpful things"
-  - name: "freetime"
-    description: "Things to use when bored"
+  - name: user
+    description: User operations
+  - name: weather
+    description: Weather information
+  - name: route
+    description: Route planning
+  - name: news
+    description: Current news
+  - name: tools
+    description: Helpful things
+  - name: freetime
+    description: Things to use when bored
 paths:
   /user/register:
     post:
       tags:
-        - "user"
-      summary: "Add a new user to the db"
-      operationId: "addUser"
+        - user
+      summary: Add a new user to the db
+      operationId: addUser
       consumes:
-        - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       parameters:
-        - name: "username"
-          in: "formData"
-          description: "Username of the new user"
+        - name: username
+          in: formData
+          description: Username of the new user
           required: true
-          type: "string"
-        - name: "password"
-          in: "formData"
-          description: "Password of the new user"
+          type: string
+        - name: password
+          in: formData
+          description: Password of the new user
           required: true
-          type: "string"
-          format: "password"
+          type: string
+          format: password
       responses:
-        201:
-          description: "User created"
-        400:
-          description: "Missing username or password"
-        409:
-          description: "Failed to create user"
-        500:
-          description: "Database returned an error"
-  
+        '201':
+          description: User created
+        '400':
+          description: Missing username or password
+        '409':
+          description: Failed to create user
+        '500':
+          description: Database returned an error
   /user/login:
     post:
       tags:
-        - "user"
-      summary: "Login as a user"
-      operationId: "loginUser"
+        - user
+      summary: Login as a user
+      operationId: loginUser
       consumes:
-        - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       parameters:
-        - name: "username"
-          in: "formData"
-          description: "Username of the user"
+        - name: username
+          in: formData
+          description: Username of the user
           required: true
-          type: "string"
-        - name: "password"
-          in: "formData"
-          description: "Password of the user"
+          type: string
+        - name: password
+          in: formData
+          description: Password of the user
           required: true
-          type: "string"
-          format: "password"
+          type: string
+          format: password
       responses:
-        200:
-          description: "Successful login"
+        '200':
+          description: Successful login
           schema:
-            $ref: "#/definitions/LoginResponse"
-        404:
-          description: "User not found"
-        400:
-          description: "Missing username or password"
-          
+            $ref: '#/definitions/LoginResponse'
+        '400':
+          description: Missing username or password
+        '404':
+          description: User not found
   /user/logout:
     post:
       tags:
-        - "user"
-      summary: "Logout as a user"
-      operationId: "logoutUser"
+        - user
+      summary: Logout as a user
+      operationId: logoutUser
       consumes:
-        - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       responses:
-        200:
-          description: "Successful logout"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful logout
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-  
   /user:
     get:
       tags:
-        - "user"
-      summary: "Get informations about you"
-      operationId: "getUser"
+        - user
+      summary: Get informations about you
+      operationId: getUser
       responses:
-        200:
-          description: "Informations about you"
+        '200':
+          description: Informations about you
           schema:
-            $ref: "#/definitions/UserInformation"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while processing your request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+            $ref: '#/definitions/UserInformation'
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while processing your request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-    
     put:
       tags:
-        - "user"
-      summary: "Update informations about you"
-      operationId: "updateUser"
+        - user
+      summary: Update informations about you
+      operationId: updateUser
       consumes:
-        - "application/json"
+        - application/json
       parameters:
-        - name: "information"
-          in: "body"
+        - name: information
+          in: body
           schema:
-            $ref: "#/definitions/UserInformation"
+            $ref: '#/definitions/UserInformation'
       responses:
-        200:
-          description: "Information updated"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while processing your request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Information updated
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while processing your request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-        
+    delete:
+      tags:
+        - user
+      summary: Delete yourself
+      operationId: deleteUser
+      responses:
+        '200':
+          description: User deleted
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while processing your request
+          schema:
+            $ref: '#/definitions/RequestError'
+      security:
+        - api_auth: []
   /weather/now:
     post:
       tags:
-        - "weather"
-      summary: "Get the current weather for your location"
-      operationId: "weatherNow"
+        - weather
+      summary: Get the current weather for your location
+      operationId: weatherNow
       consumes:
-        - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       parameters:
-        - name: "loc"
-          in: "formData"
-          description: "The location you are requesting the weather from"
+        - name: loc
+          in: formData
+          description: The location you are requesting the weather from
           required: true
-          type: "string"
+          type: string
       responses:
-        200:
-          description: "Successful"
-          schema: 
-            $ref: "#/definitions/WeatherNow"
-        400:
-          description: "Missing parameter loc"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        503:
-          description: "Error while make the request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/WeatherNow'
+        '400':
+          description: Missing parameter loc
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
+        '503':
+          description: Error while make the request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-        
   /weather/forecast:
     post:
       tags:
-        - "weather"
-      summary: "Get the future weather for your location"
-      operationId: "weatherForcast"
+        - weather
+      summary: Get the future weather for your location
+      operationId: weatherForcast
       consumes:
-        - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       parameters:
-        - name: "loc"
-          in: "formData"
-          description: "The location you are requesting the weather from"
+        - name: loc
+          in: formData
+          description: The location you are requesting the weather from
           required: true
-          type: "string"
-        - name: "days"
-          in: "formData"
-          description: "The location you are requesting the weather from"
+          type: string
+        - name: days
+          in: formData
+          description: The location you are requesting the weather from
           required: true
-          type: "integer"
-          format: "int64"
+          type: integer
+          format: int64
       responses:
-        200:
-          description: "Successful"
-          schema: 
-            $ref: "#/definitions/WeatherForecast"
-        400:
-          description: "Missing parameter loc and/or days"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        503:
-          description: "Error while make the request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/WeatherForecast'
+        '400':
+          description: Missing parameter loc and/or days
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
+        '503':
+          description: Error while make the request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-
   /route/driving:
     post:
       tags:
-        - "route"
-      summary: "Get route informations between two waypoints while driving"
-      operationId: "routeDriving"
+        - route
+      summary: Get route informations between two waypoints while driving
+      operationId: routeDriving
       consumes:
-        - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       parameters:
-        - name: "start"
-          in: "formData"
-          description: "The start waypoint"
+        - name: start
+          in: formData
+          description: The start waypoint
           required: true
-          type: "string"
-        - name: "end"
-          in: "formData"
-          description: "The end waypoint"
+          type: string
+        - name: end
+          in: formData
+          description: The end waypoint
           required: true
-          type: "string"
+          type: string
       responses:
-        200:
-          description: "Successful"
-          schema: 
-            $ref: "#/definitions/Route"
-        400:
-          description: "Missing parameter start and/or end"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        503:
-          description: "Error while make the request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/Route'
+        '400':
+          description: Missing parameter start and/or end
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
+        '503':
+          description: Error while make the request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-        
   /route/walking:
     post:
       tags:
-        - "route"
-      summary: "Get route informations between two waypoints while walking"
-      operationId: "routeWalking"
+        - route
+      summary: Get route informations between two waypoints while walking
+      operationId: routeWalking
       consumes:
-        - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       parameters:
-        - name: "start"
-          in: "formData"
-          description: "The start waypoint"
+        - name: start
+          in: formData
+          description: The start waypoint
           required: true
-          type: "string"
-        - name: "end"
-          in: "formData"
-          description: "The end waypoint"
+          type: string
+        - name: end
+          in: formData
+          description: The end waypoint
           required: true
-          type: "string"
+          type: string
       responses:
-        200:
-          description: "Successful"
-          schema: 
-            $ref: "#/definitions/Route"
-        400:
-          description: "Missing parameter start and/or end"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        503:
-          description: "Error while make the request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/Route'
+        '400':
+          description: Missing parameter start and/or end
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
+        '503':
+          description: Error while make the request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-        
   /route/transit:
     post:
       tags:
-        - "route"
-      summary: "Get route informations between two waypoints while using transit"
-      operationId: "routeTransit"
+        - route
+      summary: Get route informations between two waypoints while using transit
+      operationId: routeTransit
       consumes:
-        - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       parameters:
-        - name: "start"
-          in: "formData"
-          description: "The start waypoint"
+        - name: start
+          in: formData
+          description: The start waypoint
           required: true
-          type: "string"
-        - name: "end"
-          in: "formData"
-          description: "The end waypoint"
+          type: string
+        - name: end
+          in: formData
+          description: The end waypoint
           required: true
-          type: "string"
-        - name: "timetype"
-          in: "formData"
-          description: "What kind of time you are looking for"
+          type: string
+        - name: timetype
+          in: formData
+          description: What kind of time you are looking for
           required: true
-          type: "array"
+          type: array
           items:
-            type: "string"
+            type: string
             enum:
-            - "arrival"
-            - "departure"
-            - "lastavailable"
-            default: "departure"
-        - name: "time"
-          in: "formData"
-          description: "The time your searching a transit"
+              - arrival
+              - departure
+              - lastavailable
+            default: departure
+        - name: time
+          in: formData
+          description: The time your searching a transit
           required: true
-          type: "string"
+          type: string
       responses:
-        200:
-          description: "Successful"
-          schema: 
-            $ref: "#/definitions/Route"
-        400:
-          description: "Missing parameter"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        503:
-          description: "Error while make the request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/Route'
+        '400':
+          description: Missing parameter
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
+        '503':
+          description: Error while make the request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-        
   /news:
     post:
       tags:
-        - "news"
-      summary: "Get the current news about a topic"
-      operationId: "news"
+        - news
+      summary: Get the current news about a topic
+      operationId: news
       consumes:
-        - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       parameters:
-        - name: "topic"
-          in: "formData"
-          description: "The topic you want to have news about"
+        - name: topic
+          in: formData
+          description: The topic you want to have news about
           required: true
-          type: "string"
+          type: string
       responses:
-        200:
-          description: "Successful"
-          schema: 
-            $ref: "#/definitions/News"
-        400:
-          description: "Missing parameter topic"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        503:
-          description: "Error while make the request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/News'
+        '400':
+          description: Missing parameter topic
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
+        '503':
+          description: Error while make the request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-        
   /news/headlines:
     post:
       tags:
-        - "news"
-      summary: "Get the current headlines about a topic"
-      operationId: "newsHeadlines"
+        - news
+      summary: Get the current headlines about a topic
+      operationId: newsHeadlines
       consumes:
-        - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       parameters:
-        - name: "topic"
-          in: "formData"
-          description: "The topic you want to have news about"
+        - name: topic
+          in: formData
+          description: The topic you want to have news about
           required: true
-          type: "string"
+          type: string
       responses:
-        200:
-          description: "Successful"
-          schema: 
-            $ref: "#/definitions/News"
-        400:
-          description: "Missing parameter topic"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        503:
-          description: "Error while make the request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/News'
+        '400':
+          description: Missing parameter topic
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
+        '503':
+          description: Error while make the request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-        
   /stock:
     post:
       tags:
-        - "tools"
-      summary: "Get the current stock prices"
-      operationId: "stock"
+        - tools
+      summary: Get the current stock prices
+      operationId: stock
       consumes:
-        - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       parameters:
-        - name: "symbol"
-          in: "formData"
-          description: "The symbol you want to have updates about"
+        - name: symbol
+          in: formData
+          description: The symbol you want to have updates about
           required: true
-          type: "string"
+          type: string
       responses:
-        200:
-          description: "Successful"
-          schema: 
-            $ref: "#/definitions/Stock"
-        400:
-          description: "Missing parameter symbol"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        503:
-          description: "Error while make the request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/Stock'
+        '400':
+          description: Missing parameter symbol
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
+        '503':
+          description: Error while make the request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-        
   /translate:
     post:
       tags:
-        - "tools"
-      summary: "Get a translation"
-      operationId: "translate"
+        - tools
+      summary: Get a translation
+      operationId: translate
       consumes:
-        - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       parameters:
-        - name: "query"
-          in: "formData"
-          description: "The text you want to translate"
+        - name: query
+          in: formData
+          description: The text you want to translate
           required: true
-          type: "string"
-        - name: "source"
-          in: "formData"
-          description: "The source language"
+          type: string
+        - name: source
+          in: formData
+          description: The source language
           required: true
-          type: "string"
-        - name: "target"
-          in: "formData"
-          description: "The target language"
+          type: string
+        - name: target
+          in: formData
+          description: The target language
           required: true
-          type: "string"
+          type: string
       responses:
-        200:
-          description: "Successful"
-          schema: 
-            $ref: "#/definitions/Translation"
-        400:
-          description: "Missing parameters"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        503:
-          description: "Error while make the request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/Translation'
+        '400':
+          description: Missing parameters
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
+        '503':
+          description: Error while make the request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-        
   /quiz:
     post:
       tags:
-        - "freetime"
-      summary: "Get some questions and answers"
-      operationId: "quiz"
+        - freetime
+      summary: Get some questions and answers
+      operationId: quiz
       consumes:
-        - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       parameters:
-        - name: "amount"
-          in: "formData"
-          description: "The amount of questions you want to receive"
+        - name: amount
+          in: formData
+          description: The amount of questions you want to receive
           required: true
-          type: "integer"
-          format: "int64"
+          type: integer
+          format: int64
       responses:
-        200:
-          description: "Successful"
-          schema: 
-            $ref: "#/definitions/Quiz"
-        400:
-          description: "Missing parameter amount"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        503:
-          description: "Error while make the request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/Quiz'
+        '400':
+          description: Missing parameter amount
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
+        '503':
+          description: Error while make the request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-        
   /sightseeing:
     post:
       tags:
-        - "freetime"
-      summary: "Get some sightseeing in a radius"
-      operationId: "sightseeing"
+        - freetime
+      summary: Get some sightseeing in a radius
+      operationId: sightseeing
       consumes:
-        - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       parameters:
-        - name: "city"
-          in: "formData"
-          description: "The city you want to look up"
+        - name: city
+          in: formData
+          description: The city you want to look up
           required: true
-          type: "string"
-        - name: "radius"
-          in: "formData"
-          description: "The search radius"
+          type: string
+        - name: radius
+          in: formData
+          description: The search radius
           required: true
-          type: "string"
+          type: string
       responses:
-        200:
-          description: "Successful"
-          schema: 
-            $ref: "#/definitions/Sightseeing"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        503:
-          description: "Error while make the request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/Sightseeing'
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
+        '503':
+          description: Error while make the request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-
   /activity:
     get:
       tags:
-        - "freetime"
-      summary: "Get an activity"
-      operationId: "activity"
+        - freetime
+      summary: Get an activity
+      operationId: activity
       responses:
-        200:
-          description: "Successful"
-          schema: 
-            $ref: "#/definitions/Activity"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        503:
-          description: "Error while make the request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/Activity'
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
+        '503':
+          description: Error while make the request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-
   /joke:
     get:
       tags:
-        - "freetime"
-      summary: "Get a joke"
-      operationId: "joke"
+        - freetime
+      summary: Get a joke
+      operationId: joke
       responses:
-        200:
-          description: "Successful"
-          schema: 
-            $ref: "#/definitions/Joke"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        503:
-          description: "Error while make the request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/Joke'
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
+        '503':
+          description: Error while make the request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-  
   /fortune:
     get:
       tags:
-        - "freetime"
-      summary: "Get a fortune"
-      operationId: "fortune"
+        - freetime
+      summary: Get a fortune
+      operationId: fortune
       responses:
-        200:
-          description: "Successful"
-          schema: 
-            $ref: "#/definitions/Fortune"
-        401:
-          description: "Cookie or key missing"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        500:
-          description: "Error while confirming the key"
-          schema: 
-            $ref: "#/definitions/RequestError"
-        503:
-          description: "Error while make the request"
-          schema: 
-            $ref: "#/definitions/RequestError"
+        '200':
+          description: Successful
+          schema:
+            $ref: '#/definitions/Fortune'
+        '401':
+          description: Cookie or key missing
+          schema:
+            $ref: '#/definitions/RequestError'
+        '500':
+          description: Error while confirming the key
+          schema:
+            $ref: '#/definitions/RequestError'
+        '503':
+          description: Error while make the request
+          schema:
+            $ref: '#/definitions/RequestError'
       security:
         - api_auth: []
-      
 definitions:
   LoginResponse:
-    type: "object"
+    type: object
     properties:
       username:
-        type: "string"
+        type: string
       id:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       api:
-        type: "string"
-        
+        type: string
   RequestError:
-    type: "object"
+    type: object
     properties:
       type:
-        type: "string"
+        type: string
       e:
-        type: "string"
-        
+        type: string
   UserInformation:
-    type: "object"
+    type: object
     properties:
       id:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       fullname:
-        type: "string"
+        type: string
       stocks:
-        type: "string"
+        type: string
       movement_type:
-        type: "string"
+        type: string
       workplaceCity:
-        type: "string"
+        type: string
       workplaceCode:
-        type: "string"
-      workplaceStreet: 
-        type: "string"
-      voice: 
-        type: "integer"
-        format: "int64"
+        type: string
+      workplaceStreet:
+        type: string
+      voice:
+        type: integer
+        format: int64
       residenceCity:
-        type: "string"
+        type: string
       residenceCode:
-        type: "string"
+        type: string
       residenceStreet:
-        type: "string"
+        type: string
       workstart:
-        type: "string"
-        format: "time"
-        
+        type: string
+        format: time
   WeatherNow:
-    type: "object"
+    type: object
     properties:
       location:
-        type: "object"
+        type: object
         properties:
-          name: 
-            type: "string"
+          name:
+            type: string
           region:
-            type: "string"
+            type: string
           country:
-            type: "string"
+            type: string
       weather:
-        type: "object"
+        type: object
         properties:
           update:
-            type: "string"
-            format: "date-time"
+            type: string
+            format: date-time
           temp:
-            type: "number"
-            format: "float"
+            type: number
+            format: float
           cond:
-            type: "string"
+            type: string
           wind:
-            type: "object"
+            type: object
             properties:
               dir:
-                type: "string"
+                type: string
               speed:
-                type: "number"
-                format: "float"
-                
+                type: number
+                format: float
   WeatherForecast:
-    type: "object"
+    type: object
     properties:
       location:
-        type: "object"
+        type: object
         properties:
-          name: 
-            type: "string"
+          name:
+            type: string
           region:
-            type: "string"
+            type: string
           country:
-            type: "string"
+            type: string
       weather:
-        type: "object"
+        type: object
         properties:
           update:
-            type: "string"
-            format: "date-time"
+            type: string
+            format: date-time
           temp:
-            type: "number"
-            format: "float"
+            type: number
+            format: float
           cond:
-            type: "string"
+            type: string
           wind:
-            type: "object"
+            type: object
             properties:
               dir:
-                type: "string"
+                type: string
               speed:
-                type: "number"
-                format: "float"
+                type: number
+                format: float
       forecast:
-        type: "array"
+        type: array
         items:
-          type: "object"
+          type: object
           properties:
             date:
-              type: "string"
-              format: "date-time"
+              type: string
+              format: date-time
             avg_temp:
-              type: "number"
-              format: "float"
+              type: number
+              format: float
             cond:
-              type: "string"
+              type: string
             wind:
-              type: "number"
-              format: "float"
+              type: number
+              format: float
             snow:
-              type: "integer"
-              format: "int64"
+              type: integer
+              format: int64
             rain:
-              type: "integer"
-              format: "int64"
+              type: integer
+              format: int64
   Route:
-    type: "object"
+    type: object
     properties:
       travelDuration:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       travelDurationTraffic:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       travelDistance:
-        type: "number"
-        format: "float"
-        
+        type: number
+        format: float
   News:
-    type: "object"
+    type: object
     properties:
       status:
-        type: "string"
+        type: string
       totalResults:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       articles:
-        type: "array"
+        type: array
         items:
-          type: "object"
+          type: object
           properties:
             source:
-              type: "object"
+              type: object
               properties:
                 id:
-                  type: "string"
-                  description: "Might be null"
+                  type: string
+                  description: Might be null
             author:
-              type: "string"
-              description: "Might be null"
+              type: string
+              description: Might be null
             title:
-              type: "string"
+              type: string
             description:
-              type: "string"
+              type: string
             url:
-              type: "string"
+              type: string
             urlToImage:
-              type: "string"
+              type: string
             publishedAt:
-              type: "string"
-              format: "date-time"
+              type: string
+              format: date-time
             content:
-              type: "string"
-              description: "Might be null"
-    
+              type: string
+              description: Might be null
   Stock:
-    type: "object"
+    type: object
     properties:
       c:
-        type: "string"
-        description: "Current price"
+        type: string
+        description: Current price
       h:
-        type: "string"
-        description: "High price of the day"
+        type: string
+        description: High price of the day
       l:
-        type: "string"
-        description: "Low price of the day"
+        type: string
+        description: Low price of the day
       o:
-        type: "string"
-        description: "Current price"
+        type: string
+        description: Current price
       pc:
-        type: "string"
-        description: "Previous close price"
+        type: string
+        description: Previous close price
       t:
-        type: "string"
-        
+        type: string
   Translation:
-    type: "object"
+    type: object
     properties:
       input:
-        type: "string"
+        type: string
       output:
-        type: "string"
-        
+        type: string
   Quiz:
-    type: "object"
+    type: object
     properties:
       response_code:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       results:
-        type: "array"
+        type: array
         items:
-          type: "object"
+          type: object
           properties:
             category:
-              type: "string"
+              type: string
             type:
-              type: "string"
+              type: string
             difficulty:
-              type: "string"
+              type: string
             question:
-              type: "string"
+              type: string
             correct_answer:
-              type: "string"
+              type: string
             incorrect_answers:
-              type: "array"
+              type: array
               items:
-                type: "string"
-  
+                type: string
   Sightseeing:
-    type: "object"
+    type: object
     properties:
       xid:
-        type: "string"
+        type: string
       name:
-        type: "string"
+        type: string
       dist:
-        type: "number"
-        format: "float"
+        type: number
+        format: float
       rate:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       wikidata:
-        type: "string"
+        type: string
       kinds:
-        type: "string"
+        type: string
       point:
-        type: "object"
+        type: object
         properties:
           lon:
-            type: "number"
-            format: "float"
+            type: number
+            format: float
           lat:
-            type: "number"
-            format: "float"
+            type: number
+            format: float
       osm:
-        type: "string"
-        
+        type: string
   Activity:
-    type: "object"
+    type: object
     properties:
       activity:
-        type: "string"
+        type: string
       type:
-        type: "string"
+        type: string
       participants:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       price:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       link:
-        type: "string"
+        type: string
       key:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       accessibility:
-        type: "number"
-        format: "float"
-        
+        type: number
+        format: float
   Joke:
-    type: "object"
+    type: object
     properties:
-      error: 
-        type: "boolean"
+      error:
+        type: boolean
       category:
-        type: "string"
+        type: string
       type:
-        type: "string"
+        type: string
       setup:
-        type: "string"
-        description: "Might be undefined"
+        type: string
+        description: Might be undefined
       delivery:
-        type: "string"
-        description: "Might be undefined"
+        type: string
+        description: Might be undefined
       joke:
-        type: "string"
-        description: "Might be undefined"
+        type: string
+        description: Might be undefined
       flags:
-        type: "object"
+        type: object
         properties:
           nswf:
-            type: "boolean"
+            type: boolean
           racist:
-            type: "boolean"
+            type: boolean
           sexist:
-            type: "boolean"
+            type: boolean
           religious:
-            type: "boolean"
+            type: boolean
           political:
-            type: "boolean"
+            type: boolean
           explicit:
-            type: "boolean"
+            type: boolean
       id:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       safe:
-        type: "boolean"
+        type: boolean
       lang:
-        type: "string"
-  
+        type: string
   Fortune:
-    type: "string"
-        
+    type: string
 securityDefinitions:
   api_auth:
-    type: "apiKey"
-    name: "X-API-KEY"
-    in: "header"
+    type: apiKey
+    name: X-API-KEY
+    in: header
