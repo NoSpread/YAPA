@@ -5,7 +5,6 @@ dotenv.config({
 
 import App from './app'
 import express from 'express'
-import cors from 'cors'
 import session from 'express-session'
 
 import {
@@ -50,11 +49,6 @@ declare module 'express-session' {
     }
 }
 
-
-const corsSettings = {
-    origin: "*"
-}
-
 /**
  * This is the main instance of the REST API.
  * It includes all used controllers and middleware.
@@ -75,7 +69,6 @@ const app = new App({
         new SightseeingController()
     ],
     middleWares: [
-        cors(corsSettings),
         session({
             secret: process.env.COOKIE_SECRET || "OOOHHH NOOOOOOO",
             resave: true,
