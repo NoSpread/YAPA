@@ -1,51 +1,51 @@
 export interface Route {
     authenticationResultCode: string;
-    brandLogoUri:             string;
-    copyright:                string;
-    resourceSets:             ResourceSet[];
-    statusCode:               number;
-    statusDescription:        string;
-    traceId:                  string;
+    brandLogoUri: string;
+    copyright: string;
+    resourceSets: ResourceSet[];
+    statusCode: number;
+    statusDescription: string;
+    traceId: string;
 }
 
 export interface ResourceSet {
     estimatedTotal: number;
-    resources:      Resource[];
+    resources: Resource[];
 }
 
 export interface Resource {
-    __type:                string;
-    bbox:                  number[];
-    id:                    string;
-    distanceUnit:          string;
-    durationUnit:          string;
-    routeLegs:             RouteLeg[];
-    trafficCongestion:     TrafficCongestion;
-    trafficDataUsed:       TrafficCongestion;
-    travelDistance:        number;
-    travelDuration:        number;
+    __type: string;
+    bbox: number[];
+    id: string;
+    distanceUnit: string;
+    durationUnit: string;
+    routeLegs: RouteLeg[];
+    trafficCongestion: TrafficCongestion;
+    trafficDataUsed: TrafficCongestion;
+    travelDistance: number;
+    travelDuration: number;
     travelDurationTraffic: number;
-    travelMode:            Mode;
+    travelMode: Mode;
 }
 
 export interface RouteLeg {
-    actualEnd:      ActualEnd;
-    actualStart:    ActualEnd;
-    alternateVias:  any[];
-    cost:           number;
-    description:    string;
-    endLocation:    Location;
+    actualEnd: ActualEnd;
+    actualStart: ActualEnd;
+    alternateVias: any[];
+    cost: number;
+    description: string;
+    endLocation: Location;
     itineraryItems: ItineraryItem[];
-    routeRegion:    string;
-    routeSubLegs:   RouteSubLeg[];
-    startLocation:  Location;
+    routeRegion: string;
+    routeSubLegs: RouteSubLeg[];
+    startLocation: Location;
     travelDistance: number;
     travelDuration: number;
-    travelMode:     Mode;
+    travelMode: Mode;
 }
 
 export interface ActualEnd {
-    type:        Type;
+    type: Type;
     coordinates: number[];
 }
 
@@ -54,103 +54,103 @@ export enum Type {
 }
 
 export interface Location {
-    bbox:          number[];
-    name:          string;
-    point:         ActualEnd;
-    address:       Address;
-    confidence:    string;
-    entityType:    string;
+    bbox: number[];
+    name: string;
+    point: ActualEnd;
+    address: Address;
+    confidence: string;
+    entityType: string;
     geocodePoints: GeocodePoint[];
-    matchCodes:    string[];
+    matchCodes: string[];
 }
 
 export interface Address {
-    adminDistrict:    string;
-    countryRegion:    string;
+    adminDistrict: string;
+    countryRegion: string;
     formattedAddress: string;
-    locality:         string;
+    locality: string;
 }
 
 export interface GeocodePoint {
-    type:              Type;
-    coordinates:       number[];
+    type: Type;
+    coordinates: number[];
     calculationMethod: string;
-    usageTypes:        string[];
+    usageTypes: string[];
 }
 
 export interface ItineraryItem {
-    compassDirection:     CompassDirection;
-    details:              Detail[];
-    exit:                 string;
-    iconType:             IconType;
-    instruction:          Instruction;
-    isRealTimeTransit:    boolean;
-    maneuverPoint:        ActualEnd;
+    compassDirection: CompassDirection;
+    details: Detail[];
+    exit: string;
+    iconType: IconType;
+    instruction: Instruction;
+    isRealTimeTransit: boolean;
+    maneuverPoint: ActualEnd;
     realTimeTransitDelay: number;
-    sideOfStreet:         SideOfStreet;
-    tollZone:             string;
-    towardsRoadName?:     string;
-    transitTerminus:      string;
-    travelDistance:       number;
-    travelDuration:       number;
-    travelMode:           Mode;
-    signs?:               string[];
-    warnings?:            Warning[];
-    hints?:               Hint[];
+    sideOfStreet: SideOfStreet;
+    tollZone: string;
+    towardsRoadName ? : string;
+    transitTerminus: string;
+    travelDistance: number;
+    travelDuration: number;
+    travelMode: Mode;
+    signs ? : string[];
+    warnings ? : Warning[];
+    hints ? : Hint[];
 }
 
 export enum CompassDirection {
     East = "east",
-    North = "north",
-    Northeast = "northeast",
-    Northwest = "northwest",
-    South = "south",
-    Southeast = "southeast",
-    Southwest = "southwest",
-    West = "west",
+        North = "north",
+        Northeast = "northeast",
+        Northwest = "northwest",
+        South = "south",
+        Southeast = "southeast",
+        Southwest = "southwest",
+        West = "west",
 }
 
 export interface Detail {
-    compassDegrees?:              number;
-    endPathIndices:               number[];
-    maneuverType:                 string;
-    mode:                         Mode;
-    names?:                       string[];
-    roadType:                     RoadType;
-    startPathIndices:             number[];
-    locationCodes?:               string[];
-    roadShieldRequestParameters?: RoadShieldRequestParameters;
+    compassDegrees ? : number;
+    endPathIndices: number[];
+    maneuverType: string;
+    mode: Mode;
+    names ? : string[];
+    roadType: RoadType;
+    startPathIndices: number[];
+    locationCodes ? : string[];
+    roadShieldRequestParameters ? : RoadShieldRequestParameters;
 }
 
 export enum Mode {
     Driving = "Driving",
-    Walking = "Walking",
-    Transit = "Transit"
+        Walking = "Walking",
+        Transit = "Transit"
 }
 
 export interface RoadShieldRequestParameters {
-    bucket:  number;
+    bucket: number;
     shields: Shield[];
 }
 
 export interface Shield {
-    labels:         string[];
+    labels: string[];
     roadShieldType: number;
 }
 
 export enum RoadType {
     Arterial = "Arterial",
-    Ferry = "Ferry",
-    Highway = "Highway",
-    LimitedAccessHighway = "LimitedAccessHighway",
-    MajorRoad = "MajorRoad",
-    Ramp = "Ramp",
-    Street = "Street",
+        Ferry = "Ferry",
+        Highway = "Highway",
+        LimitedAccessHighway = "LimitedAccessHighway",
+        MajorRoad = "MajorRoad",
+        Ramp = "Ramp",
+        Street = "Street",
 }
 
 export interface Hint {
     hintType: string;
-    text:     string;
+    text: string;
 }
 
 export enum IconType {
@@ -159,8 +159,8 @@ export enum IconType {
 
 export interface Instruction {
     formattedText: null;
-    maneuverType:  string;
-    text:          string;
+    maneuverType: string;
+    text: string;
 }
 
 export enum SideOfStreet {
@@ -168,87 +168,87 @@ export enum SideOfStreet {
 }
 
 export interface Warning {
-    origin?:     string;
-    severity:    TrafficCongestion;
-    text:        string;
+    origin ? : string;
+    severity: TrafficCongestion;
+    text: string;
     warningType: WarningType;
-    to?:         string;
-    endTime?:    Time;
-    startTime?:  Time;
+    to ? : string;
+    endTime ? : Time;
+    startTime ? : Time;
 }
 
 export interface Time {
-    DateTime:      string;
+    DateTime: string;
     OffsetMinutes: number;
 }
 
 export enum TrafficCongestion {
     Minor = "Minor",
-    Moderate = "Moderate",
-    None = "None",
-    Serious = "Serious",
+        Moderate = "Moderate",
+        None = "None",
+        Serious = "Serious",
 }
 
 export enum WarningType {
     Accident = "Accident",
-    AdminDivisionChange = "AdminDivisionChange",
-    BlockedRoad = "BlockedRoad",
-    CheckTimetable = "CheckTimetable",
-    Congestion = "Congestion",
-    CountryChange = "CountryChange",
-    DisabledVehicle = "DisabledVehicle",
-    GateAccess = "GateAccess",
-    GetOffTransit = "GetOffTransit",
-    GetOnTransit = "GetOnTransit",
-    IllegalUTurn = "IllegalUTurn",
-    MassTransit = "MassTransit",
-    Miscellaneous = "Miscellaneous",
-    NoIncident = "NoIncident",
-    None = "None",
-    Other = "Other",
-    OtherNews = "OtherNews",
-    OtherTrafficIncidents = "OtherTrafficIncidents",
-    PlannedEvents = "PlannedEvents",
-    PrivateRoad = "PrivateRoad",
-    RestrictedTurn = "RestrictedTurn",
-    RoadClosures = "RoadClosures",
-    RoadHazard = "RoadHazard",
-    ScheduledConstruction = "ScheduledConstruction",
-    SeasonalClosures = "SeasonalClosures",
-    Tollbooth = "Tollbooth",
-    TollRoad = "TollRoad",
-    TollZoneEnter = "TollZoneEnter",
-    TollZoneExit = "TollZoneExit",
-    TrafficFlow = "TrafficFlow",
-    TransitLineChange = "TransitLineChange",
-    UnpavedRoad = "UnpavedRoad",
-    Weather = "Weather"
+        AdminDivisionChange = "AdminDivisionChange",
+        BlockedRoad = "BlockedRoad",
+        CheckTimetable = "CheckTimetable",
+        Congestion = "Congestion",
+        CountryChange = "CountryChange",
+        DisabledVehicle = "DisabledVehicle",
+        GateAccess = "GateAccess",
+        GetOffTransit = "GetOffTransit",
+        GetOnTransit = "GetOnTransit",
+        IllegalUTurn = "IllegalUTurn",
+        MassTransit = "MassTransit",
+        Miscellaneous = "Miscellaneous",
+        NoIncident = "NoIncident",
+        None = "None",
+        Other = "Other",
+        OtherNews = "OtherNews",
+        OtherTrafficIncidents = "OtherTrafficIncidents",
+        PlannedEvents = "PlannedEvents",
+        PrivateRoad = "PrivateRoad",
+        RestrictedTurn = "RestrictedTurn",
+        RoadClosures = "RoadClosures",
+        RoadHazard = "RoadHazard",
+        ScheduledConstruction = "ScheduledConstruction",
+        SeasonalClosures = "SeasonalClosures",
+        Tollbooth = "Tollbooth",
+        TollRoad = "TollRoad",
+        TollZoneEnter = "TollZoneEnter",
+        TollZoneExit = "TollZoneExit",
+        TrafficFlow = "TrafficFlow",
+        TransitLineChange = "TransitLineChange",
+        UnpavedRoad = "UnpavedRoad",
+        Weather = "Weather"
 }
 
 export interface RouteSubLeg {
-    endWaypoint:    Waypoint;
-    startWaypoint:  Waypoint;
+    endWaypoint: Waypoint;
+    startWaypoint: Waypoint;
     travelDistance: number;
     travelDuration: number;
 }
 
 export interface Waypoint {
-    type:               Type;
-    coordinates:        number[];
-    description:        string;
-    isVia:              boolean;
+    type: Type;
+    coordinates: number[];
+    description: string;
+    isVia: boolean;
     locationIdentifier: string;
-    routePathIndex:     number;
+    routePathIndex: number;
 }
 
 export interface RouteOutput {
     travelDuration: number,
-    travelDurationTraffic: number,
-    travelDistance: number
+        travelDurationTraffic: number,
+        travelDistance: number
 }
 
 export enum TimeType {
     Arrival = " Arrival",
-    Departure = "Departure",
-    LastAvailable = "LastAvailable"
+        Departure = "Departure",
+        LastAvailable = "LastAvailable"
 }

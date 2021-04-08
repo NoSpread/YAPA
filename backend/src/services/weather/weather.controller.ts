@@ -1,5 +1,8 @@
 import * as express from 'express'
-import { Request, Response } from 'express'
+import {
+    Request,
+    Response
+} from 'express'
 import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 
@@ -32,16 +35,16 @@ class WeatherController implements IControllerBase {
 
         if (location) {
             this.weather.getCurrentWeather(location)
-            .then(weather => {
-                res.json(weather)
-            })
-            .catch( e => {
-                const error = {
-                    type: "REQUEST_ERROR",
-                    e: e.name
-                }
-                res.status(503).json(error)
-            })
+                .then(weather => {
+                    res.json(weather)
+                })
+                .catch(e => {
+                    const error = {
+                        type: "REQUEST_ERROR",
+                        e: e.name
+                    }
+                    res.status(503).json(error)
+                })
         } else res.sendStatus(400)
     }
 
@@ -51,20 +54,23 @@ class WeatherController implements IControllerBase {
      * @param res Express
      */
     private getForecastWeather = (req: Request, res: Response) => {
-        const { loc: location, days} = req.body
+        const {
+            loc: location,
+            days
+        } = req.body
 
         if (location && days) {
             this.weather.getForecastWaether(location, days)
-            .then(weather => {
-                res.json(weather)
-            })
-            .catch( e => {
-                const error = {
-                    type: "REQUEST_ERROR",
-                    e: e.name
-                }
-                res.status(503).json(error)
-            })
+                .then(weather => {
+                    res.json(weather)
+                })
+                .catch(e => {
+                    const error = {
+                        type: "REQUEST_ERROR",
+                        e: e.name
+                    }
+                    res.status(503).json(error)
+                })
         } else res.sendStatus(400)
     }
 }

@@ -1,7 +1,12 @@
 import * as express from 'express'
-import { Request, Response } from 'express'
+import {
+    Request,
+    Response
+} from 'express'
 import IControllerBase from '../../interfaces/IControllerBase'
-import { IUserinformation } from '../../interfaces/IDatabase'
+import {
+    IUserinformation
+} from '../../interfaces/IDatabase'
 import authentication from '../../middleware/authentication'
 import UserModel from './user.model'
 
@@ -31,7 +36,10 @@ class UserController implements IControllerBase {
     }
 
     private register = async (req: Request, res: Response) => {
-        const {username, password} = req.body
+        const {
+            username,
+            password
+        } = req.body
         if (username && password) {
             const status = await this.user.register(username, password)
             res.sendStatus(status)
@@ -39,15 +47,18 @@ class UserController implements IControllerBase {
     }
 
     private login = async (req: Request, res: Response) => {
-        const {username, password} = req.body
+        const {
+            username,
+            password
+        } = req.body
         if (username && password) {
             try {
                 const status = await this.user.login(username, password)
                 if (status) {
-                  req.session.user = status
-                  res.json(status)
+                    req.session.user = status
+                    res.json(status)
                 } else res.sendStatus(401)
-            } catch(err) {
+            } catch (err) {
                 res.sendStatus(404) // user not found
             }
         } else res.sendStatus(400)
@@ -61,7 +72,7 @@ class UserController implements IControllerBase {
             try {
                 const status = await this.user.logout(apikey)
                 if (status) {
-                    req.session.destroy( err => {
+                    req.session.destroy(err => {
                         res.sendStatus(200)
                     })
                 } else res.sendStatus(401)
@@ -123,7 +134,7 @@ class UserController implements IControllerBase {
             try {
                 const status = await this.user.delete(apikey)
                 if (status) {
-                    req.session.destroy( err => {
+                    req.session.destroy(err => {
                         res.sendStatus(200)
                     })
                 } else res.sendStatus(401)

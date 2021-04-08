@@ -1,12 +1,16 @@
 import dotenv from 'dotenv'
-dotenv.config({ path: __dirname + "/../.env"})
+dotenv.config({
+    path: __dirname + "/../.env"
+})
 
 import App from './app'
 import express from 'express'
 import cors from 'cors'
 import session from 'express-session'
 
-import { database } from './database'
+import {
+    database
+} from './database'
 
 import loggerMiddleware from './middleware/logger'
 
@@ -27,7 +31,7 @@ process.on('uncaughtException', err => {
     process.exit(1) //mandatory (as per the Node.js docs)
 })
 
-process.on('SIGINT', function() {
+process.on('SIGINT', function () {
     console.log('Closing server');
     process.exit(0)
 })
@@ -38,11 +42,11 @@ process.on('SIGINT', function() {
  */
 declare module 'express-session' {
     export interface SessionData {
-      user: {
-        id: number,
-        username: string,
-        api: string
-      }
+        user: {
+            id: number,
+            username: string,
+            api: string
+        }
     }
 }
 
@@ -63,22 +67,24 @@ const app = new App({
         new JokeController(),
         new TranslateController(),
         new StocksController(),
-		new ActivityController(),
-		new RouteController(),
-		new NewsController(),
-		new QuizController(),
+        new ActivityController(),
+        new RouteController(),
+        new NewsController(),
+        new QuizController(),
         new WeatherController(),
-		new SightseeingController()
-	],
+        new SightseeingController()
+    ],
     middleWares: [
         cors(corsSettings),
-        session({    
+        session({
             secret: process.env.COOKIE_SECRET || "OOOHHH NOOOOOOO",
             resave: true,
             saveUninitialized: true,
             name: "sessionID"
         }),
-        express.urlencoded({extended: true}),
+        express.urlencoded({
+            extended: true
+        }),
         express.json(),
         loggerMiddleware
     ]

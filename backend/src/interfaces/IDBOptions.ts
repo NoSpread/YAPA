@@ -1,4 +1,3 @@
-
 type IRDBOptions = {
     host: string,
     port: number,
@@ -13,4 +12,7 @@ type ISQLOptions = {
     port: number
 }
 
-export {IRDBOptions, ISQLOptions}
+export {
+    IRDBOptions,
+    ISQLOptions
+}

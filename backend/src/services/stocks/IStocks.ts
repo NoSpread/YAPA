@@ -1,8 +1,8 @@
 export interface Stock {
-    c:  number;
-    h:  number;
-    l:  number;
-    o:  number;
+    c: number;
+    h: number;
+    l: number;
+    o: number;
     pc: number;
-    t:  number;
+    t: number;
 }

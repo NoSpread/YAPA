@@ -1,5 +1,8 @@
 import * as express from 'express'
-import { Request, Response } from 'express'
+import {
+    Request,
+    Response
+} from 'express'
 import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 
@@ -23,17 +26,17 @@ class JokeController implements IControllerBase {
     private getJoke = (req: Request, res: Response) => {
 
         this.joke.getJoke()
-        .then(joke => {
-            res.json(joke)
-        })
-        .catch( e => {
-            const error = {
-                type: "REQUEST_ERROR",
-                e: e.name
-            }
-            
-            res.status(503).json(error)
-        })
+            .then(joke => {
+                res.json(joke)
+            })
+            .catch(e => {
+                const error = {
+                    type: "REQUEST_ERROR",
+                    e: e.name
+                }
+
+                res.status(503).json(error)
+            })
     }
 }
 
