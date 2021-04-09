@@ -13,10 +13,8 @@ class App extends Component {
       login: true,
       api : "something"
     };
-
-    this.handleStateChange = this.handleStateChange.bind(this);
   };
-  
+
 
   render() {
     const changeView = () => {
@@ -46,6 +44,12 @@ class App extends Component {
       }
     };
 
+    const setApiKey = () => {
+      this.setState({
+        api: document.getElementById("setApi").value
+      });
+    }
+
     const centerStyle = {
       display: "flex", 
       justifyContent: "center", 
@@ -57,12 +61,13 @@ class App extends Component {
         <header>
           <div className="app-bar">
             <input type="text" id="changeViewInput" onClick={() => changeView()} hidden/>
+            <input type="text" id="setApi" onClick={() => setApiKey()} hidden/>
           </div>
         </header>
         <div className="main" id="main">
           {this.state.dashboard? (<Dashboard api={this.state.api}/>) : null}
           {this.state.settings? (<Settings api={this.state.api}/>) : null}
-          {this.state.login? (<Login />) : null}
+          {this.state.login? (<Login/>) : null}
         </div>
       </div>
     );

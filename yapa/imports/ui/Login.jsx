@@ -4,7 +4,10 @@ import '../style/login.css';
 class Login extends Component {
     constructor(props) {
         super(props);
-        this.state = {register: false};
+        this.state = {
+            register: false,
+            api: ""
+        };
     }
 
     render() {
@@ -12,7 +15,7 @@ class Login extends Component {
         const changeViewFunction = () => {
             document.getElementById("changeViewInput").value = "dashboard";
             document.getElementById("changeViewInput").click();
-        }
+        }    
 
         const register = (event) => {
             event.preventDefault();
@@ -28,8 +31,8 @@ class Login extends Component {
                 },
                 body: `username=${loginInput.value}&password=${passwordInput.value}`
             }).then(res => {
-                if(res.status == "201") {
-                    login();
+                if(res.status == "201") {                   
+                    login(event);
                 } else {
                     document.getElementById("main").innerHTML = `<div class="alert alert-warning alert-dismissible">
                     <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -40,13 +43,13 @@ class Login extends Component {
                 console.error(e);
             });      
         }
-
+    
         const login = (event) => {
             event.preventDefault();
 
             var loginInput = document.getElementById("login");
             var passwordInput = document.getElementById("password");
-
+    
             fetch('https://api.nospread.xyz/yapa/v1/user/login', {
                 method: "POST",
                 headers: {
@@ -69,7 +72,8 @@ class Login extends Component {
                   </div>${document.getElementById("main").innerHTML}`;
                 }
             }).then(function(data) {
-                //console.log(data.api);
+                document.getElementById("setApi").value = data.api;
+                document.getElementById("setApi").click();
                 changeViewFunction();
             }).catch(e => {
                 console.error(e);
@@ -85,6 +89,7 @@ class Login extends Component {
                         <input type="submit" onClick={e => register(e)} value="Registrieren"/> : 
                         <input type="submit" onClick={e => login(e)} value="Anmelden"/>
                     }
+                    {/* <input type="button" onClick={this.props.handleStateChange("loginapi")} value="API Senden"/> */}
                 </form>
                 <div id="formFooter">
                     {this.state.register? 
