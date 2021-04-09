@@ -1,22 +1,49 @@
 import React, { Component } from 'react';
 import Dashboard from './Dashboard';
 import Settings from './Settings';
+import Login from './Login';
 
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {page: true};
+    this.state = {
+      dashboard: false,
+      settings: false,
+      login: true,
+      api : "something"
+    };
+
+    this.handleStateChange = this.handleStateChange.bind(this);
   };
-
-  
-
-
   
 
   render() {
     const changeView = () => {
-      this.setState({page: !this.state.page});
+      var changeViewInput = document.getElementById("changeViewInput");
+      switch (changeViewInput.value) {
+        case "dashboard":
+          this.setState({
+            dashboard: true,
+            settings: false,
+            login: false
+          });
+        break;
+        case "settings":
+          this.setState({
+            dashboard: false,
+            settings: true,
+            login: false
+          });
+        break;
+        case "login":
+          this.setState({
+            dashboard: false,
+            settings: false,
+            login: true
+          });
+        break;
+      }
     };
 
     const centerStyle = {
@@ -29,11 +56,13 @@ class App extends Component {
       <div className="app" style={centerStyle}>
         <header>
           <div className="app-bar">
-            <button id="changeViewButton" onClick={changeView} hidden></button>
+            <input type="text" id="changeViewInput" onClick={() => changeView()} hidden/>
           </div>
         </header>
-        <div className="main">
-          {this.state.page? (<Dashboard />) : (<Settings />)}
+        <div className="main" id="main">
+          {this.state.dashboard? (<Dashboard api={this.state.api}/>) : null}
+          {this.state.settings? (<Settings api={this.state.api}/>) : null}
+          {this.state.login? (<Login />) : null}
         </div>
       </div>
     );
