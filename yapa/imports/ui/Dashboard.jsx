@@ -98,7 +98,7 @@ class Dashboard extends Component {
     }
 
     return (
-      <div>
+      <div onLoad={console.log(getApi())}>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <h1 id="title" style={{textAlign: "center"}}>Dashboard</h1>
         <div id="placeHolder" className="placeholder" style={placeHolderStyle}>

@@ -18,6 +18,23 @@ class Settings extends Component {
 
         const updateSettings = () => {
             // Store new settings in DB
+
+            fetch('https://api.nospread.xyz/yapa/v1/user', {
+                method: "PUT",
+                headers: {
+                    "accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: `username=${loginInput.value}&password=${passwordInput.value}`
+            }).then(res => {
+                if(res.status == "201") {                   
+                } else {
+                }
+            }).catch(e => {
+                console.error(e);
+            });      
+
+            getApi();
         }
 
         return (
