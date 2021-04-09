@@ -1,5 +1,7 @@
 import got from 'got'
-import { Stock } from './IStocks'
+import {
+    Stock
+} from './IStocks'
 
 class StocksModel {
 
@@ -11,8 +13,8 @@ class StocksModel {
      * @param symbol The stock symbol (e.g. GME)
      * @returns Stock object descriped in the Stock interface
      */
-    public getStocks = async (symbol: string): Promise<Stock> => {
-        const result = await got<Stock>(this.endpoint, {
+    public getStocks = async (symbol: string): Promise < Stock > => {
+        const result = await got < Stock > (this.endpoint, {
             searchParams: {
                 token: this.apikey,
                 symbol: symbol

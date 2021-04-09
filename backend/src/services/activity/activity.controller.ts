@@ -1,5 +1,8 @@
 import * as express from 'express'
-import { Request, Response } from 'express'
+import {
+    Request,
+    Response
+} from 'express'
 import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 
@@ -21,18 +24,18 @@ class ActivityController implements IControllerBase {
     }
 
     private getActivity = (req: Request, res: Response) => {
-        
+
         this.activity.getActivity()
-        .then(activity => {
-            res.json(activity)
-        })
-        .catch( e => {
-            const error = {
-                type: "REQUEST_ERROR",
-                e: e.name
-            }
-            res.status(503).json(error)
-        })
+            .then(activity => {
+                res.json(activity)
+            })
+            .catch(e => {
+                const error = {
+                    type: "REQUEST_ERROR",
+                    e: e.name
+                }
+                res.status(503).json(error)
+            })
     }
 }
 

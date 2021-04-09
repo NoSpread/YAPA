@@ -1,5 +1,7 @@
 import got from 'got'
-import { News } from './INews'
+import {
+    News
+} from './INews'
 
 class NewsModel {
 
@@ -11,8 +13,14 @@ class NewsModel {
      * @param query A keyword to find news
      * @returns News object
      */
-    public getNews = async (query: string): Promise<News> => {
-        const result = await got<News>(`${this.endpoint}/everything`, { searchParams: { apiKey: this.apikey, q: query }, responseType: 'json'})
+    public getNews = async (query: string): Promise < News > => {
+        const result = await got < News > (`${this.endpoint}/everything`, {
+            searchParams: {
+                apiKey: this.apikey,
+                q: query
+            },
+            responseType: 'json'
+        })
 
         if (result.statusCode != 200) {
             throw `Error accessing news API (${result.statusCode})`
@@ -26,8 +34,14 @@ class NewsModel {
      * @param query A keyword to find new headlines
      * @returns News Object
      */
-    public getHeadlines = async (query: string): Promise<News> => {
-        const result = await got<News>(`${this.endpoint}/top-headlines`, { searchParams: { apiKey: this.apikey, q: query }, responseType: 'json'})
+    public getHeadlines = async (query: string): Promise < News > => {
+        const result = await got < News > (`${this.endpoint}/top-headlines`, {
+            searchParams: {
+                apiKey: this.apikey,
+                q: query
+            },
+            responseType: 'json'
+        })
 
         if (result.statusCode != 200) {
             throw `Error accessing news API (${result.statusCode})`

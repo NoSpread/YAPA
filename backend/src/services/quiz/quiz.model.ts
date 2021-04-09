@@ -1,5 +1,7 @@
 import got from 'got'
-import { Quiz } from './IQuiz'
+import {
+    Quiz
+} from './IQuiz'
 
 class QuizModel {
 
@@ -10,8 +12,13 @@ class QuizModel {
      * @param amount Amount of quiz to get
      * @returns A quiz object
      */
-    public async getQuiz(amount: string): Promise<Quiz> {
-        const result = await got<Quiz>(this.endpoint, {searchParams: { amount: amount }, responseType: 'json'})
+    public async getQuiz(amount: string): Promise < Quiz > {
+        const result = await got < Quiz > (this.endpoint, {
+            searchParams: {
+                amount: amount
+            },
+            responseType: 'json'
+        })
 
         if (result.statusCode != 200) {
             throw new Error(`Error accessing quiz API (${result.statusCode})`)

@@ -1,5 +1,8 @@
 import got from 'got'
-import { Translation, TranslationOutput } from './ITranslate'
+import {
+    Translation,
+    TranslationOutput
+} from './ITranslate'
 
 class TranslateModel {
 
@@ -12,14 +15,14 @@ class TranslateModel {
      * @param target Target Language
      * @returns The translation object
      */
-    public async postTranslate(query: string, source: string, target: string): Promise<TranslationOutput> {
+    public async postTranslate(query: string, source: string, target: string): Promise < TranslationOutput > {
 
         const requestObj = {
             q: query,
             source: source,
             target: target
         }
-        const result = await got.post<Translation>(this.endpoint, {
+        const result = await got.post < Translation > (this.endpoint, {
             json: requestObj,
             responseType: "json"
         })
@@ -33,7 +36,7 @@ class TranslateModel {
             input: query,
             output: jsonTranslate.translatedText
         }
-        
+
         return output
     }
 }
