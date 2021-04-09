@@ -55,14 +55,14 @@ class UserModel {
             const status = await database.logoutUser(apikey)
             if (status) return true
             else return false
-        } catch(e) {
+        } catch (e) {
             this.logger.error(e)
             throw e
         }
     }
 
     /**
-     * 
+     * Get information about a user
      * @param apikey Valid API key
      * @returns Returns the user information or throws an error
      */
@@ -70,31 +70,43 @@ class UserModel {
         try {
             const info = await database.getUser(apikey)
             return info
-        } catch(e) {
-            this.logger.error(e)
-            throw e
-        }
-    }
-
-    public update = async (info: IUserinformation, apikey: string): Promise < boolean > => {
-        try {
-            const uid = await database.getUserID(apikey)
-            if (uid && info.id === uid) {
-                const success = await database.updateUser(info)
-                if (success) return true
-            } return false
         } catch (e) {
             this.logger.error(e)
             throw e
         }
     }
 
+    /**
+     * Update the user information
+     * @param info Updated userinformation
+     * @param apikey Valid API key
+     * @returns Boolean depended on succsess
+     */
+    public update = async (info: IUserinformation, apikey: string): Promise < boolean > => {
+        try {
+            const uid = await database.getUserID(apikey)
+            if (uid && info.id === uid) {
+                const success = await database.updateUser(info)
+                if (success) return true
+            }
+            return false
+        } catch (e) {
+            this.logger.error(e)
+            throw e
+        }
+    }
+
+    /**
+     * Deletes a user and the user information and api key
+     * @param apikey Valid API key
+     * @returns Boolean depended on succsess
+     */
     public delete = async (apikey: string): Promise < boolean > => {
         try {
             const status = await database.deleteUser(apikey)
             if (status) return true
             else return false
-        } catch(e) {
+        } catch (e) {
             this.logger.error(e)
             throw e
         }

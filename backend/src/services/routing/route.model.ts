@@ -1,5 +1,10 @@
 import got from 'got'
-import { Route, RouteOutput, Mode, TimeType} from './IRoute'
+import {
+    Route,
+    RouteOutput,
+    Mode,
+    TimeType
+} from './IRoute'
 
 class RouteModel {
 
@@ -15,7 +20,7 @@ class RouteModel {
      * @param dateTime A time in a string format
      * @returns Route statistics
      */
-    public getRoute = async (start: string, end: string, method: Mode, timeType?: TimeType, dateTime?: string): Promise<RouteOutput> => {
+    public getRoute = async (start: string, end: string, method: Mode, timeType ? : TimeType, dateTime ? : string): Promise < RouteOutput > => {
 
         const searchParams = timeType && dateTime ? {
             key: this.apikey,
@@ -31,7 +36,7 @@ class RouteModel {
             avoid: "minimizeTolls"
         }
 
-        const result = await got<Route>(this.endpoint + method, {
+        const result = await got < Route > (this.endpoint + method, {
             searchParams: searchParams,
             responseType: 'json'
         })
@@ -41,7 +46,11 @@ class RouteModel {
         }
 
         const route = result.body
-        const { travelDuration, travelDurationTraffic, travelDistance } = route.resourceSets[0].resources[0]
+        const {
+            travelDuration,
+            travelDurationTraffic,
+            travelDistance
+        } = route.resourceSets[0].resources[0]
         const routeOut: RouteOutput = {
             travelDuration: travelDuration,
             travelDurationTraffic: travelDurationTraffic,

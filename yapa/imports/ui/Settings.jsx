@@ -6,8 +6,18 @@ class Settings extends Component {
     }
 
     render() {
-        const changeViewFromSettings = () => {
-            document.getElementById('changeViewButton').click();
+        // To Change between Login, Dashboard & Settings
+        const changeViewFunction = () => {
+            document.getElementById("changeViewInput").value = "dashboard";
+            document.getElementById("changeViewInput").click();
+        }
+
+        const getApi = () => {
+            return this.props.api;
+        }
+
+        const updateSettings = () => {
+            // Store new settings in DB
         }
 
         return (
@@ -34,7 +44,7 @@ class Settings extends Component {
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div className="form-group">
                                             <label htmlFor="streetHome">Straße und Hausnummer (Zuhause)</label>
-                                            <input type="text" className="form-control" id="streetHome" placeholder="Straße und Hausnummer eingeben"/>
+                                            <input type="text" className="form-control" id="streetHome" placeholder="Straße und Haus-Nr. eingeben"/>
                                         </div>
                                     </div>
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -52,7 +62,7 @@ class Settings extends Component {
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div className="form-group">
                                             <label htmlFor="streetWork">Straße und Hausnummer (Arbeitsplatz)</label>
-                                            <input type="text" className="form-control" id="streetWork" placeholder="Straße und Hausnummer eingeben"/>
+                                            <input type="text" className="form-control" id="streetWork" placeholder="Straße und Haus-Nr. eingeben"/>
                                         </div>
                                     </div>
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -124,8 +134,9 @@ class Settings extends Component {
                                 <div className="row gutters">
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                         <div className="text-right">
-                                            <button type="button" id="submit" name="submit" className="btn btn-secondary" onClick={changeViewFromSettings}>Cancel</button>
-                                            <button type="button" id="submit" name="submit" className="btn btn-primary" onClick={changeViewFromSettings}>Update</button>
+                                            <button type="button" id="submit" name="submit" className="btn btn-secondary" style={{float: "left"}}>Delete</button>
+                                            <button type="button" id="submit" name="submit" className="btn btn-secondary" onClick={() => changeViewFunction()}>Cancel</button>
+                                            <button type="button" id="submit" name="submit" className="btn btn-primary" onClick={() => {updateSettings(); changeViewFunction();}}>Update</button>
                                         </div>
                                     </div>
                                 </div>

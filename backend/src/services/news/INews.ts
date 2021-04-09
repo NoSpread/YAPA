@@ -1,21 +1,21 @@
 export interface News {
-    status:       string;
+    status: string;
     totalResults: number;
-    articles:     Article[];
+    articles: Article[];
 }
 
 export interface Article {
-    source:      Source;
-    author:      null | string;
-    title:       string;
+    source: Source;
+    author: null | string;
+    title: string;
     description: string;
-    url:         string;
-    urlToImage:  string;
+    url: string;
+    urlToImage: string;
     publishedAt: Date;
-    content:     null | string;
+    content: null | string;
 }
 
 export interface Source {
-    id:   null | string;
+    id: null | string;
     name: string;
 }

@@ -180,6 +180,11 @@ class DB {
         }
     }
 
+    /**
+     * Get the corresponding uid to a givien api key
+     * @param apikey API key from a valid user
+     * @returns the userid
+     */
     public async getUserID(apikey: string): Promise<number> {
         if (!this._mysql) throw new Error("MYSQL_NOTINITIALIZED")
 

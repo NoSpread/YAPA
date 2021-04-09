@@ -1,7 +1,11 @@
-import { Request, Response, NextFunction } from 'express'
+import {
+    Request,
+    Response,
+    NextFunction
+} from 'express'
 import Logger from './../logger'
 
-const log = new Logger() 
+const log = new Logger()
 
 /**
  * Log all requests to the REST API

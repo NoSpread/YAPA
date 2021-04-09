@@ -1,5 +1,8 @@
 import * as express from 'express'
-import { Request, Response } from 'express'
+import {
+    Request,
+    Response
+} from 'express'
 import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 
@@ -27,17 +30,17 @@ class NewsController implements IControllerBase {
 
         if (topic) {
             this.news.getNews(topic)
-            .then(news => {
-                res.send(news)
-            })
-            .catch( e => {
-                const error = {
-                    type: "REQUEST_ERROR",
-                    e: e.name
-                }
-                
-                res.status(503).json(error)
-            })
+                .then(news => {
+                    res.send(news)
+                })
+                .catch(e => {
+                    const error = {
+                        type: "REQUEST_ERROR",
+                        e: e.name
+                    }
+
+                    res.status(503).json(error)
+                })
         } else res.sendStatus(400)
     }
 
@@ -46,17 +49,17 @@ class NewsController implements IControllerBase {
 
         if (topic) {
             this.news.getHeadlines(topic)
-            .then(news => {
-                res.send(news)
-            })
-            .catch( e => {
-                const error = {
-                    type: "REQUEST_ERROR",
-                    e: e.name
-                }
-                
-                res.status(503).json(error)
-            })
+                .then(news => {
+                    res.send(news)
+                })
+                .catch(e => {
+                    const error = {
+                        type: "REQUEST_ERROR",
+                        e: e.name
+                    }
+
+                    res.status(503).json(error)
+                })
         } else res.sendStatus(400)
     }
 }

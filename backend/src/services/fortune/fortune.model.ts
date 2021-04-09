@@ -8,8 +8,10 @@ class FortuneModel {
      * Request a fortune from the justyy api
      * @returns A simple fortune string
      */
-    public getFortune = async (): Promise<string> => {
-        const result = await got(this.endpoint, { responseType: 'text' })
+    public getFortune = async (): Promise < string > => {
+        const result = await got(this.endpoint, {
+            responseType: 'text'
+        })
 
         if (result.statusCode != 200) {
             throw `Error accessing fortune API (${result.statusCode})`

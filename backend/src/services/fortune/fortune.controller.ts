@@ -1,5 +1,8 @@
 import * as express from 'express'
-import { Request, Response } from 'express'
+import {
+    Request,
+    Response
+} from 'express'
 import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 
@@ -21,18 +24,18 @@ class FortuneController implements IControllerBase {
     }
 
     private getFortune = (req: Request, res: Response) => {
-        
+
         this.fortune.getFortune()
-        .then(fortune => {
-            res.send(fortune)
-        })
-        .catch( e => {
-            const error = {
-                type: "REQUEST_ERROR",
-                e: e.name
-            }
-            res.status(503).json(error)
-        })
+            .then(fortune => {
+                res.send(fortune)
+            })
+            .catch(e => {
+                const error = {
+                    type: "REQUEST_ERROR",
+                    e: e.name
+                }
+                res.status(503).json(error)
+            })
     }
 }
 

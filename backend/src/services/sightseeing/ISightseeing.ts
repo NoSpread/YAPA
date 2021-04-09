@@ -1,12 +1,12 @@
 export interface Sightseeing {
-    xid:       string;
-    name:      string;
-    dist:      number;
-    rate:      number;
-    wikidata?: string;
-    kinds:     string;
-    point:     Point;
-    osm?:      string;
+    xid: string;
+    name: string;
+    dist: number;
+    rate: number;
+    wikidata ? : string;
+    kinds: string;
+    point: Point;
+    osm ? : string;
 }
 
 export interface Point {
@@ -20,17 +20,17 @@ export interface SError {
 
 
 export interface Geoname {
-    name?:       string;
-    country?:    string;
-    lat?:        number;
-    lon?:        number;
-    population?: number;
-    timezone?:   string;
-    status:      string;
-    error?:      GError;
+    name ? : string;
+    country ? : string;
+    lat ? : number;
+    lon ? : number;
+    population ? : number;
+    timezone ? : string;
+    status: string;
+    error ? : GError;
 }
 
 export interface GError {
     status: string,
-    error: string
+        error: string
 }

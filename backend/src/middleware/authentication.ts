@@ -1,5 +1,11 @@
-import { Request, Response, NextFunction } from 'express'
-import { database } from '../database'
+import {
+    Request,
+    Response,
+    NextFunction
+} from 'express'
+import {
+    database
+} from '../database'
 
 /**
  * This middleware checks if the user is authenticated

@@ -1,5 +1,7 @@
 import got from 'got'
-import { Activity } from './IActivity'
+import {
+    Activity
+} from './IActivity'
 
 class ActivityModel {
 
@@ -9,8 +11,10 @@ class ActivityModel {
      * Request a random possible activity from the boredapi
      * @returns Activity Object
      */
-    public async getActivity(): Promise<Activity> {
-        const result = await got<Activity>(this.endpoint, {responseType: 'json'})
+    public async getActivity(): Promise < Activity > {
+        const result = await got < Activity > (this.endpoint, {
+            responseType: 'json'
+        })
 
         if (result.statusCode != 200) {
             throw new Error(`Error accessing activity API (${result.statusCode})`)

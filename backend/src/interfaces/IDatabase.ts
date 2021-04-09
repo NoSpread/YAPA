@@ -1,4 +1,6 @@
-import { RowDataPacket } from 'mysql2/promise'
+import {
+    RowDataPacket
+} from 'mysql2/promise'
 
 interface IDBUser extends RowDataPacket {
     id: number,
@@ -31,13 +33,19 @@ interface IDBKey extends RowDataPacket {
 
 interface ILogin {
     id: number,
-    username: string,
-    api: string
+        username: string,
+        api: string
 }
 
 interface IKey {
     user: string,
-    db: string
+        db: string
 }
 
-export {IDBUser, IDBKey, ILogin, IKey, IUserinformation}
+export {
+    IDBUser,
+    IDBKey,
+    ILogin,
+    IKey,
+    IUserinformation
+}

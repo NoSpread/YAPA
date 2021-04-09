@@ -1,5 +1,8 @@
 import * as express from 'express'
-import { Request, Response } from 'express'
+import {
+    Request,
+    Response
+} from 'express'
 import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 import SightseeingModel from './sightseeing.model'
@@ -21,22 +24,25 @@ class SightseeingController implements IControllerBase {
 
     private getSightseeing = (req: Request, res: Response) => {
 
-        const { city, radius } = req.body
+        const {
+            city,
+            radius
+        } = req.body
 
         if (city && radius) {
             this.sightseeing.getGeoname(city, radius)
-            .then( sightseeing => {
-                res.json(sightseeing)
-            })
-            .catch( e => {
-                const error = {
-                    type: "REQUEST_ERROR",
-                    e: e.name
-                }
-                
-                res.status(503).json(error)
-            })
-        } else res.sendStatus(400)        
+                .then(sightseeing => {
+                    res.json(sightseeing)
+                })
+                .catch(e => {
+                    const error = {
+                        type: "REQUEST_ERROR",
+                        e: e.name
+                    }
+
+                    res.status(503).json(error)
+                })
+        } else res.sendStatus(400)
     }
 }
 

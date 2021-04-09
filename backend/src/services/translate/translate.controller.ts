@@ -1,5 +1,8 @@
 import * as express from 'express'
-import { Request, Response } from 'express'
+import {
+    Request,
+    Response
+} from 'express'
 import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 
@@ -21,20 +24,24 @@ class TranslateController implements IControllerBase {
     }
 
     private postTranslation = (req: Request, res: Response) => {
-        const { query, source, target } = req.body
+        const {
+            query,
+            source,
+            target
+        } = req.body
 
         if (query && source && target) {
             this.translate.postTranslate(query, source, target)
-            .then(translation => {
-                res.json(translation)
-            })
-            .catch( e => {
-                const error = {
-                    type: "REQUEST_ERROR",
-                    e: e.name
-                }
-                res.status(503).json(error)
-            })
+                .then(translation => {
+                    res.json(translation)
+                })
+                .catch(e => {
+                    const error = {
+                        type: "REQUEST_ERROR",
+                        e: e.name
+                    }
+                    res.status(503).json(error)
+                })
         } else res.sendStatus(400)
     }
 }

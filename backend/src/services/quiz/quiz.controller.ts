@@ -1,5 +1,8 @@
 import * as express from 'express'
-import { Request, Response } from 'express'
+import {
+    Request,
+    Response
+} from 'express'
 import authentication from '../../middleware/authentication'
 import IControllerBase from '../../interfaces/IControllerBase'
 
@@ -25,17 +28,17 @@ class QuizController implements IControllerBase {
 
         if (amount) {
             this.quiz.getQuiz(amount)
-            .then(quiz => {
-                res.send(quiz)
-            })
-            .catch( e => {
-                const error = {
-                    type: "REQUEST_ERROR",
-                    e: e.name
-                }
-                
-                res.status(503).json(error)
-            })
+                .then(quiz => {
+                    res.send(quiz)
+                })
+                .catch(e => {
+                    const error = {
+                        type: "REQUEST_ERROR",
+                        e: e.name
+                    }
+
+                    res.status(503).json(error)
+                })
         } else res.sendStatus(400)
     }
 }
