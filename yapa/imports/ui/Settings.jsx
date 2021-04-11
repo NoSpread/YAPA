@@ -16,6 +16,34 @@ class Settings extends Component {
             return this.props.api;
         }
 
+        const getId = () => {
+            return this.props.id;
+        }
+
+        const fetchSettings = () => {
+            fetch('https://api.nospread.xyz/yapa/v1/user', {
+                method: "GET",
+                headers: {
+                    "X-API-KEY": getApi()
+                    // "Content-Type": "application/json"
+                },
+            }).then(res => {
+                if(res.status == "200") {
+                    return res.json();                     
+                } else {
+                    return res.json(); 
+                    // if no data -> 500 e: "NO_INFORMATION"
+                }
+            }).then(function(data) {
+                console.log(data);
+                console.log("settings");
+            }).catch(e => {
+                console.error(e);
+            });      
+
+            getApi();
+        }
+
         const updateSettings = () => {
             // Store new settings in DB
 
@@ -27,18 +55,44 @@ class Settings extends Component {
                 },
                 body: `username=${loginInput.value}&password=${passwordInput.value}`
             }).then(res => {
-                if(res.status == "201") {                   
+                if(res.status == "200") {
+                    return res.json();                     
                 } else {
+                    return res.json(); 
                 }
+            }).then(function(data) {
+                console.log(data);
             }).catch(e => {
                 console.error(e);
-            });      
+            });          
+
+            getApi();
+        }
+
+        const deleteUser = () => {
+            fetch('https://api.nospread.xyz/yapa/v1/user', {
+                method: "DELETE",
+                headers: {
+                    "accept": "application/json",
+                    "Content-Type": "application/json"
+                }
+            }).then(res => {
+                if(res.status == "200") {
+                    return res.json();                     
+                } else {
+                    return res.json(); 
+                }
+            }).then(function(data) {
+                console.log(data);
+            }).catch(e => {
+                console.error(e);
+            });          
 
             getApi();
         }
 
         return (
-            <div className="container">
+            <div className="container" onLoad={fetchSettings()}>
                 <div className="row gutters">
                     <div className="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                         <div className="card h-100">

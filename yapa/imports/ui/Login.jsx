@@ -74,6 +74,10 @@ class Login extends Component {
             }).then(function(data) {
                 document.getElementById("setApi").value = data.api;
                 document.getElementById("setApi").click();
+
+                document.getElementById("setId").value = data.id;
+                document.getElementById("setId").click();
+
                 changeViewFunction();
             }).catch(e => {
                 console.error(e);
