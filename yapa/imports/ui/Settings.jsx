@@ -31,42 +31,75 @@ class Settings extends Component {
                 if(res.status == "200") {
                     return res.json();                     
                 } else {
-                    return res.json(); 
+                    document.getElementById("main").innerHTML = `<div class="alert alert-warning alert-dismissible">
+                    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    Es gibt noch keine Einstellungen.
+                  </div>${document.getElementById("main").innerHTML}`;
                     // if no data -> 500 e: "NO_INFORMATION"
                 }
             }).then(function(data) {
-                console.log(data);
-                console.log("settings");
-            }).catch(e => {
+				filldata(data);
+			}).catch(e => {
                 console.error(e);
-            });      
-
-            getApi();
+            });
         }
 
-        const updateSettings = () => {
-            // Store new settings in DB
+		const filldata = (data) => {
+			// its settings i guess, quite much repetition
+			document.getElementById("name").value = data["fullname"]
+			document.getElementById("streetHome").value = data["residenceStreet"]
+			document.getElementById("cityHome").value  = data["residenceCity"]
+			document.getElementById("zipHome").value = data["residenceCode"]
+			document.getElementById("streetWork").value = data["workplaceStreet"]
+			document.getElementById("cityWork").value = data["workplaceCity"]
+			document.getElementById("zipWork").value = data["workplaceCode"]
+			document.getElementById("stocks").value = data["stocks"]
+			document.getElementById("plannedWorkTime").value = data["workstart"]
+			document.getElementById("assistentVoice").children[data["voice"]].selected= true
+			document.getElementById("transportationMode").
+				children[["foot","publicTransport", "car"].indexOf(data["movement_type"])].selected = true
+		}
 
-            fetch('https://api.nospread.xyz/yapa/v1/user', {
+        const updateSettings = () => {
+            // Store new settings in DB 
+			updatebody = {
+				"id": parseInt(getId()),
+				"fullname": document.getElementById("name").value,
+				"residenceStreet": document.getElementById("streetHome").value,
+				"residenceCity": document.getElementById("cityHome").value,
+				"residenceCode": document.getElementById("zipHome").value,
+				"workplaceStreet": document.getElementById("streetWork").value,
+				"workplaceCity": document.getElementById("cityWork").value,
+				"workplaceCode": document.getElementById("zipWork").value,
+				"stocks": document.getElementById("stocks").value,
+				"workstart": document.getElementById("plannedWorkTime").value,
+				"voice": parseInt(document.getElementById("assistentVoice").value.slice(-1)),
+				"movement_type": document.getElementById("transportationMode").value
+			}
+			fetch('https://api.nospread.xyz/yapa/v1/user', {
                 method: "PUT",
                 headers: {
-                    "accept": "application/json",
+                    "X-API-KEY": getApi(),
+                    //"accept": "application/json",
                     "Content-Type": "application/json"
                 },
-                body: `username=${loginInput.value}&password=${passwordInput.value}`
+				body : JSON.stringify(updatebody)
             }).then(res => {
                 if(res.status == "200") {
-                    return res.json();                     
+                    document.getElementById("main").innerHTML = `<div class="alert alert-warning alert-dismissible">
+                    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                 	Die Einstellungen wurden erfolgreich aktualisiert!
+					</div>${document.getElementById("main").innerHTML}`;
                 } else {
-                    return res.json(); 
+                    document.getElementById("main").innerHTML = `<div class="alert alert-warning alert-dismissible">
+                    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                 	Die Einstellungen konnten nicht aktualisiert werden!
+					</div>${document.getElementById("main").innerHTML}`;
+
                 }
-            }).then(function(data) {
-                console.log(data);
             }).catch(e => {
                 console.error(e);
-            });          
-
-            getApi();
+            });
         }
 
         const deleteUser = () => {
@@ -172,20 +205,8 @@ class Settings extends Component {
                                             <label htmlFor="transportationMode">Fortbewegungsart</label>
                                             <select  className="form-control" id="transportationMode" name="sTate">
                                                 <option value="foot">Zu Fuß</option>
-                                                <option value="bicycle">Fahrrad</option>
                                                 <option value="publicTransport">ÖPNV</option>
                                                 <option value="car">Auto</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                        <div className="form-group">
-                                            <label htmlFor="jokeQuality">Witzqualität</label>
-                                            <select  className="form-control" id="jokeQuality" name="jokeQuality">
-                                                <option value="flatJoke">Flachwitz</option>
-                                                <option value="dadJoke">Vaterwitz</option>
-                                                <option value="ok">Ok</option>
-                                                <option value="nsfw">NSFW</option>
                                             </select>
                                         </div>
                                     </div>
