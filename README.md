@@ -53,7 +53,6 @@ services:
     ports:
       - "5000:5000"
     environment: 
-      API_URL: http://localhost
       API_PORT: 5000
       CATCH_ALL_DOMAIN: 
       FINNHUB_API_KEY: 
