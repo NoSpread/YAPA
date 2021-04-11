@@ -11,7 +11,8 @@ class App extends Component {
       dashboard: false,
       settings: false,
       login: true,
-      api : "something"
+      api : "null",
+      id: 0
     };
   };
 
@@ -50,6 +51,12 @@ class App extends Component {
       });
     }
 
+    const setUserId = () => {
+      this.setState({
+        id: document.getElementById("setId").value
+      });
+    }
+
     const centerStyle = {
       display: "flex", 
       justifyContent: "center", 
@@ -62,11 +69,12 @@ class App extends Component {
           <div className="app-bar">
             <input type="text" id="changeViewInput" onClick={() => changeView()} hidden/>
             <input type="text" id="setApi" onClick={() => setApiKey()} hidden/>
+            <input type="text" id="setId" onClick={() => setUserId()} hidden/>
           </div>
         </header>
         <div className="main" id="main">
-          {this.state.dashboard? (<Dashboard api={this.state.api}/>) : null}
-          {this.state.settings? (<Settings api={this.state.api}/>) : null}
+          {this.state.dashboard? (<Dashboard api={this.state.api} id={this.state.id}/>) : null}
+          {this.state.settings? (<Settings api={this.state.api} id={this.state.id}/>) : null}
           {this.state.login? (<Login/>) : null}
         </div>
       </div>

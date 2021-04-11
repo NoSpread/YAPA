@@ -75,6 +75,10 @@ class Dashboard extends Component {
       return this.props.api;
     }
 
+    const getId = () => {
+      return this.props.id;
+    }
+
     const placeHolderStyle = {
       width: "30vw",
       height: "40vh"
@@ -98,7 +102,7 @@ class Dashboard extends Component {
     }
 
     return (
-      <div onLoad={console.log(getApi())}>
+      <div onLoad={console.log(`${getApi()}\n${getId()}`)}>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <h1 id="title" style={{textAlign: "center"}}>Dashboard</h1>
         <div id="placeHolder" className="placeholder" style={placeHolderStyle}>
