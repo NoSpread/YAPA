@@ -283,6 +283,11 @@ class DB {
         return false
     }
 
+    /**
+     * Deletes a user and all informations
+     * @param apikey Valid and active API key
+     * @returns Boolean value according to its succsess
+     */
     public async deleteUser(apikey: string): Promise<boolean> {
         if (!this._mysql) throw new Error("MYSQL_NOTINITIALIZED")
 
