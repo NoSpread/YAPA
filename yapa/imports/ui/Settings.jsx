@@ -6,12 +6,126 @@ class Settings extends Component {
     }
 
     render() {
-        const changeViewFromSettings = () => {
-            document.getElementById('changeViewButton').click();
+        // To Change between Login, Dashboard & Settings
+        const changeViewFunction = () => {
+            document.getElementById("changeViewInput").value = "dashboard";
+            document.getElementById("changeViewInput").click();
+        }
+
+        const getApi = () => {
+            return this.props.api;
+        }
+
+        const getId = () => {
+            return this.props.id;
+        }
+
+        const fetchSettings = () => {
+            fetch('https://api.nospread.xyz/yapa/v1/user', {
+                method: "GET",
+                headers: {
+                    "X-API-KEY": getApi()
+                    // "Content-Type": "application/json"
+                },
+            }).then(res => {
+                if(res.status == "200") {
+                    return res.json();                     
+                } else {
+                    document.getElementById("main").innerHTML = `<div class="alert alert-warning alert-dismissible">
+                    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    Es gibt noch keine Einstellungen.
+                  </div>${document.getElementById("main").innerHTML}`;
+                    // if no data -> 500 e: "NO_INFORMATION"
+                }
+            }).then(function(data) {
+				filldata(data);
+			}).catch(e => {
+                console.error(e);
+            });
+        }
+
+		const filldata = (data) => {
+			// its settings i guess, quite much repetition
+			document.getElementById("name").value = data["fullname"]
+			document.getElementById("streetHome").value = data["residenceStreet"]
+			document.getElementById("cityHome").value  = data["residenceCity"]
+			document.getElementById("zipHome").value = data["residenceCode"]
+			document.getElementById("streetWork").value = data["workplaceStreet"]
+			document.getElementById("cityWork").value = data["workplaceCity"]
+			document.getElementById("zipWork").value = data["workplaceCode"]
+			document.getElementById("stocks").value = data["stocks"]
+			document.getElementById("plannedWorkTime").value = data["workstart"]
+			document.getElementById("assistentVoice").children[data["voice"]].selected= true
+			document.getElementById("transportationMode").
+				children[["foot","publicTransport", "car"].indexOf(data["movement_type"])].selected = true
+		}
+
+        const updateSettings = () => {
+            // Store new settings in DB 
+			updatebody = {
+				"id": parseInt(getId()),
+				"fullname": document.getElementById("name").value,
+				"residenceStreet": document.getElementById("streetHome").value,
+				"residenceCity": document.getElementById("cityHome").value,
+				"residenceCode": document.getElementById("zipHome").value,
+				"workplaceStreet": document.getElementById("streetWork").value,
+				"workplaceCity": document.getElementById("cityWork").value,
+				"workplaceCode": document.getElementById("zipWork").value,
+				"stocks": document.getElementById("stocks").value,
+				"workstart": document.getElementById("plannedWorkTime").value,
+				"voice": parseInt(document.getElementById("assistentVoice").value.slice(-1)),
+				"movement_type": document.getElementById("transportationMode").value
+			}
+			fetch('https://api.nospread.xyz/yapa/v1/user', {
+                method: "PUT",
+                headers: {
+                    "X-API-KEY": getApi(),
+                    //"accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+				body : JSON.stringify(updatebody)
+            }).then(res => {
+                if(res.status == "200") {
+                    document.getElementById("main").innerHTML = `<div class="alert alert-warning alert-dismissible">
+                    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                 	Die Einstellungen wurden erfolgreich aktualisiert!
+					</div>${document.getElementById("main").innerHTML}`;
+                } else {
+                    document.getElementById("main").innerHTML = `<div class="alert alert-warning alert-dismissible">
+                    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                 	Die Einstellungen konnten nicht aktualisiert werden!
+					</div>${document.getElementById("main").innerHTML}`;
+
+                }
+            }).catch(e => {
+                console.error(e);
+            });
+        }
+
+        const deleteUser = () => {
+            fetch('https://api.nospread.xyz/yapa/v1/user', {
+                method: "DELETE",
+                headers: {
+                    "accept": "application/json",
+                    "Content-Type": "application/json"
+                }
+            }).then(res => {
+                if(res.status == "200") {
+                    return res.json();                     
+                } else {
+                    return res.json(); 
+                }
+            }).then(function(data) {
+                console.log(data);
+            }).catch(e => {
+                console.error(e);
+            });          
+
+            getApi();
         }
 
         return (
-            <div className="container">
+            <div className="container" onLoad={fetchSettings()}>
                 <div className="row gutters">
                     <div className="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                         <div className="card h-100">
@@ -34,7 +148,7 @@ class Settings extends Component {
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div className="form-group">
                                             <label htmlFor="streetHome">Straße und Hausnummer (Zuhause)</label>
-                                            <input type="text" className="form-control" id="streetHome" placeholder="Straße und Hausnummer eingeben"/>
+                                            <input type="text" className="form-control" id="streetHome" placeholder="Straße und Haus-Nr. eingeben"/>
                                         </div>
                                     </div>
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -52,7 +166,7 @@ class Settings extends Component {
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div className="form-group">
                                             <label htmlFor="streetWork">Straße und Hausnummer (Arbeitsplatz)</label>
-                                            <input type="text" className="form-control" id="streetWork" placeholder="Straße und Hausnummer eingeben"/>
+                                            <input type="text" className="form-control" id="streetWork" placeholder="Straße und Haus-Nr. eingeben"/>
                                         </div>
                                     </div>
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -91,20 +205,8 @@ class Settings extends Component {
                                             <label htmlFor="transportationMode">Fortbewegungsart</label>
                                             <select  className="form-control" id="transportationMode" name="sTate">
                                                 <option value="foot">Zu Fuß</option>
-                                                <option value="bicycle">Fahrrad</option>
                                                 <option value="publicTransport">ÖPNV</option>
                                                 <option value="car">Auto</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                        <div className="form-group">
-                                            <label htmlFor="jokeQuality">Witzqualität</label>
-                                            <select  className="form-control" id="jokeQuality" name="jokeQuality">
-                                                <option value="flatJoke">Flachwitz</option>
-                                                <option value="dadJoke">Vaterwitz</option>
-                                                <option value="ok">Ok</option>
-                                                <option value="nsfw">NSFW</option>
                                             </select>
                                         </div>
                                     </div>
@@ -124,8 +226,9 @@ class Settings extends Component {
                                 <div className="row gutters">
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                         <div className="text-right">
-                                            <button type="button" id="submit" name="submit" className="btn btn-secondary" onClick={changeViewFromSettings}>Cancel</button>
-                                            <button type="button" id="submit" name="submit" className="btn btn-primary" onClick={changeViewFromSettings}>Update</button>
+                                            <button type="button" id="submit" name="submit" className="btn btn-secondary" style={{float: "left"}}>Delete</button>
+                                            <button type="button" id="submit" name="submit" className="btn btn-secondary" onClick={() => changeViewFunction()}>Cancel</button>
+                                            <button type="button" id="submit" name="submit" className="btn btn-primary" onClick={() => {updateSettings(); changeViewFunction();}}>Update</button>
                                         </div>
                                     </div>
                                 </div>

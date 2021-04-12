@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 
-class Path extends Component {
+class Stocks extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
     const backgroundStyle = {
-      backgroundColor: "orange",
+      backgroundColor: "grey",
       height: "100%",
       width: "100%"
     };
 
     return (
       <div style={backgroundStyle}>
-        <p>These are path data</p>
+        <p>These are stocks</p>
       </div>
     );
   }
 };
 
-export default Path;
+export default Stocks;
