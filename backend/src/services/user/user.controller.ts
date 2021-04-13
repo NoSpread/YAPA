@@ -108,21 +108,35 @@ class UserController implements IControllerBase {
         const apikey: string | null = req.session.user ? req.session.user.api : req.body.apikey ? req.body.apikey : null
 
         const isInfo = (body: IUserinformation | any): body is IUserinformation => {
-            return true
+            const keys = ["id", "fullname", "stocks", "movement_type", "workplaceCity", "workplaceCode", "workplaceStreet", "voice", "residenceCity", "residenceCode", "residenceStreet", "workstart"]
+
+            let valid = true
+
+            for (const key of keys) {
+                if (body[key] !== undefined) continue
+                else {
+                    valid = false
+                    break
+                }
+            }
+
+            return valid
         }
 
-        if (isInfo(info) && apikey) {
-            try {
-                const information = await this.user.update(info, apikey)
-                if (information) res.sendStatus(200)
-                else res.sendStatus(401)
-            } catch (e) {
-                const err = {
-                    type: e.code || "UPDATE_ERROR",
-                    e: e.message
+        if (apikey) {
+            if (isInfo(info)) {
+                try {
+                    const information = await this.user.update(info, apikey)
+                    if (information) res.sendStatus(200)
+                    else res.sendStatus(401)
+                } catch (e) {
+                    const err = {
+                        type: e.code || "UPDATE_ERROR",
+                        e: e.message
+                    }
+                    res.status(500).json(err)
                 }
-                res.status(500).json(err)
-            }
+            } else res.sendStatus(400)
         } else res.sendStatus(401)
     }
 
