@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import '../style/login.css';
+// import '../style/login.css';
+// import '/bootstrap/css/*'
 
 class Login extends Component {
     constructor(props) {
@@ -87,18 +88,18 @@ class Login extends Component {
         return (
             <div id="formContent">
                 <form>
-                    <input type="text" id="login" name="login" placeholder="Nutzername"/>
-                    <input type="password" id="password" name="login" placeholder="Passwort"/>
+                    <input className="form-control" type="text" id="login" name="login" placeholder="Nutzername"/>
+                    <input className="form-control" type="password" id="password" name="login" placeholder="Passwort"/>
                     {this.state.register? 
                         <input type="submit" onClick={e => register(e)} value="Registrieren"/> : 
-                        <input type="submit" onClick={e => login(e)} value="Anmelden"/>
+                        <input className="btn btn-primary" type="submit" onClick={e => login(e)} value="Anmelden"/>
                     }
                     {/* <input type="button" onClick={this.props.handleStateChange("loginapi")} value="API Senden"/> */}
                 </form>
                 <div id="formFooter">
                     {this.state.register? 
-                        <a className="underlineHover" onClick={() => this.setState({register: !this.state.register})}>Anmelden</a> : 
-                        <a className="underlineHover" onClick={() => this.setState({register: !this.state.register})}>Registrieren</a>
+                        <a onClick={() => this.setState({register: !this.state.register})}>Anmelden</a> : 
+                        <a onClick={() => this.setState({register: !this.state.register})}>Registrieren</a>
                     }
                 </div>
             </div>

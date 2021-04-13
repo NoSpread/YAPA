@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../../style/conversation.css';
+// import '../../style/conversation.css';
 
 class Conversation extends Component {
   constructor(props) {
