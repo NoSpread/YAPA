@@ -9,11 +9,36 @@ class Quiz extends Component {
   }
 
   render() {
-    const showAnswer = () => {
+    const translate = (elementId, isLast) => {
+      fetch('https://api.nospread.xyz/yapa/v1/translate', {
+        method: "POST",
+        headers: {
+          "X-API-KEY": this.props.api,
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `query=${document.getElementById(elementId).innerHTML}&source=en&target=de`
+      }).then(res => {
+        if (res.status == "200") {
+          return res.json(); 
+        } else {
+          console.log(res);
+        }                  
+      }).then(function(data) {
+        document.getElementById(elementId).innerHTML = data["output"];
+
+        if(isLast == true) {
+          document.getElementById("quiz").style.display = "grid";
+        }
+      }).catch(e => {
+        console.error(e);
+      });
+    }
+
+    const revealAnswer = () => {
         document.getElementsByClassName("correct")[0].style.backgroundColor = "green";
         var incorrect_answers = document.getElementsByClassName("incorrect");
         Array.prototype.forEach.call(incorrect_answers, element => {
-            element.style.backgroundColor = "red"; 
+          element.style.backgroundColor = "red"; 
         });   
     }
 
@@ -25,22 +50,31 @@ class Quiz extends Component {
 
         // Add Question
         document.getElementById("quiz").innerHTML = 
-            `<p style="gridRowStart: 1; gridRowEnd: 2">${data["results"][0]["question"]}</p>`;
-        
+          `<p style="gridRowStart: 1; gridRowEnd: 2" id="questionText">${data["results"][0]["question"]}</p>`;
+        translate("questionText", false);
+
         // Add Answers
         var answerButtons = "";
+        var id = 0;
         results.forEach(element => {
-            if(data["results"][0]["correct_answer"] == element) {
-                answerButtons += `<button class="answerButton correct">${element}</button>`;    
-            } else {
-                answerButtons += `<button class="answerButton incorrect">${element}</button>`;
-            }    
+          id++;
+          if(data["results"][0]["correct_answer"] == element) {
+            answerButtons += `<button class="answerButton correct" id="${id.toString()}">${element}</button>`;    
+          } else {
+            answerButtons += `<button class="answerButton incorrect" id="${id.toString()}">${element}</button>`;
+          }             
         }); 
         document.getElementById("quiz").innerHTML += answerButtons;
 
         // Add OnClick Show Answer
         document.getElementById("quiz").querySelectorAll(".answerButton").forEach(element => {
-            element.addEventListener("click", () => showAnswer());
+          if(id == 1) {
+            translate(element.id.toString(), true);
+          } else {
+            translate(element.id.toString(), false);
+            id--;
+          } 
+          element.addEventListener("click", () => revealAnswer());
         });
     }
     
@@ -67,7 +101,8 @@ class Quiz extends Component {
         height: "100%",
         width: "100%",
         display: "grid",
-        gridTemplateRows: "auto auto"
+        gridTemplateRows: "auto auto",
+        display: "none"
     };
 
     return (

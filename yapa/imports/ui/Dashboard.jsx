@@ -55,17 +55,25 @@ class Dashboard extends Component {
           </div>
         </div>`;
 
-      var activityBool = e.value.toLowerCase().includes("aktivität");
-      var fortuneBool = e.value.toLowerCase().includes("glückskeks");
-      var jokeBool = e.value.toLowerCase().includes("witz");
-      var pathBool = e.value.toLowerCase().includes("route");
-      var quizBool = e.value.toLowerCase().includes("quiz");
-      var stocksBool = e.value.toLowerCase().includes("aktien");
+      var cardBools = [
+        e.value.toLowerCase().includes("aktivität"),
+        e.value.toLowerCase().includes("glückskeks"),
+        e.value.toLowerCase().includes("witz"),
+        e.value.toLowerCase().includes("route"),
+        e.value.toLowerCase().includes("quiz"),
+        e.value.toLowerCase().includes("aktien")
+      ];
       e.value = "";
       
+      var numOfTrue = 0;
+      cardBools.forEach(element => {
+        if(element == true) {
+          numOfTrue++;
+        }
+      });
 
       // Don't let it handle too much
-      if(pathBool == true && stocksBool == true) {
+      if(numOfTrue >= 2) {
         document.getElementById("chat-content").innerHTML += 
         `<div className="media media-chat media-chat-reverse">
           <div className="media-body" style="
@@ -82,17 +90,17 @@ class Dashboard extends Component {
             clear: right;
             background-color: #48b0f7;
             color: #fff
-            color: #9b9b9b">I can't handle this much at once</p>
+            color: #9b9b9b">Leider kann ich nicht so viel auf einmal machen</p>
           </div>
         </div>`;
       } 
       // Couldn't understand
-      else if (activityBool == false && 
-               fortuneBool == false && 
-               jokeBool == false && 
-               pathBool == false && 
-               quizBool == false &&
-               stocksBool == false) {
+      else if (cardBools[0] == false && 
+               cardBools[1] == false && 
+               cardBools[2] == false && 
+               cardBools[3] == false && 
+               cardBools[4] == false &&
+               cardBools[5] == false) {
         document.getElementById("chat-content").innerHTML += 
         `<div className="media media-chat media-chat-reverse">
           <div className="media-body" style="
@@ -109,19 +117,19 @@ class Dashboard extends Component {
             clear: right;
             background-color: #48b0f7;
             color: #fff
-            color: #9b9b9b">I couldn't quite catch that. \nCould you please repeat it?</p>
+            color: #9b9b9b">Das konnte ich leider nicht verstehen \nKönntest du das wiederholen?</p>
           </div>
         </div>`;
       } 
       // Handle the request
       else {
         this.setState({ 
-          activity: activityBool,
-          fortune: fortuneBool,
-          joke: jokeBool,
-          path: pathBool,
-          quiz: quizBool,
-          stocks: stocksBool,
+          activity: cardBools[0],
+          fortune: cardBools[1],
+          joke: cardBools[2],
+          path: cardBools[3],
+          quiz: cardBools[4],
+          stocks: cardBools[5],
         });
 
         // Hide Conversation

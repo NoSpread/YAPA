@@ -57,11 +57,14 @@ class Activity extends Component {
     }
 
     const backgroundStyle = {
-      
+      display: "none", 
+      backgroundColor: "#FAFAFA", 
+      height: "100%", 
+      width: "100%"
     };
 
     return (
-      <div id="activity" style={{display: "none", backgroundColor: "#FAFAFA", height: "100%", width: "100%"}} onLoad={getActivity()}>
+      <div id="activity" style={backgroundStyle} onLoad={getActivity()}>
       </div>
     );
   }
