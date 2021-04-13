@@ -11,6 +11,10 @@ class Settings extends Component {
             document.getElementById("changeViewInput").value = "dashboard";
             document.getElementById("changeViewInput").click();
         }
+        const logout = () => {
+            document.getElementById("changeViewInput").value = "login";
+            document.getElementById("changeViewInput").click();
+        }
 
         const getApi = () => {
             return this.props.api;
@@ -28,15 +32,8 @@ class Settings extends Component {
                     // "Content-Type": "application/json"
                 },
             }).then(res => {
-                if(res.status == "200") {
+                if(res.status == "200") 
                     return res.json();                     
-                } else {
-                    document.getElementById("main").innerHTML = `<div class="alert alert-warning alert-dismissible">
-                    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    Es gibt noch keine Einstellungen.
-                  </div>${document.getElementById("main").innerHTML}`;
-                    // if no data -> 500 e: "NO_INFORMATION"
-                }
             }).then(function(data) {
 				filldata(data);
 			}).catch(e => {
@@ -46,6 +43,7 @@ class Settings extends Component {
 
 		const filldata = (data) => {
 			// its settings i guess, quite much repetition
+			if(data == null) return;
 			document.getElementById("name").value = data["fullname"]
 			document.getElementById("streetHome").value = data["residenceStreet"]
 			document.getElementById("cityHome").value  = data["residenceCity"]
@@ -62,6 +60,7 @@ class Settings extends Component {
 
         const updateSettings = () => {
             // Store new settings in DB 
+			console.log("updatesettings ")
 			updatebody = {
 				"id": parseInt(getId()),
 				"fullname": document.getElementById("name").value,
@@ -103,9 +102,11 @@ class Settings extends Component {
         }
 
         const deleteUser = () => {
+			console.log("deleteUser")
             fetch('https://api.nospread.xyz/yapa/v1/user', {
                 method: "DELETE",
                 headers: {
+					"X-API-KEY": getApi(),
                     "accept": "application/json",
                     "Content-Type": "application/json"
                 }
@@ -116,12 +117,11 @@ class Settings extends Component {
                     return res.json(); 
                 }
             }).then(function(data) {
-                console.log(data);
+                console.log(JSON.strinigfy(data));
             }).catch(e => {
                 console.error(e);
             });          
 
-            getApi();
         }
 
         return (
@@ -226,7 +226,7 @@ class Settings extends Component {
                                 <div className="row gutters">
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                         <div className="text-right">
-                                            <button type="button" id="submit" name="submit" className="btn btn-secondary" style={{float: "left"}}>Delete</button>
+                                            <button type="button" id="submit" name="submit" className="btn btn-secondary" onClick={() => {deleteUser(); logout();}} style={{float: "left"}} >Delete</button>
                                             <button type="button" id="submit" name="submit" className="btn btn-secondary" onClick={() => changeViewFunction()}>Cancel</button>
                                             <button type="button" id="submit" name="submit" className="btn btn-primary" onClick={() => {updateSettings(); changeViewFunction();}}>Update</button>
                                         </div>
