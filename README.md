@@ -75,17 +75,17 @@ volumes:
 
 ## Color Schema
 
-![#e63946](https://placehold.it/15/e63946/000000?text=+) `#e63946` Imperial Red<br>
-![#f1faee](https://placehold.it/15/f1faee/000000?text=+) `#f1faee` Honeydew<br>
-![#a8dadc](https://placehold.it/15/a8dadc/000000?text=+) `#a8dadc` Powder Blue<br>
-![#457b9d](https://placehold.it/15/457b9d/000000?text=+) `#457b9d` Celadon Blue<br>
-![#1d3557](https://placehold.it/15/1d3557/000000?text=+) `#1d3557` Berliner Blue
+![#e63946](https://via.placeholder.com/15/e63946/000000?text=+) `#e63946` Imperial Red<br>
+![#f1faee](https://via.placeholder.com/15/f1faee/000000?text=+) `#f1faee` Honeydew<br>
+![#a8dadc](https://via.placeholder.com/15/a8dadc/000000?text=+) `#a8dadc` Powder Blue<br>
+![#457b9d](https://via.placeholder.com/15/457b9d/000000?text=+) `#457b9d` Celadon Blue<br>
+![#1d3557](https://via.placeholder.com/15/1d3557/000000?text=+) `#1d3557` Berliner Blue
 
 ## Key Words
 
-aktivität -> activity
-glückskeks -> fortune
-witz -> joke
-route -> path
-quiz -> quiz
-aktien -> stocks
+ - aktivität -> activity
+ - glückskeks -> fortune
+ - witz -> joke
+ - route -> path
+ - quiz -> quiz
+ - aktien -> stocks
