@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Conversation from './AnswerWindows/Conversation';
+import Activity from './AnswerWindows/Activity';
 import Fortune from './AnswerWindows/Fortune';
 import Joke from './AnswerWindows/Joke';
 import Path from './AnswerWindows/Path';
@@ -10,12 +11,13 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      conversation: false,
+      conversation: true,
       fortune: false,
       joke: false,
       path: false,
       quiz: false,
       stocks: false,
+      activity: false
     };
   }
 
@@ -27,47 +29,109 @@ class Dashboard extends Component {
     }
 
     const searchKeyWord = (e) => {
-      var fortuneBool = e.value.includes("fortune");
-      var jokeBool = e.value.includes("joke");
-      var pathBool = e.value.includes("path");
-      var quizBool = e.value.includes("quiz");
-      var stocksBool = e.value.includes("stocks");
+      this.setState({ 
+        fortune: false,
+        joke: false,
+        path: false,
+        quiz: false,
+        stocks: false,
+        conversation: true
+      });
+
+      document.getElementById("chat-content").innerHTML += 
+        `<div className="media media-chat">
+          <div className="media-body" style="
+            -webkit-box-flex: initial;
+            flex: initial;
+            display: table;
+            min-width: 0">
+            <p style="position: relative;
+            padding: 6px 8px;
+            margin: 4px 0;
+            background-color: #f5f6f7;
+            border-radius: 3px;
+            font-weight: 100;
+            color: #9b9b9b">${e.value}</p>
+          </div>
+        </div>`;
+
+      var activityBool = e.value.toLowerCase().includes("aktivität");
+      var fortuneBool = e.value.toLowerCase().includes("glückskeks");
+      var jokeBool = e.value.toLowerCase().includes("witz");
+      var pathBool = e.value.toLowerCase().includes("route");
+      var quizBool = e.value.toLowerCase().includes("quiz");
+      var stocksBool = e.value.toLowerCase().includes("aktien");
+      e.value = "";
       
 
       // Don't let it handle too much
       if(pathBool == true && stocksBool == true) {
-        this.setState({      
-          stocks: false,
-          path: false
-        });
-        e.value = "I can't handle this much at once";
-      } 
-      // Or too few
-      else if (e.value == "") {
-        this.setState({      
-          stocks: stocksBool,
-          path: pathBool
-        });
-        e.value = "If I should do something for you, you must tell me what";
+        document.getElementById("chat-content").innerHTML += 
+        `<div className="media media-chat media-chat-reverse">
+          <div className="media-body" style="
+            -webkit-box-flex: initial;
+            flex: initial;
+            display: table;
+            min-width: 0">
+            <p style="position: relative;
+            padding: 6px 8px;
+            margin: 4px 0;
+            border-radius: 3px;
+            font-weight: 100;
+            float: right;
+            clear: right;
+            background-color: #48b0f7;
+            color: #fff
+            color: #9b9b9b">I can't handle this much at once</p>
+          </div>
+        </div>`;
       } 
       // Couldn't understand
-      else if (pathBool == false && stocksBool == false) {
-        this.setState({      
-          stocks: stocksBool,
-          path: pathBool
-        });
-        e.value = "I couldn't quite catch that. \nCould you please repeat it?";
+      else if (activityBool == false && 
+               fortuneBool == false && 
+               jokeBool == false && 
+               pathBool == false && 
+               quizBool == false &&
+               stocksBool == false) {
+        document.getElementById("chat-content").innerHTML += 
+        `<div className="media media-chat media-chat-reverse">
+          <div className="media-body" style="
+            -webkit-box-flex: initial;
+            flex: initial;
+            display: table;
+            min-width: 0">
+            <p style="position: relative;
+            padding: 6px 8px;
+            margin: 4px 0;
+            border-radius: 3px;
+            font-weight: 100;
+            float: right;
+            clear: right;
+            background-color: #48b0f7;
+            color: #fff
+            color: #9b9b9b">I couldn't quite catch that. \nCould you please repeat it?</p>
+          </div>
+        </div>`;
       } 
-      // Handled the request
+      // Handle the request
       else {
         this.setState({ 
+          activity: activityBool,
           fortune: fortuneBool,
           joke: jokeBool,
           path: pathBool,
           quiz: quizBool,
-          stocks: stocks
+          stocks: stocksBool,
         });
-        e.value = "Here you go";
+
+        // Hide Conversation
+        document.getElementById("chat-content").innerHTML = "";
+        var x = document.getElementById("conversation");
+        if (x.style.display === "none") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
+        }
       }
     };
 
@@ -79,11 +143,6 @@ class Dashboard extends Component {
       return this.props.id;
     }
 
-    const placeHolderStyle = {
-      width: "30vw",
-      height: "40vh"
-    };
-
     const settingsButtonStyle = {
       width: "2.5em",
       height: "2.5em",
@@ -92,35 +151,42 @@ class Dashboard extends Component {
       marginBottom: "0.25em"
     };
 
-    const settingsButtonSpacingStyle = {
-      margin: "0.5em"
+    const centerContent = {
+      display: "flex",
+      flexFlow: "column nowrap",
+      flexBasis: "10%",
+      justifyContent: "center",
+      alignItems: "center"
     }
 
-    const userButtonsStyle = {
+    const inputBar = {
       display: "flex",
-      justifyContent: "center"
+      flexFlow: "row nowrap",
+      flexBasis: "10%",
+      justifyContent: "center",
+      alignItems: "center"
     }
 
     return (
-      <div onLoad={console.log(`${getApi()}\n${getId()}`)}>
+      <div style={centerContent}>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-        <h1 id="title" style={{textAlign: "center"}}>Dashboard</h1>
-        <div id="placeHolder" className="placeholder" style={placeHolderStyle}>
+        <h1 id="title">Dashboard</h1>
+        <div id="content" style={{flex:"80%"}}>
           {this.state.conversation? (<Conversation />) : null}
-          {this.state.fortune? (<Fortune />) : null}
-          {this.state.joke? (<Joke />) : null}
-          {this.state.path? (<Path />) : null}
-          {this.state.quiz? (<Quiz />) : null}
-          {this.state.stocks? (<Stocks />) : null}
+          {this.state.activity? (<Activity api={getApi()}/>) : null}
+          {this.state.fortune? (<Fortune api={getApi()}/>) : null}
+          {this.state.joke? (<Joke api={getApi()}/>) : null}
+          {this.state.path? (<Path api={getApi()}/>) : null}
+          {this.state.quiz? (<Quiz api={getApi()}/>) : null}
+          {this.state.stocks? (<Stocks api={getApi()}/>) : null}
         </div>
-        <div style={userButtonsStyle}>
-          <a className="button icon-button" style={settingsButtonSpacingStyle} aria-label="Icon-only Settings Button">
+        <div style={inputBar}>
+          <a className="button icon-button" style={{margin: "0.5em"}} aria-label="Icon-only Settings Button">
             <img src="/settings.png" className="icon-button__icon" aria-hidden="true" focusable="false" style={settingsButtonStyle} onClick={() => changeViewFunction()}></img>
           </a>
-          <input type="text" id="inputText"/>
-          <button onClick={() => searchKeyWord(document.getElementById("inputText"))}>Enter</button>
-          {/* <button>Start Listening</button> */}
-        </div>       
+            <input type="text" id="inputText"/>
+            <button onClick={() => {searchKeyWord(document.getElementById("inputText"))}}>Enter</button>
+        </div>     
       </div>
     );
   }

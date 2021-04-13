@@ -80,3 +80,12 @@ volumes:
 ![#a8dadc](https://placehold.it/15/a8dadc/000000?text=+) `#a8dadc` Powder Blue<br>
 ![#457b9d](https://placehold.it/15/457b9d/000000?text=+) `#457b9d` Celadon Blue<br>
 ![#1d3557](https://placehold.it/15/1d3557/000000?text=+) `#1d3557` Berliner Blue
+
+## Key Words
+
+aktivität -> activity
+glückskeks -> fortune
+witz -> joke
+route -> path
+quiz -> quiz
+aktien -> stocks

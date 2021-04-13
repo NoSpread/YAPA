@@ -5,7 +5,6 @@
 .card {
     border: 0;
     border-radius: 0px;
-    margin-bottom: 30px;
     -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.03);
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.03);
     -webkit-transition: .5s;
@@ -14,10 +13,6 @@
 
 .padding {
     padding: 3rem !important
-}
-
-body {
-    background-color: #f9f9fa
 }
 
 .card-header:first-child {
@@ -54,23 +49,6 @@ h4.card-title {
     margin-right: 8px
 }
 
-.btn-secondary {
-    color: #4d5259 !important;
-    background-color: #e4e7ea;
-    border-color: #e4e7ea;
-    color: #fff
-}
-
-.btn-xs {
-    font-size: 11px;
-    padding: 2px 8px;
-    line-height: 18px
-}
-
-.btn-xs:hover {
-    color: #fff !important
-}
-
 .card-title {
     font-family: Roboto, sans-serif;
     font-weight: 300;
@@ -97,36 +75,9 @@ h4.card-title {
 }
 
 .media {
-    padding: 16px 12px;
+    padding: 0px 12px;
     -webkit-transition: background-color .2s linear;
     transition: background-color .2s linear
-}
-
-.media .avatar {
-    flex-shrink: 0
-}
-
-.avatar {
-    position: relative;
-    display: inline-block;
-    width: 36px;
-    height: 36px;
-    line-height: 36px;
-    text-align: center;
-    border-radius: 100%;
-    background-color: #f5f6f7;
-    color: #8b95a5;
-    text-transform: uppercase
-}
-
-.media-chat .media-body {
-    -webkit-box-flex: initial;
-    flex: initial;
-    display: table
-}
-
-.media-body {
-    min-width: 0
 }
 
 .media-chat .media-body p {
@@ -149,44 +100,10 @@ h4.card-title {
     opacity: .8
 }
 
-.media-meta-day {
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    -webkit-box-align: center;
-    align-items: center;
-    margin-bottom: 0;
-    color: #8b95a5;
-    opacity: .8;
-    font-weight: 400
-}
-
 .media {
-    padding: 16px 12px;
+    padding: 0px 12px;
     -webkit-transition: background-color .2s linear;
     transition: background-color .2s linear
-}
-
-.media-meta-day::before {
-    margin-right: 16px
-}
-
-.media-meta-day::before,
-.media-meta-day::after {
-    content: '';
-    -webkit-box-flex: 1;
-    flex: 1 1;
-    border-top: 1px solid #ebebeb
-}
-
-.media-meta-day::after {
-    content: '';
-    -webkit-box-flex: 1;
-    flex: 1 1;
-    border-top: 1px solid #ebebeb
-}
-
-.media-meta-day::after {
-    margin-left: 16px
 }
 
 .media-chat.media-chat-reverse {
@@ -203,7 +120,7 @@ h4.card-title {
 }
 
 .media {
-    padding: 16px 12px;
+    padding: 0px 12px;
     -webkit-transition: background-color .2s linear;
     transition: background-color .2s linear
 }
@@ -264,42 +181,4 @@ select,
 textarea {
     font-family: Roboto, sans-serif;
     font-weight: 300
-}
-
-.publisher-btn {
-    background-color: transparent;
-    border: none;
-    color: #8b95a5;
-    font-size: 16px;
-    cursor: pointer;
-    overflow: -moz-hidden-unscrollable;
-    -webkit-transition: .2s linear;
-    transition: .2s linear
-}
-
-.file-group {
-    position: relative;
-    overflow: hidden
-}
-
-.publisher-btn {
-    background-color: transparent;
-    border: none;
-    color: #cac7c7;
-    font-size: 16px;
-    cursor: pointer;
-    overflow: -moz-hidden-unscrollable;
-    -webkit-transition: .2s linear;
-    transition: .2s linear
-}
-
-.file-group input[type="file"] {
-    position: absolute;
-    opacity: 0;
-    z-index: -1;
-    width: 20px
-}
-
-.text-info {
-    color: #48b0f7 !important
 }

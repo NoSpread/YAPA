@@ -44,7 +44,7 @@ class Settings extends Component {
 		const filldata = (data) => {
 			// its settings i guess, quite much repetition
 			if(data == null) return;
-			document.getElementById("name").value = data["fullname"]
+            document.getElementById("name").value = data["fullname"]
 			document.getElementById("streetHome").value = data["residenceStreet"]
 			document.getElementById("cityHome").value  = data["residenceCity"]
 			document.getElementById("zipHome").value = data["residenceCode"]
@@ -55,13 +55,14 @@ class Settings extends Component {
 			document.getElementById("plannedWorkTime").value = data["workstart"]
 			document.getElementById("assistentVoice").children[data["voice"]].selected= true
 			document.getElementById("transportationMode").
-				children[["foot","publicTransport", "car"].indexOf(data["movement_type"])].selected = true
+				children[["", "walking","transit", "driving"].indexOf(data["movement_type"])].selected = true
+            
 		}
 
         const updateSettings = () => {
             // Store new settings in DB 
 			console.log("updatesettings ")
-			updatebody = {
+			var updatebody = {
 				"id": parseInt(getId()),
 				"fullname": document.getElementById("name").value,
 				"residenceStreet": document.getElementById("streetHome").value,
@@ -84,12 +85,7 @@ class Settings extends Component {
                 },
 				body : JSON.stringify(updatebody)
             }).then(res => {
-                if(res.status == "200") {
-                    document.getElementById("main").innerHTML = `<div class="alert alert-warning alert-dismissible">
-                    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                 	Die Einstellungen wurden erfolgreich aktualisiert!
-					</div>${document.getElementById("main").innerHTML}`;
-                } else {
+                if(res.status != "200") {
                     document.getElementById("main").innerHTML = `<div class="alert alert-warning alert-dismissible">
                     <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
                  	Die Einstellungen konnten nicht aktualisiert werden!
@@ -204,9 +200,10 @@ class Settings extends Component {
                                         <div className="form-group">
                                             <label htmlFor="transportationMode">Fortbewegungsart</label>
                                             <select  className="form-control" id="transportationMode" name="sTate">
-                                                <option value="foot">Zu Fuß</option>
-                                                <option value="publicTransport">ÖPNV</option>
-                                                <option value="car">Auto</option>
+                                                <option value="">Nichts Ausgewählt</option>
+                                                <option value="walking">Zu Fuß</option>
+                                                <option value="transit">ÖPNV</option>
+                                                <option value="driving">Auto</option>
                                             </select>
                                         </div>
                                     </div>
