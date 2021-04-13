@@ -17,7 +17,6 @@ interface IUserinformation extends RowDataPacket {
     workplaceCity: string | null,
     workplaceCode: string | null,
     workplaceStreet: string | null,
-    jokequality: string | null,
     voice: string | null,
     residenceCity: string | null,
     residenceCode: string | null,

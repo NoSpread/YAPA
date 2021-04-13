@@ -221,6 +221,9 @@
           "200": {
             "description": "Information updated"
           },
+		  "400": {
+            "description": "Missing key or keys"
+          },
           "401": {
             "description": "Cookie or key missing",
             "schema": {

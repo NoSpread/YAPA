@@ -79,7 +79,7 @@ const app = new App({
     middleWares: [
         cors(corsSettings),
         session({
-            secret: process.env.COOKIE_SECRET || "OOOHHH NOOOOOOO",
+            secret: process.env.COOKIE_SECRET || "TheAnswerToLifeTheUniverseandEverything",
             resave: true,
             saveUninitialized: true,
             name: "sessionID"
