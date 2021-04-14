@@ -132,13 +132,13 @@ class Settings extends Component {
                         <div className="card h-100">
                             <div className="card-body">
                                 <div className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                                    <h5 className="user-name">Einstellungen</h5>
+                                    <h1 className="user-name">Einstellungen</h1>
                                     <br/>
                                     <br/>
                                 </div>
                                 <div className="row gutters">
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <h6 className="mb-3 text-primary">Persönliche Informationen</h6>
+                                        <h2 className="mb-3 text-primary">Persönliche Informationen</h2>
                                     </div>
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div className="form-group">
@@ -187,7 +187,7 @@ class Settings extends Component {
                                 <br/>
                                 <div className="row gutters">
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <h6 className="mb-3 text-primary">Assistent</h6>
+                                        <h2 className="mb-3 text-primary">Assistent-Einstellungen</h2>
                                     </div>
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div className="form-group">
@@ -219,7 +219,6 @@ class Settings extends Component {
                                                 <option value="voice1">Stimme 1 (männlich)</option>
                                                 <option value="voice2">Stimme 2 (weiblich)</option>
                                                 <option value="voice3">Stimme 3 (Roboter)</option>
-                                                <option value="voice4">Stimme 4 (UwU)</option>
                                             </select>
                                         </div>
                                     </div>
@@ -228,9 +227,9 @@ class Settings extends Component {
                                 <div className="row gutters">
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                         <div className="text-right">
-                                            <button type="button" id="submit" name="submit" className="btn btn-secondary" onClick={() => {deleteUser(); logout();}} style={{float: "left"}} >Delete</button>
-                                            <button type="button" id="submit" name="submit" className="btn btn-secondary" onClick={() => changeViewFunction()}>Cancel</button>
-                                            <button type="button" id="submit" name="submit" className="btn btn-primary" onClick={() => {updateSettings(); changeViewFunction();}}>Update</button>
+                                            <button type="button" id="submit" name="submit" className="btn btn-warning" onClick={() => {deleteUser(); logout();}} style={{float: "left"}} >Benutzer löschen</button>
+                                            <button type="button" id="submit" name="submit" className="btn btn-warning" onClick={() => changeViewFunction()}>Abbrechen</button>
+                                            <button type="button" id="submit" name="submit" className="btn btn-primary" onClick={() => {updateSettings(); changeViewFunction();}}>Änderungen speichern</button>
                                         </div>
                                     </div>
                                 </div>
