@@ -39,6 +39,47 @@ class Login extends Component {
                 console.error(e);
             });      
         }
+
+        const fetchSettings = (apiKey) => {
+            return new Promise((resolve, reject) => {
+              fetch('https://api.nospread.xyz/yapa/v1/user', {
+                method: "GET",
+                headers: {
+                  "X-API-KEY": apiKey
+                  // "Content-Type": "application/json"
+                },
+              }).then(res => {
+                if(res.status == "200") {
+                  return res.json();   
+                } else {
+                  console.log(res); 
+                }        
+              }).then(function(data) {
+                resolve(data)
+              }).catch(e => {
+                console.error(e);
+                reject(error)
+              });
+            })
+          }
+      
+          const welcome = (apiKey) => {
+            fetchSettings(apiKey)
+            .then(data => {
+              const welcomeString = `Guten Morgen ${data.fullname}. Wie kann ich dir heute behilflich sein?`;
+              Meteor.call("synthesiseText", welcomeString, (err, res) => {
+                if (err) console.error(err)
+        
+                const blob = new Blob([res], { type: "audio/wav" });
+                const url = window.URL.createObjectURL(blob);
+        
+                document.getElementById("audio").src = url;
+                document.getElementById("audio").play();
+              });
+            }).catch(e => {
+              console.log(e);
+            });
+          }
     
         const login = (event) => {
             event.preventDefault();
@@ -62,6 +103,7 @@ class Login extends Component {
                     document.getElementById("warning").textContent = "Anmeldung fehlgeschlagen";
                 }
             }).then(function(data) {
+                welcome(data.api);
                 document.getElementById("setApi").value = data.api;
                 document.getElementById("setApi").click();
 

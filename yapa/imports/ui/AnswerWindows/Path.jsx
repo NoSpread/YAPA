@@ -73,13 +73,13 @@ class Path extends Component {
 
           document.getElementById("path").innerHTML = 
             `<p class="answer">Reisedauer: ${time.getHours()} ${timeHourSuf(time.getHours())}, ${time.getMinutes()} ${timeMinSuf(time.getMinutes())}</p>
-            <p class="answer">Reisedauer bei Stau: ${timeTraffic.getHours()} ${timeHourSuf(timeTraffic.getHours())}, ${timeTraffic.getMinutes()} ${timeMinSuf(timeTraffic.getMinutes())}</p>
+            <p class="answer">Aktuelle Verkehrslage: ${timeTraffic.getHours()} ${timeHourSuf(timeTraffic.getHours())}, ${timeTraffic.getMinutes()} ${timeMinSuf(timeTraffic.getMinutes())}</p>
             <p class="answer">Entfernung: ${data["travelDistance"].toString().replace(".", ",")} km</p>`;
                    
             // Read alloud
           var answers = document.getElementsByClassName("answer");
-          var stringToReadAloud = `Die Reise dauert ${time.getHours()} ${timeHourSuf(time.getHours())}, ${time.getMinutes()} ${timeMinSuf(time.getMinutes())}.
-            Bei Stau dauert sie ${timeTraffic.getHours()} ${timeHourSuf(timeTraffic.getHours())}, ${timeTraffic.getMinutes()} ${timeMinSuf(timeTraffic.getMinutes())}.
+          var stringToReadAloud = `Die Reisezeit beträgt durchschnittlich ${time.getHours()} ${timeHourSuf(time.getHours())}, ${time.getMinutes()} ${timeMinSuf(time.getMinutes())}.
+            Bei der aktuellen Verkehrslage benötigst du ${timeTraffic.getHours()} ${timeHourSuf(timeTraffic.getHours())}, ${timeTraffic.getMinutes()} ${timeMinSuf(timeTraffic.getMinutes())}.
             Die Entfernung beträgt ${data["travelDistance"].toString().replace(".", ",")} Kilometer`;
  
           Meteor.call("synthesiseText", stringToReadAloud, (err, res) => {
