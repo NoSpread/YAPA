@@ -53,6 +53,7 @@ class Login extends Component {
                   return res.json();   
                 } else {
                   console.log(res); 
+                  return null;
                 }        
               }).then(function(data) {
                 resolve(data)
@@ -66,7 +67,13 @@ class Login extends Component {
           const welcome = (apiKey) => {
             fetchSettings(apiKey)
             .then(data => {
-              const welcomeString = `Guten Morgen ${data.fullname}. Wie kann ich dir heute behilflich sein?`;
+                var welcomeString = "";
+                if ( data == null ) {
+                    welcomeString = `Guten Morgen. Wie kann ich dir heute behilflich sein?`;
+                } else {
+                    welcomeString = `Guten Morgen ${data.fullname}. Wie kann ich dir heute behilflich sein?`;
+                }
+              
               Meteor.call("synthesiseText", welcomeString, (err, res) => {
                 if (err) console.error(err)
         

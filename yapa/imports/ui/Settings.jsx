@@ -94,9 +94,9 @@ class Settings extends Component {
                     document.getElementById("main").innerHTML = `<div class="alert alert-warning alert-dismissible">
                     <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
                  	Die Einstellungen konnten nicht aktualisiert werden!
-					</div>${document.getElementById("main").innerHTML}`;
-                    changeViewFunction();
+					</div>${document.getElementById("main").innerHTML}`;                  
                 }
+                changeViewFunction();
             }).catch(e => {
                 console.error(e);
             });
