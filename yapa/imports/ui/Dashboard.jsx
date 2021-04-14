@@ -207,7 +207,7 @@ class Dashboard extends Component {
     return (
       <div style={centerContent}>
         <h1 id="title">Dashboard</h1>
-        <div id="content" style={{flex:"80%"}}>
+        <div id="content" style={{height: "30vh"}}>
           {this.state.conversation? (<Conversation />) : null}
           {this.state.activity? (<Activity api={getApi()}/>) : null}
           {this.state.fortune? (<Fortune api={getApi()}/>) : null}
@@ -217,17 +217,29 @@ class Dashboard extends Component {
           {this.state.stocks? (<Stocks api={getApi()}/>) : null}
         </div>
 
-        <div className="input-group" id="inputBar">
-            <input type="text" className="form-control" id="inputText" placeholder="Frag mich was!"/>
-            <span className="input-group-btn">
-                <button className="btn btn-primary" type="button" onClick={() => {searchKeyWord(document.getElementById("inputText"))}}>Enter</button>
-            </span>
+        <div class="h-75 d-inline-block">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-md-4 text-right">
+                <span className="btn btn-default" onClick={() => changeViewFunction()}> <i className="glyphicon glyphicon-cog"></i></span>
+              </div>
+              <div className="col-md-4">
+                <div className="input-group" id="inputBar">
+                    <input type="text" className="form-control" id="inputText" placeholder="Frag mich was!"/>
+                    <span className="input-group-btn">
+                        <button className="btn btn-primary" type="button" onClick={() => {searchKeyWord(document.getElementById("inputText"))}}>Enter</button>
+                    </span>
+                </div>
+              </div>
+              <div className="col-md-4">
+                <button className="btn btn-default" onClick={() => startAudioCapture()}>🎤</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <span className="btn btn-default" onClick={() => changeViewFunction()}> <i className="glyphicon glyphicon-cog"></i> Einstellungen </span>
-        <button className="btn btn-default" onClick={() => startAudioCapture()}>🎤</button>
         <audio id="audio">
           <source src=""/>
-        </audio>; 
+        </audio>;
       </div>
     );
   }
