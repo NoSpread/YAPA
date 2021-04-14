@@ -76,7 +76,8 @@ class Login extends Component {
 
         return (
             <div className="panel panel-default align-middle">
-                <div className="panel-heading">{this.state.register ? "Registrierung" : "Anmeldung"}</div>
+                <div className="panel-heading">
+                    {this.state.register ? "Registrierung" : "Anmeldung"}</div>
                 <div className="panel-body">
                     <p className="text-warning text-center" id="warning"></p>
                     <form>
