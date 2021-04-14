@@ -78,10 +78,10 @@ class Path extends Component {
                    
             // Read alloud
           var answers = document.getElementsByClassName("answer");
-          var stringToReadAloud = "";
-          Array.prototype.forEach.call(answers, element => {
-            stringToReadAloud += element.innerHTML;
-          });   
+          var stringToReadAloud = `Die Reise dauert ${time.getHours()} ${timeHourSuf(time.getHours())}, ${time.getMinutes()} ${timeMinSuf(time.getMinutes())}.
+            Bei Stau dauert sie ${timeTraffic.getHours()} ${timeHourSuf(timeTraffic.getHours())}, ${timeTraffic.getMinutes()} ${timeMinSuf(timeTraffic.getMinutes())}.
+            Die Entfernung beträgt ${data["travelDistance"].toString().replace(".", ",")} Kilometer`;
+ 
           Meteor.call("synthesiseText", stringToReadAloud, (err, res) => {
             if (err) console.error(err)
     
@@ -118,7 +118,7 @@ class Path extends Component {
     }
 
     const backgroundStyle = {
-      backgroundColor: "#FAFAFA",
+      backgroundColor: "#FFF",
       height: "100%",
       width: "100%"
     };

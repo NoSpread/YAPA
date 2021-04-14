@@ -73,7 +73,7 @@ class Activity extends Component {
 
     const backgroundStyle = {
       display: "none", 
-      backgroundColor: "#FAFAFA", 
+      backgroundColor: "#FFF", 
       height: "100%", 
       width: "100%"
     };
