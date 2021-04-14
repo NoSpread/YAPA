@@ -80,13 +80,14 @@ class Quiz extends Component {
         const translateInterval = setInterval(() => {
           if(id == 1) {
             translate(id, true);
-            elements[id].addEventListener("click", () => revealAnswer());
+            //elements[id].addEventListener("click", () => revealAnswer());
             clearInterval(translateInterval)
           } else {
             translate(id, false);
-            id--;
           }
+            id--;
           elements[id].addEventListener("click", () => revealAnswer());
+            console.log("Addded EL for id=", id);
         }, 200)
 
     }
@@ -110,7 +111,7 @@ class Quiz extends Component {
     }
 
     const backgroundStyle = {
-        backgroundColor: "#FAFAFA",
+        backgroundColor: "#FFF",
         height: "100%",
         width: "100%",
         display: "grid",

@@ -235,19 +235,27 @@ class Dashboard extends Component {
     return (
       <div style={centerContent}>
         <h1 id="title">Dashboard</h1>
-        <div id="content" style={{height: "30vh"}}>
-          {this.state.conversation? (<Conversation />) : null}
-          {this.state.activity? (<Activity api={getApi()}/>) : null}
-          {this.state.fortune? (<Fortune api={getApi()}/>) : null}
-          {this.state.joke? (<Joke api={getApi()}/>) : null}
-          {this.state.path? (<Path api={getApi()}/>) : null}
-          {this.state.quiz? (<Quiz api={getApi()}/>) : null}
-          {this.state.stocks? (<Stocks api={getApi()}/>) : null}
-        </div>
 
-        <div class="h-75 d-inline-block">
+        <div className="h-75 d-inline-block">
           <div className="container">
-            <div className="row justify-content-center">
+            <div className="row">
+                <div className="col-md-4"></div>
+                <div className="col-md-4">
+                    <div className="panel panel-default" style={{height: "35vh", paddingBottom: "1vh"}}>
+                        <div id="content" className="panel-body">
+                          {this.state.conversation? (<Conversation />) : null}
+                          {this.state.activity? (<Activity api={getApi()}/>) : null}
+                          {this.state.fortune? (<Fortune api={getApi()}/>) : null}
+                          {this.state.joke? (<Joke api={getApi()}/>) : null}
+                          {this.state.path? (<Path api={getApi()}/>) : null}
+                          {this.state.quiz? (<Quiz api={getApi()}/>) : null}
+                          {this.state.stocks? (<Stocks api={getApi()}/>) : null}
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-4"></div>
+            </div>
+            <div className="row">
               <div className="col-md-4 text-right">
                 <span className="btn btn-default" onClick={() => changeViewFunction()}> <i className="glyphicon glyphicon-cog"></i></span>
               </div>
@@ -267,7 +275,7 @@ class Dashboard extends Component {
         </div>
         <audio id="audio">
           <source src=""/>
-        </audio>;
+        </audio>
       </div>
     );
   }

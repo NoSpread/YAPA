@@ -38,15 +38,14 @@ class Stocks extends Component {
         }              
       }).then(function(data) {
         document.getElementById("stocks").innerHTML = 
-          `<p><b>${stockName}</b><p/>
-          <p>c: ${data["c"]}</p>
-          <p>h: ${data["h"]}</p>
-          <p>l: ${data["l"]}</p>
-          <p>o: ${data["o"]}</p>
-          <p>pc: ${data["pc"]}</p>
-          <p>t: ${data["t"]}</p>`;
+          `<p><b>Informationen zum Symbol ${stockName}</b><p/>
+          <p>Aktuell: ${String(data["c"]).replace(".",",")}</p>
+          <p>Tageshoch: ${String(data["h"]).replace(".",",")}</p>
+          <p>Tagestief: ${String(data["l"]).replace(".",",")}</p>
+          <p>Eröffnung: ${String(data["o"]).replace(".",",")}</p>
+          <p>Vortag: ${String(data["pc"]).replace(".",",")}</p>`;
 
-          const speechText = `Das Symbol ${stockName} ist derzeit bei ${data["c"]} G E. Das Tageshoch war bei ${data["h"]} G E.`
+          const speechText = `Das Symbol ${stockName} ist derzeit bei ${String(data["c"]).replace(".",",")} G E. Das Tageshoch war bei ${String(data["h"]).replace(".",",")} G E.`
 
           Meteor.call("synthesiseText", speechText, (err, res) => {
             if (err) console.error(err)
@@ -95,7 +94,7 @@ class Stocks extends Component {
     }
 
     const backgroundStyle = {
-      backgroundColor: "#FAFAFA",
+      backgroundColor: "#FFF",
       height: "100%",
       width: "100%"
     };

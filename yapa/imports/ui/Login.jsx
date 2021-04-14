@@ -74,49 +74,51 @@ class Login extends Component {
             });   
         }
 
+
         return (
-            <div className="panel panel-default align-middle">
-                <div className="panel-heading">
-                    {this.state.register ? "Registrierung" : "Anmeldung"}</div>
-                <div className="panel-body">
-                    <p className="text-warning text-center" id="warning"></p>
-                    <form>
-                        <div className="form-group">
-                            <div className="input-group">
-                                <div className="input-group-addon">
-                                    <span className="input-group-text"> <i className="glyphicon glyphicon-user"></i> </span>
+            <div style={{paddingTop: "10vh"}}>
+                <div className="panel panel-default align-middle">
+                    <div className="panel-heading">{this.state.register ? "Registrierung" : "Anmeldung"}</div>
+                    <div className="panel-body">
+                        <p className="text-warning text-center" id="warning"></p>
+                        <form>
+                            <div className="form-group">
+                                <div className="input-group">
+                                    <div className="input-group-addon">
+                                        <span className="input-group-text"> <i className="glyphicon glyphicon-user"></i> </span>
+                                    </div>
+                                    <input className="form-control" type="text" id="login" placeholder="Nutzername"/>
                                 </div>
-                                <input className="form-control" type="text" id="login" placeholder="Nutzername"/>
                             </div>
-                        </div>
 
-                        <div className="form-group">
-                            <div className="input-group">
-                                <div className="input-group-addon">
-                                    <span className="input-group-text"> <i className="glyphicon glyphicon-lock"></i> </span>
+                            <div className="form-group">
+                                <div className="input-group">
+                                    <div className="input-group-addon">
+                                        <span className="input-group-text"> <i className="glyphicon glyphicon-lock"></i> </span>
+                                    </div>
+                                    <input className="form-control" type="password" id="password" placeholder="Passwort"/>
                                 </div>
-                                <input className="form-control" type="password" id="password" placeholder="Passwort"/>
                             </div>
-                        </div>
 
 
-                        <div className="form-group">
-                            {this.state.register? 
-                                <input className="btn btn-primary btn-block" type="submit" onClick={e => register(e)} value="Registrieren"/> : 
-                                <input className="btn btn-primary btn-block" type="submit" onClick={e => login(e)} value="Anmelden"/>
-                            }
-                        </div>
-                    </form>
-                </div>
-                <div className="panel-footer">
-                    {this.state.register? 
-                        <a className="btn btn-link" onClick={() => this.setState({register: !this.state.register})}>
-                            Ich habe schon einen Account.
-                        </a> : 
-                        <a className="btn btn-link" onClick={() => this.setState({register: !this.state.register})}>
-                            Ich habe noch keinen Account.
-                        </a>
-                    }
+                            <div className="form-group">
+                                {this.state.register? 
+                                    <input className="btn btn-primary btn-block" type="submit" onClick={e => register(e)} value="Registrieren"/> : 
+                                    <input className="btn btn-primary btn-block" type="submit" onClick={e => login(e)} value="Anmelden"/>
+                                }
+                            </div>
+                        </form>
+                    </div>
+                    <div className="panel-footer">
+                        {this.state.register? 
+                            <a className="btn btn-link" onClick={() => this.setState({register: !this.state.register})}>
+                                Ich habe schon einen Account.
+                            </a> : 
+                            <a className="btn btn-link" onClick={() => this.setState({register: !this.state.register})}>
+                                Ich habe noch keinen Account.
+                            </a>
+                        }
+                    </div>
                 </div>
             </div>
         );
