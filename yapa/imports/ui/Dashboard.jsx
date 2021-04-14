@@ -41,7 +41,10 @@ class Dashboard extends Component {
           audioChunks.push(e.data);
         }
     
-        const start = () => mediaRecorder.start(100);
+        const start = () => {
+          mediaRecorder.start(100);
+          document.getElementById("recordButton").innerHTML = "🔴"
+        }
 
         const stop = () =>
           new Promise(async resolve => {
@@ -50,11 +53,11 @@ class Dashboard extends Component {
               var reader = new FileReader();
               reader.readAsDataURL(audioBlob); 
               reader.onloadend = function() {
-                  var base64data = reader.result;                
-                  console.log(base64data);
-                  Meteor.call("speechToText", base64data, (err, res) => {
-                    resolve(res)
-                  })
+                var base64data = reader.result;                                  
+                Meteor.call("speechToText", base64data, (err, res) => {
+                  document.getElementById("recordButton").innerHTML = "🎤"
+                  resolve(res)
+                })
               }
             });
     
@@ -72,11 +75,18 @@ class Dashboard extends Component {
       
       setTimeout( async () => {
         const transskript = await recorder.stop();
-        // mach was damit kev
+        const transskript_text = transskript.results[0].alternatives[0].transcript
+
+        document.getElementById('inputText').value = transskript_text
+        const search = {
+          value: transskript_text
+        }
+        searchKeyWord(search)
       }, 5000)
     }
 
     const searchKeyWord = (e) => {
+      console.log(e.value)
       this.setState({ 
         fortune: false,
         joke: false,
@@ -107,7 +117,7 @@ class Dashboard extends Component {
         e.value.toLowerCase().includes("aktivität"),
         e.value.toLowerCase().includes("glückskeks"),
         e.value.toLowerCase().includes("witz"),
-        e.value.toLowerCase().includes("route"),
+        e.value.toLowerCase().includes("weg"),
         e.value.toLowerCase().includes("quiz"),
         e.value.toLowerCase().includes("aktien")
       ];
@@ -268,7 +278,7 @@ class Dashboard extends Component {
                 </div>
               </div>
               <div className="col-md-4">
-                <button className="btn btn-default" onClick={() => clickRecBtn()}>🎤</button>
+                <button className="btn btn-default" id="recordButton" onClick={() => clickRecBtn()}>🎤</button>
               </div>
             </div>
           </div>

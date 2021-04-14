@@ -24,15 +24,11 @@ class Activity extends Component {
         document.getElementById(elementId).innerHTML = document.getElementById(elementId).innerHTML.replace("toBeTranslated", data["output"]);
 
         if(isLast == true) {
+          console.log("should only be one");
           document.getElementById("activity").style.display = "block";
-
-          // Read alloud
-          var answers = document.getElementsByClassName("answer");
-          var stringToReadAloud = "";
-          Array.prototype.forEach.call(answers, element => {
-            stringToReadAloud += element.innerHTML;
-          });   
-          Meteor.call("synthesiseText", stringToReadAloud, (err, res) => {
+          
+          const readString = `Ich kann dir folgende Aktivität vorschlagen. ${data["output"]}`
+          Meteor.call("synthesiseText", readString, (err, res) => {
             if (err) console.error(err)
     
             const blob = new Blob([res], { type: "audio/wav" });
@@ -64,8 +60,8 @@ class Activity extends Component {
           <p class="answer">Preis: ${data["price"]}</p>
           <p class="answer">Link: ${data["link"]}</p>
           <p class="answer">Zugänglichkeit: ${data["accessibility"]}</p>`;
-        translate(data["activity"], "activityText", false);
-        translate(data["type"], "typeText", true);
+        translate(data["type"], "typeText", false);
+        translate(data["activity"], "activityText", true);
       }).catch(e => {
         console.error(e);
       });
