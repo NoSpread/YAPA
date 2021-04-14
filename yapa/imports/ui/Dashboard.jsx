@@ -30,22 +30,50 @@ class Dashboard extends Component {
       document.getElementById("changeViewInput").click();
     }
 
-    const startAudioCapture = () => {
-      var captureSuccess = function(mediaFiles) {
-        var i, path, len;
-        for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-          path = mediaFiles[i].fullPath;
-          console.log("SPEECH TO TEXT")
-          Meteor.call("speechToText", path);      
-        }     
-      };
     
-      // capture error callback
-      var captureError = function(error) {
-        navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
-      };
+    const recordAudio = () =>
+      new Promise(async resolve => {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mediaRecorder = new MediaRecorder(stream);
+        const audioChunks = []
+    
+        mediaRecorder.ondataavailable = function(e) {
+          audioChunks.push(e.data);
+        }
+    
+        const start = () => mediaRecorder.start(100);
 
-      navigator.device.capture.captureAudio(captureSuccess, captureError, {limit:1});
+        const stop = () =>
+          new Promise(async resolve => {
+            mediaRecorder.addEventListener("stop", () => {   
+              const audioBlob = new Blob(audioChunks, {type: 'audio/ogg;codecs=opus'})
+              var reader = new FileReader();
+              reader.readAsDataURL(audioBlob); 
+              reader.onloadend = function() {
+                  var base64data = reader.result;                
+                  console.log(base64data);
+                  Meteor.call("speechToText", base64data, (err, res) => {
+                    resolve(res)
+                  })
+              }
+            });
+    
+            mediaRecorder.stop();
+          });
+    
+        resolve({ start, stop });
+    });
+
+    const sleep = time => new Promise(resolve => setTimeout(resolve, time));
+
+    const clickRecBtn = async () => {
+      const recorder = await recordAudio();
+      recorder.start();
+      
+      setTimeout( async () => {
+        const transskript = await recorder.stop();
+        // mach was damit kev
+      }, 5000)
     }
 
     const searchKeyWord = (e) => {
@@ -232,7 +260,7 @@ class Dashboard extends Component {
                 </div>
               </div>
               <div className="col-md-4">
-                <button className="btn btn-default" onClick={() => startAudioCapture()}>🎤</button>
+                <button className="btn btn-default" onClick={() => clickRecBtn()}>🎤</button>
               </div>
             </div>
           </div>

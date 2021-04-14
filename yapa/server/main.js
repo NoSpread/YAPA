@@ -3,7 +3,7 @@ import SpeechToTextV1 from 'ibm-watson/speech-to-text/v1';
 import TextToSpeechV1 from 'ibm-watson/text-to-speech/v1';
 import { IamAuthenticator } from 'ibm-watson/auth';
 import * as fs from 'fs';
-import { resolve } from 'path';
+import { Readable } from 'stream';
 
 //const fs = Npm.require('fs');
 __ROOT_APP_PATH__ = fs.realpathSync('.');
@@ -49,30 +49,37 @@ Meteor.methods({
 
     },
 
-    speechToText(audiofilePath) {
-        const params = {
-            objectMode: true,
-            contentType: 'audio/mpeg',
-            model: 'de-DE_BroadbandModel',
-            keywords: ['aktivität', 'glückskeks', 'witz', 'route', 'quiz', 'aktien'],
-            keywordsThreshold: 0.5,
-            maxAlternatives: 3,
-        };
-        
-        // Create the stream.
-        const recognizeStream = speechToText.recognizeUsingWebSocket(params);
-        
-        // Pipe in the audio.
-        fs.createReadStream(audiofilePath).pipe(recognizeStream);
-
-        // Listen for events.
-        recognizeStream.on('data', function(event) { onEvent('Data:', event); });
-        recognizeStream.on('error', function(event) { onEvent('Error:', event); });
-        recognizeStream.on('close', function(event) { onEvent('Close:', event); });
-
-        // Display events on the console.
-        function onEvent(name, event) {
-            console.log(name, JSON.stringify(event, null, 2));
-        };
+    async speechToText(base64) {
+        return new Promise((resolve, reject) => {
+            const params = {
+                objectMode: true,
+                contentType: 'audio/ogg;codecs=opus',
+                model: 'de-DE_BroadbandModel',
+                keywords: ['aktivität', 'glückskeks', 'witz', 'route', 'quiz', 'aktien'],
+                keywordsThreshold: 0.5,
+                maxAlternatives: 1,
+            };
+            
+            // Create the stream.
+            const recognizeStream = speechToText.recognizeUsingWebSocket(params);
+            
+            // Pipe in the audio.
+    
+            const filename = `${Math.floor(Math.random() * 10000)}.ogg`
+    
+            fs.writeFileSync(filename, Buffer.from(base64.replace('data:audio/ogg;codecs=opus;base64,', ''), 'base64'));
+    
+            const stream = fs.createReadStream(filename)
+            stream.pipe(recognizeStream);
+    
+            fs.unlink(filename, err => {
+                if (err) throw err;
+            }) 
+    
+            // Listen for events.
+            recognizeStream.on('data', function(event) { resolve(event); });
+            recognizeStream.on('error', function(event) { reject(event); });
+    
+        })
     }
 });
