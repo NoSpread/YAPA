@@ -14,9 +14,9 @@ Meteor.startup(() => {
 
 const textToSpeech = new TextToSpeechV1({
     authenticator: new IamAuthenticator({
-      apikey: 'L7t6XJVfAYxAWZfN00JU1OLm7mh8BVHqsLKX8EJ3UJna',
+      apikey: 'xwhMeArxa_9ZlrLYZD7otGzzSsgcM8rn-feIUxy4An_7',
     }),
-    serviceUrl: 'https://api.eu-gb.text-to-speech.watson.cloud.ibm.com/instances/ca743c88-351b-460b-9c76-594c763900a9',
+    serviceUrl: 'https://api.eu-de.text-to-speech.watson.cloud.ibm.com/instances/4f167a7b-15a7-4c35-8df0-55942155fda2',
     disableSslVerification: true,
 });
 

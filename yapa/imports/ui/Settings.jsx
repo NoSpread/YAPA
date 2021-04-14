@@ -95,7 +95,7 @@ class Settings extends Component {
                     <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
                  	Die Einstellungen konnten nicht aktualisiert werden!
 					</div>${document.getElementById("main").innerHTML}`;
-
+                    changeViewFunction();
                 }
             }).catch(e => {
                 console.error(e);
@@ -229,7 +229,7 @@ class Settings extends Component {
                                         <div className="text-right">
                                             <button type="button" id="submit" name="submit" className="btn btn-warning" onClick={() => {deleteUser(); logout();}} style={{float: "left"}} >Benutzer löschen</button>
                                             <button type="button" id="submit" name="submit" className="btn btn-warning" onClick={() => changeViewFunction()}>Abbrechen</button>
-                                            <button type="button" id="submit" name="submit" className="btn btn-primary" onClick={() => {updateSettings(); changeViewFunction();}}>Änderungen speichern</button>
+                                            <button type="button" id="submit" name="submit" className="btn btn-primary" onClick={() => {updateSettings()}}>Änderungen speichern</button>
                                         </div>
                                     </div>
                                 </div>

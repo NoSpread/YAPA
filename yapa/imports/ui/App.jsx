@@ -22,11 +22,11 @@ class App extends Component {
       var changeViewInput = document.getElementById("changeViewInput");
       switch (changeViewInput.value) {
         case "dashboard":
-          this.setState({
-            dashboard: true,
-            settings: false,
-            login: false
-          });
+            this.setState({
+              dashboard: true,
+              settings: false,
+              login: false
+            });
         break;
         case "settings":
           this.setState({
