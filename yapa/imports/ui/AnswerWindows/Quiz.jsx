@@ -110,7 +110,7 @@ class Quiz extends Component {
     }
 
     const backgroundStyle = {
-        backgroundColor: "#FAFAFA",
+        backgroundColor: "#FFF",
         height: "100%",
         width: "100%",
         display: "grid",
