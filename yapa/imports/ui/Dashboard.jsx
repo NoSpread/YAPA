@@ -151,14 +151,6 @@ class Dashboard extends Component {
       return this.props.id;
     }
 
-    const settingsButtonStyle = {
-      width: "2.5em",
-      height: "2.5em",
-      borderRadius: "50%",
-      padding: "0.35em",
-      marginBottom: "0.25em"
-    };
-
     const centerContent = {
       display: "flex",
       flexFlow: "column nowrap",
@@ -167,17 +159,8 @@ class Dashboard extends Component {
       alignItems: "center"
     }
 
-    const inputBar = {
-      display: "flex",
-      flexFlow: "row nowrap",
-      flexBasis: "10%",
-      justifyContent: "center",
-      alignItems: "center"
-    }
-
     return (
       <div style={centerContent}>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <h1 id="title">Dashboard</h1>
         <div id="content" style={{flex:"80%"}}>
           {this.state.conversation? (<Conversation />) : null}
@@ -188,13 +171,14 @@ class Dashboard extends Component {
           {this.state.quiz? (<Quiz api={getApi()}/>) : null}
           {this.state.stocks? (<Stocks api={getApi()}/>) : null}
         </div>
-        <div style={inputBar}>
-          <a className="button icon-button" style={{margin: "0.5em"}} aria-label="Icon-only Settings Button">
-            <img src="/settings.png" className="icon-button__icon" aria-hidden="true" focusable="false" style={settingsButtonStyle} onClick={() => changeViewFunction()}></img>
-          </a>
-            <input type="text" id="inputText"/>
-            <button onClick={() => {searchKeyWord(document.getElementById("inputText"))}}>Enter</button>
-        </div>     
+
+        <div className="input-group">
+            <input type="text" className="form-control" id="inputText" placeholder="Frag mich was!"/>
+            <span className="input-group-btn">
+                <button className="btn btn-primary" type="button" onClick={() => {searchKeyWord(document.getElementById("inputText"))}}>Enter</button>
+            </span>
+        </div>
+        <span className="btn btn-default" onClick={() => changeViewFunction()}> <i className="glyphicon glyphicon-cog"></i> Einstellungen </span>
       </div>
     );
   }
