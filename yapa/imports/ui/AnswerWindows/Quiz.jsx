@@ -44,10 +44,13 @@ class Quiz extends Component {
     }
 
     const revealAnswer = () => {
-        document.getElementsByClassName("correct")[0].style.backgroundColor = "green";
+        //document.getElementsByClassName("correct")[0].style.backgroundColor = "green";
+        document.getElementsByClassName("correct")[0].classList.remove('btn-default');
+        document.getElementsByClassName("correct")[0].classList.add('btn-success');
         var incorrect_answers = document.getElementsByClassName("incorrect");
         Array.prototype.forEach.call(incorrect_answers, element => {
-          element.style.backgroundColor = "red"; 
+            element.classList.remove('btn-default');
+            element.classList.add('btn-warning');
         });   
     }
 
@@ -68,9 +71,9 @@ class Quiz extends Component {
         results.forEach(element => {
           id++;
           if(data["results"][0]["correct_answer"] == element) {
-            answerButtons += `<button class="answerButton correct" id="${id.toString()}">${element}</button>`;    
+            answerButtons += `<button class="btn btn-default answerButton correct" id="${id.toString()}">${element}</button>`;    
           } else {
-            answerButtons += `<button class="answerButton incorrect" id="${id.toString()}">${element}</button>`;
+            answerButtons += `<button class="btn btn-default answerButton incorrect" id="${id.toString()}">${element}</button>`;
           }             
         }); 
         document.getElementById("quiz").innerHTML += answerButtons;
@@ -87,7 +90,6 @@ class Quiz extends Component {
           }
             id--;
           elements[id].addEventListener("click", () => revealAnswer());
-            console.log("Addded EL for id=", id);
         }, 200)
 
     }

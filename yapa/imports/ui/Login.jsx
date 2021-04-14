@@ -33,7 +33,7 @@ class Login extends Component {
                 if(res.status == "201") {                   
                     login(event);
                 } else {
-                    document.getElementById("warning").textContent = "Nutzer konnte nicht erstellt werden.";
+                    document.getElementById("warning").textContent = "Fehler bei der Registrierung";
                 }
             }).catch(e => {
                 console.error(e);
