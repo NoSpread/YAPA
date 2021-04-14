@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-// import '../style/login.css';
-// import '/bootstrap/css/*'
 
 class Login extends Component {
     constructor(props) {
@@ -35,10 +33,7 @@ class Login extends Component {
                 if(res.status == "201") {                   
                     login(event);
                 } else {
-                    document.getElementById("main").innerHTML = `<div class="alert alert-warning alert-dismissible">
-                    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>Warnung!</strong> Nutzer konnte leider nicht erstellt werden.
-                  </div>${document.getElementById("main").innerHTML}`;
+                    document.getElementById("warning").textContent = "Nutzer konnte nicht erstellt werden.";
                 }
             }).catch(e => {
                 console.error(e);
@@ -62,15 +57,9 @@ class Login extends Component {
                 if(res.status == "200") {
                     return res.json();                 
                 } else if (res.status == "400") {
-                    document.getElementById("main").innerHTML = `<div class="alert alert-warning alert-dismissible">
-                    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>Warnung!</strong> Nutzername oder Passwort fehlt.
-                  </div>${document.getElementById("main").innerHTML}`;
+                    document.getElementById("warning").textContent = "Eingabe unvollständig";
                 } else {
-                    document.getElementById("main").innerHTML = `<div class="alert alert-warning alert-dismissible">
-                    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>Warnung!</strong> Nutzer konnte nicht gefunden werden.
-                  </div>${document.getElementById("main").innerHTML}`;
+                    document.getElementById("warning").textContent = "Anmeldung fehlgeschlagen";
                 }
             }).then(function(data) {
                 document.getElementById("setApi").value = data.api;
@@ -86,20 +75,46 @@ class Login extends Component {
         }
 
         return (
-            <div id="formContent">
-                <form>
-                    <input className="form-control" type="text" id="login" name="login" placeholder="Nutzername"/>
-                    <input className="form-control" type="password" id="password" name="login" placeholder="Passwort"/>
+            <div className="panel panel-default align-middle">
+                <div className="panel-heading">{this.state.register ? "Registrierung" : "Anmeldung"}</div>
+                <div className="panel-body">
+                    <p className="text-warning text-center" id="warning"></p>
+                    <form>
+                        <div className="form-group">
+                            <div className="input-group">
+                                <div className="input-group-addon">
+                                    <span className="input-group-text"> <i className="glyphicon glyphicon-user"></i> </span>
+                                </div>
+                                <input className="form-control" type="text" id="login" placeholder="Nutzername"/>
+                            </div>
+                        </div>
+
+                        <div className="form-group">
+                            <div className="input-group">
+                                <div className="input-group-addon">
+                                    <span className="input-group-text"> <i className="glyphicon glyphicon-lock"></i> </span>
+                                </div>
+                                <input className="form-control" type="password" id="password" placeholder="Passwort"/>
+                            </div>
+                        </div>
+
+
+                        <div className="form-group">
+                            {this.state.register? 
+                                <input className="btn btn-primary btn-block" type="submit" onClick={e => register(e)} value="Registrieren"/> : 
+                                <input className="btn btn-primary btn-block" type="submit" onClick={e => login(e)} value="Anmelden"/>
+                            }
+                        </div>
+                    </form>
+                </div>
+                <div className="panel-footer">
                     {this.state.register? 
-                        <input type="submit" onClick={e => register(e)} value="Registrieren"/> : 
-                        <input className="btn btn-primary" type="submit" onClick={e => login(e)} value="Anmelden"/>
-                    }
-                    {/* <input type="button" onClick={this.props.handleStateChange("loginapi")} value="API Senden"/> */}
-                </form>
-                <div id="formFooter">
-                    {this.state.register? 
-                        <a onClick={() => this.setState({register: !this.state.register})}>Anmelden</a> : 
-                        <a onClick={() => this.setState({register: !this.state.register})}>Registrieren</a>
+                        <a className="btn btn-link" onClick={() => this.setState({register: !this.state.register})}>
+                            Ich habe schon einen Account.
+                        </a> : 
+                        <a className="btn btn-link" onClick={() => this.setState({register: !this.state.register})}>
+                            Ich habe noch keinen Account.
+                        </a>
                     }
                 </div>
             </div>
@@ -108,5 +123,3 @@ class Login extends Component {
 };
 
 export default Login;
-
-// Source of bootstrap https://bootsnipp.com/snippets/dldxB
