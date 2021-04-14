@@ -28,6 +28,15 @@ class Quiz extends Component {
 
         if(isLast == true) {
           document.getElementById("quiz").style.display = "grid";
+          Meteor.call("synthesiseText", document.getElementById("questionText").innerHTML, (err, res) => {
+            if (err) console.error(err)
+    
+            const blob = new Blob([res], { type: "audio/wav" });
+            const url = window.URL.createObjectURL(blob);
+    
+            document.getElementById("audio").src = url;
+            document.getElementById("audio").play();
+          });
         }
       }).catch(e => {
         console.error(e);
@@ -67,15 +76,19 @@ class Quiz extends Component {
         document.getElementById("quiz").innerHTML += answerButtons;
 
         // Add OnClick Show Answer
-        document.getElementById("quiz").querySelectorAll(".answerButton").forEach(element => {
+        const elements = document.getElementsByClassName("answerButton")
+        const translateInterval = setInterval(() => {
           if(id == 1) {
-            translate(element.id.toString(), true);
+            translate(id, true);
+            elements[id].addEventListener("click", () => revealAnswer());
+            clearInterval(translateInterval)
           } else {
-            translate(element.id.toString(), false);
+            translate(id, false);
             id--;
-          } 
-          element.addEventListener("click", () => revealAnswer());
-        });
+          }
+          elements[id].addEventListener("click", () => revealAnswer());
+        }, 200)
+
     }
     
     const getQuiz = () => {

@@ -7,8 +7,19 @@ class Path extends Component {
 
   render() {
     const getPathData = (data) => {
-      if(data["movement_type"] == "") {
+      if(data["movement_type"] === null) {
         document.getElementById("conversation").style.display = "block";
+
+        var textToReadAloud = "Du hast keinen Fortbewegungstyp ausgewählt";
+        Meteor.call("synthesiseText", textToReadAloud, (err, res) => {
+          if (err) console.error(err)
+  
+          const blob = new Blob([res], { type: "audio/wav" });
+          const url = window.URL.createObjectURL(blob);
+  
+          document.getElementById("audio").src = url;
+          document.getElementById("audio").play();
+        });
         document.getElementById("chat-content").innerHTML = 
         `<div className="media media-chat media-chat-reverse">
           <div className="media-body" style="
@@ -25,7 +36,7 @@ class Path extends Component {
             clear: right;
             background-color: #48b0f7;
             color: #fff
-            color: #9b9b9b">You don't have movement type selected</p>
+            color: #9b9b9b">${textToReadAloud}</p>
           </div>
         </div>`;
       } else {
@@ -43,15 +54,43 @@ class Path extends Component {
           if(res.status == "200")
             return res.json();                   
         }).then(function(data) {
+
           var time = new Date(0);
-          time.setSeconds(data["travelDuration"]);
-          var timeString = time.toISOString().substr(11, 8);
+          time.setSeconds(data["travelDuration"]); 
+          
+          const timeHourSuf = (time) => {
+            if (time > 1) return "Stunden"
+            else return "Stunde"
+          }
+          
+          const timeMinSuf = (time) => {
+            if (time > 1) return "Minuten"
+            else return "Minute"
+          }
+
+          var timeTraffic = new Date(0);
+          timeTraffic.setSeconds(data["travelDurationTraffic"]);
 
           document.getElementById("path").innerHTML = 
-            `<p>Reisedauer: ${timeString} h</p>
-            <p>Reisedauer bei Stau: ${data["travelDurationTraffic"]}</p>
-            <p>Entfernung: ${data["travelDistance"]} km</p>`;
-          console.log(data);
+            `<p class="answer">Reisedauer: ${time.getHours()} ${timeHourSuf(time.getHours())}, ${time.getMinutes()} ${timeMinSuf(time.getMinutes())}</p>
+            <p class="answer">Reisedauer bei Stau: ${timeTraffic.getHours()} ${timeHourSuf(timeTraffic.getHours())}, ${timeTraffic.getMinutes()} ${timeMinSuf(timeTraffic.getMinutes())}</p>
+            <p class="answer">Entfernung: ${data["travelDistance"].toString().replace(".", ",")} km</p>`;
+                   
+            // Read alloud
+          var answers = document.getElementsByClassName("answer");
+          var stringToReadAloud = "";
+          Array.prototype.forEach.call(answers, element => {
+            stringToReadAloud += element.innerHTML;
+          });   
+          Meteor.call("synthesiseText", stringToReadAloud, (err, res) => {
+            if (err) console.error(err)
+    
+            const blob = new Blob([res], { type: "audio/wav" });
+            const url = window.URL.createObjectURL(blob);
+    
+            document.getElementById("audio").src = url;
+            document.getElementById("audio").play();
+          });
         }).catch(e => {
           console.error(e);
         });
@@ -66,8 +105,11 @@ class Path extends Component {
           // "Content-Type": "application/json"
         },
       }).then(res => {
-        if(res.status == "200")
-          return res.json();                   
+        if(res.status == "200") {
+          return res.json();   
+        } else {
+          console.log(res); 
+        }        
       }).then(function(data) {
         getPathData(data);
       }).catch(e => {

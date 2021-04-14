@@ -6,6 +6,8 @@ import Joke from './AnswerWindows/Joke';
 import Path from './AnswerWindows/Path';
 import Quiz from './AnswerWindows/Quiz';
 import Stocks from './AnswerWindows/Stocks';
+import { Meteor } from 'meteor/meteor';
+
 
 class Dashboard extends Component {
   constructor(props) {
@@ -26,6 +28,24 @@ class Dashboard extends Component {
     const changeViewFunction = () => {
       document.getElementById("changeViewInput").value = "settings";
       document.getElementById("changeViewInput").click();
+    }
+
+    const startAudioCapture = () => {
+      var captureSuccess = function(mediaFiles) {
+        var i, path, len;
+        for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+          path = mediaFiles[i].fullPath;
+          console.log("SPEECH TO TEXT")
+          Meteor.call("speechToText", path);      
+        }     
+      };
+    
+      // capture error callback
+      var captureError = function(error) {
+        navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+      };
+
+      navigator.device.capture.captureAudio(captureSuccess, captureError, {limit:1});
     }
 
     const searchKeyWord = (e) => {
@@ -74,6 +94,19 @@ class Dashboard extends Component {
 
       // Don't let it handle too much
       if(numOfTrue >= 2) {
+        var response = "Leider kann ich nicht so viel auf einmal machen";
+        Meteor.call("synthesiseText", response, (err, res) => {
+          if (err) console.error(err)
+  
+          console.log("something");
+          const blob = new Blob([res], { type: "audio/wav" });
+          const url = window.URL.createObjectURL(blob);
+  
+          document.getElementById("audio").src = url;
+          document.getElementById("audio").play();
+          console.log("nothing");
+        });
+
         document.getElementById("chat-content").innerHTML += 
         `<div className="media media-chat media-chat-reverse">
           <div className="media-body" style="
@@ -90,7 +123,7 @@ class Dashboard extends Component {
             clear: right;
             background-color: #48b0f7;
             color: #fff
-            color: #9b9b9b">Leider kann ich nicht so viel auf einmal machen</p>
+            color: #9b9b9b">${response}</p>
           </div>
         </div>`;
       } 
@@ -101,6 +134,18 @@ class Dashboard extends Component {
                cardBools[3] == false && 
                cardBools[4] == false &&
                cardBools[5] == false) {
+        var response = "Das konnte ich leider nicht verstehen. Könntest du das wiederholen?";
+        Meteor.call("synthesiseText", response, (err, res) => {
+          if (err) console.error(err)
+  
+          console.log("something");
+          const blob = new Blob([res], { type: "audio/wav" });
+          const url = window.URL.createObjectURL(blob);
+  
+          document.getElementById("audio").src = url;
+          document.getElementById("audio").play();
+          console.log("nothing");
+        });
         document.getElementById("chat-content").innerHTML += 
         `<div className="media media-chat media-chat-reverse">
           <div className="media-body" style="
@@ -117,7 +162,7 @@ class Dashboard extends Component {
             clear: right;
             background-color: #48b0f7;
             color: #fff
-            color: #9b9b9b">Das konnte ich leider nicht verstehen \nKönntest du das wiederholen?</p>
+            color: #9b9b9b">${response}</p>
           </div>
         </div>`;
       } 
@@ -188,12 +233,16 @@ class Dashboard extends Component {
           {this.state.quiz? (<Quiz api={getApi()}/>) : null}
           {this.state.stocks? (<Stocks api={getApi()}/>) : null}
         </div>
-        <div style={inputBar}>
+        <div style={inputBar} id="inputBar">
           <a className="button icon-button" style={{margin: "0.5em"}} aria-label="Icon-only Settings Button">
             <img src="/settings.png" className="icon-button__icon" aria-hidden="true" focusable="false" style={settingsButtonStyle} onClick={() => changeViewFunction()}></img>
           </a>
             <input type="text" id="inputText"/>
             <button onClick={() => {searchKeyWord(document.getElementById("inputText"))}}>Enter</button>
+            <button onClick={() => startAudioCapture()}></button>
+            <audio id="audio">
+              <source src=""/>
+            </audio>; 
         </div>     
       </div>
     );

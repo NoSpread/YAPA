@@ -26,6 +26,15 @@ class Fortune extends Component {
   
           if(isLast == true) {
             document.getElementById("fortune").style.display = "block";
+            Meteor.call("synthesiseText", document.getElementById("fortuneText").innerHTML, (err, res) => {
+              if (err) console.error(err)
+      
+              const blob = new Blob([res], { type: "audio/wav" });
+              const url = window.URL.createObjectURL(blob);
+      
+              document.getElementById("audio").src = url;
+              document.getElementById("audio").play();
+            });
           }
         }).catch(e => {
           console.error(e);

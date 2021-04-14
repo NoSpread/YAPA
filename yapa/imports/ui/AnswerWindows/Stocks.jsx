@@ -45,6 +45,18 @@ class Stocks extends Component {
           <p>o: ${data["o"]}</p>
           <p>pc: ${data["pc"]}</p>
           <p>t: ${data["t"]}</p>`;
+
+          const speechText = `Das Symbol ${stockName} ist derzeit bei ${data["c"]} G E. Das Tageshoch war bei ${data["h"]} G E.`
+
+          Meteor.call("synthesiseText", speechText, (err, res) => {
+            if (err) console.error(err)
+    
+            const blob = new Blob([res], { type: "audio/wav" });
+            const url = window.URL.createObjectURL(blob);
+    
+            document.getElementById("audio").src = url;
+            document.getElementById("audio").play();
+          });
       }).catch(e => {
         console.error(e);
       });
