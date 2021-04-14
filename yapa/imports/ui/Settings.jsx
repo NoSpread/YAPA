@@ -76,6 +76,11 @@ class Settings extends Component {
 				"voice": parseInt(document.getElementById("assistentVoice").value.slice(-1)),
 				"movement_type": document.getElementById("transportationMode").value
 			}
+            
+            Object.keys(updatebody).forEach(key => {
+                if(updatebody[key] === "") updatebody[key] = null;
+            })
+
 			fetch('https://api.nospread.xyz/yapa/v1/user', {
                 method: "PUT",
                 headers: {
@@ -156,7 +161,7 @@ class Settings extends Component {
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div className="form-group">
                                             <label htmlFor="zipHome">Postleitzahl (Zuhause)</label>
-                                            <input type="text" className="form-control" id="zipHome" placeholder="Postleitzahl eingeben"/>
+                                            <input type="number" className="form-control" id="zipHome" placeholder="Postleitzahl eingeben"/>
                                         </div>
                                     </div>
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
@@ -174,7 +179,7 @@ class Settings extends Component {
                                     <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                         <div className="form-group">
                                             <label htmlFor="zipWork">Postleitzahl (Arbeitsplatz)</label>
-                                            <input type="text" className="form-control" id="zipWork" placeholder="Postleitzahl eingeben"/>
+                                            <input type="number" className="form-control" id="zipWork" placeholder="Postleitzahl eingeben"/>
                                         </div>
                                     </div>
                                 </div>

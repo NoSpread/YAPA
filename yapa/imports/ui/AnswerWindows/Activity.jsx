@@ -1,4 +1,3 @@
-// Just a string
 import React, { Component } from 'react';
 
 class Activity extends Component {
@@ -26,6 +25,22 @@ class Activity extends Component {
 
         if(isLast == true) {
           document.getElementById("activity").style.display = "block";
+
+          // Read alloud
+          var answers = document.getElementsByClassName("answer");
+          var stringToReadAloud = "";
+          Array.prototype.forEach.call(answers, element => {
+            stringToReadAloud += element.innerHTML;
+          });   
+          Meteor.call("synthesiseText", stringToReadAloud, (err, res) => {
+            if (err) console.error(err)
+    
+            const blob = new Blob([res], { type: "audio/wav" });
+            const url = window.URL.createObjectURL(blob);
+    
+            document.getElementById("audio").src = url;
+            document.getElementById("audio").play();
+          });
         }
       }).catch(e => {
         console.error(e);
@@ -43,12 +58,12 @@ class Activity extends Component {
           return res.json();                   
       }).then(function(data) {
         document.getElementById("activity").innerHTML = 
-          `<p id="activityText">Aktivität: toBeTranslated</p>
-          <p id="typeText">Typ: toBeTranslated</p>
-          <p>Geeignet für: ${data["participants"]} Personen</p>
-          <p>Preis: ${data["price"]}</p>
-          <p>Link: ${data["link"]}</p>
-          <p>Zugänglichkeit: ${data["accessibility"]}</p>`;
+          `<p id="activityText" class="answer">Aktivität: toBeTranslated</p>
+          <p id="typeText" class="answer">Typ: toBeTranslated</p>
+          <p class="answer">Geeignet für: ${data["participants"]} Personen</p>
+          <p class="answer">Preis: ${data["price"]}</p>
+          <p class="answer">Link: ${data["link"]}</p>
+          <p class="answer">Zugänglichkeit: ${data["accessibility"]}</p>`;
         translate(data["activity"], "activityText", false);
         translate(data["type"], "typeText", true);
       }).catch(e => {

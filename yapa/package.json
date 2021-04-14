@@ -9,11 +9,14 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",
+    "fs": "0.0.1-security",
+    "ibm-watson": "^6.0.4",
     "jquery": "^3.6.0",
     "meteor-node-stubs": "^1.0.1",
     "popper.js": "^1.16.1",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "watson-speech": "^0.39.0"
   },
   "meteor": {
     "mainModule": {

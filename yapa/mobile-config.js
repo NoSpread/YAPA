@@ -20,3 +20,12 @@ App.launchScreens({
   'android_xxxhdpi_portrait': 'images/screen-1280x1920.png',
   'android_xxxhdpi_landscape': 'images/screen-1920x1280.png'
 });
+
+App.info({
+  id: 'com.yapa.dev',
+  name: 'Yapa',
+  description: 'Best App',
+  author: 'xyz',
+  email: 'contact@example.com',
+  website: 'http://example.com'
+});
