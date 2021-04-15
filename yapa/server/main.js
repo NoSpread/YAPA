@@ -14,17 +14,17 @@ Meteor.startup(() => {
 
 const textToSpeech = new TextToSpeechV1({
     authenticator: new IamAuthenticator({
-      apikey: '***REMOVED***',
+      apikey: process.env.IBM_TTS,
     }),
-    serviceUrl: '***REMOVED***',
+    serviceUrl: process.env.IBM_TTS_SERVICE,
     disableSslVerification: true,
 });
 
 const speechToText = new SpeechToTextV1({
     authenticator: new IamAuthenticator({
-      apikey: '***REMOVED***',
+      apikey: process.env.IBM_STT,
     }),
-    serviceUrl: '***REMOVED***',
+    serviceUrl: process.env.IBM_STT_SERVICE,
     disableSslVerification: true,
 });
 
