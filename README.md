@@ -94,9 +94,9 @@ The app is available at localhost:3000
 
 ## Key Words
 
- - aktivität -> activity
- - glückskeks -> fortune
- - witz -> joke
- - route -> path
- - quiz -> quiz
- - aktien -> stocks
+ - aktivität -> activity.jsx
+ - glückskeks -> fortune.jsx
+ - witz -> joke.jsx
+ - weg -> path.jsx
+ - quiz -> quiz.jsx
+ - aktien -> stocks.jsx

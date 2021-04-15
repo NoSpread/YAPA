@@ -14,17 +14,17 @@ Meteor.startup(() => {
 
 const textToSpeech = new TextToSpeechV1({
     authenticator: new IamAuthenticator({
-      apikey: '***REMOVED***',
+      apikey: 'xwhMeArxa_9ZlrLYZD7otGzzSsgcM8rn-feIUxy4An_7',
     }),
-    serviceUrl: '***REMOVED***',
+    serviceUrl: 'https://api.eu-de.text-to-speech.watson.cloud.ibm.com/instances/4f167a7b-15a7-4c35-8df0-55942155fda2',
     disableSslVerification: true,
 });
 
 const speechToText = new SpeechToTextV1({
     authenticator: new IamAuthenticator({
-      apikey: '***REMOVED***',
+      apikey: 'VNjRDZ17_3bLdD-0PLk8sipJY1k_EyiAAzF_hnY9ryrU',
     }),
-    serviceUrl: '***REMOVED***',
+    serviceUrl: 'https://api.eu-de.speech-to-text.watson.cloud.ibm.com/instances/1639309b-f7ea-4d3b-87aa-2ada9050d03f',
     disableSslVerification: true,
 });
 
