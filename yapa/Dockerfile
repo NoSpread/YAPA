@@ -1,21 +1,20 @@
 FROM node:latest
 
+ENV METEOR_ALLOW_SUPERUSER=true
 ENV ROOT_URL="http://localhost:3000"
+
+RUN apt update
+RUN apt upgrade -y
 
 RUN curl "https://install.meteor.com/" | sh
 
-RUN useradd --create-home --shell /bin/bash yapa
-
-USER yapa
-WORKDIR /home/yapa
+WORKDIR /usr/src/yapa
 
 COPY . .
 
-USER root 
-RUN chown -R yapa:yapa /home/yapa
-USER yapa
+RUN mkdir .meteor/local
+RUN chmod -R 700 .meteor/local
 
-RUN npm install
 RUN meteor npm install
 
 EXPOSE 3000

@@ -8,4 +8,5 @@
 */**/yarn-error.log
 */package-lock.json
 backend/docker-compose.yml
+yapa/docker-compose.yml
 backend/.vscode/launch.json
