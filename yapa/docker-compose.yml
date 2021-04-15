@@ -1,0 +1,10 @@
+version: '3.3'
+services: 
+    frontend:
+            hostname: frontend
+            image: "nospread/yapa_frontend"
+            build: .
+            ports: 
+                - "3000:3000"
+            environment: 
+                ENDPOINT: https://api.nospread.xyz/yapa/
