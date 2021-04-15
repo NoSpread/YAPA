@@ -75,13 +75,21 @@ volumes:
 
 ## Frontend
 
-```
-Install node
-In a console run 'npm install meteor'
-In YAPA/yapa open a console
-Run 'npm install'
-Run 'meteor'
-The app is available at localhost:3000
+```yaml
+version: '3.3'
+services: 
+    frontend:
+            hostname: frontend
+            image: "nospread/yapa_frontend"
+            build: .
+            ports: 
+                - "3000:3000"
+            environment: 
+                METEOR_SETTINGS: '{"public":{"endpoint":"https://api.nospread.xyz/yapa/v1"}}'
+                IBM_TTS: ""
+                IBM_STT: ""
+                IBM_TTS_SERVICE: ""
+                IBM_STT_SERVICE: ""
 ```
 
 ## Color Scheme
