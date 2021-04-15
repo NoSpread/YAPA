@@ -8,7 +8,7 @@ class Fortune extends Component {
 
   render() {
     const translate = (word, elementId, isLast) => {
-        fetch(process.env.ENDPOINT + '/translate', {
+        fetch(`${Meteor.settings.public.endpoint}/translate`, {
           method: "POST",
           headers: {
             "X-API-KEY": this.props.api,
@@ -42,7 +42,7 @@ class Fortune extends Component {
       }
 
     const getFortune = () => {
-        fetch(process.env.ENDPOINT + '/fortune', {
+        fetch(`${Meteor.settings.public.endpoint}/fortune`, {
         method: "GET",
         headers: {
           "X-API-KEY": this.props.api

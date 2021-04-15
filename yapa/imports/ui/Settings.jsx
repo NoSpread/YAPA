@@ -25,7 +25,7 @@ class Settings extends Component {
         }
 
         const fetchSettings = () => {
-            fetch(process.env.ENDPOINT + '/user', {
+            fetch(`${Meteor.settings.public.endpoint}/user`, {
                 method: "GET",
                 headers: {
                     "X-API-KEY": getApi()
@@ -81,7 +81,7 @@ class Settings extends Component {
                 if(updatebody[key] === "") updatebody[key] = null;
             })
 
-			fetch(process.env.ENDPOINT + '/user', {
+			fetch(`${Meteor.settings.public.endpoint}/user`, {
                 method: "PUT",
                 headers: {
                     "X-API-KEY": getApi(),
@@ -104,7 +104,7 @@ class Settings extends Component {
 
         const deleteUser = () => {
 			console.log("deleteUser")
-            fetch(process.env.ENDPOINT + '/user', {
+            fetch(`${Meteor.settings.public.endpoint}/user`, {
                 method: "DELETE",
                 headers: {
 					"X-API-KEY": getApi(),

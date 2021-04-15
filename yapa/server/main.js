@@ -3,7 +3,7 @@ import SpeechToTextV1 from 'ibm-watson/speech-to-text/v1';
 import TextToSpeechV1 from 'ibm-watson/text-to-speech/v1';
 import { IamAuthenticator } from 'ibm-watson/auth';
 import * as fs from 'fs';
-import { Readable } from 'stream';
+import { Readable } from 'stream'
 
 //const fs = Npm.require('fs');
 __ROOT_APP_PATH__ = fs.realpathSync('.');
@@ -63,18 +63,14 @@ Meteor.methods({
             // Create the stream.
             const recognizeStream = speechToText.recognizeUsingWebSocket(params);
             
-            // Pipe in the audio.
-    
-            const filename = `${Math.floor(Math.random() * 10000)}.ogg`
-    
-            fs.writeFileSync(filename, Buffer.from(base64.replace('data:audio/ogg;codecs=opus;base64,', ''), 'base64'));
-    
-            const stream = fs.createReadStream(filename)
-            stream.pipe(recognizeStream);
-    
-            fs.unlink(filename, err => {
-                if (err) throw err;
-            }) 
+            // Pipe in the audio.      
+            
+            const readable = new Readable()
+            readable._read = () => {} // _read is required but you can noop it
+            readable.push(Buffer.from(base64.replace('data:audio/ogg;codecs=opus;base64,', ''), 'base64'))
+            readable.push(null)
+
+            readable.pipe(recognizeStream);
     
             // Listen for events.
             recognizeStream.on('data', function(event) { resolve(event); });

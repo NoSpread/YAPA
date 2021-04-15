@@ -7,7 +7,7 @@ class Activity extends Component {
 
   render() {
     const translate = (word, elementId, isLast) => {
-      fetch(process.env.ENDPOINT + '/translate', {
+      fetch(`${Meteor.settings.public.endpoint}/translate`, {
         method: "POST",
         headers: {
           "X-API-KEY": this.props.api,
@@ -44,7 +44,7 @@ class Activity extends Component {
     }
     
     const getActivity = () => {
-      fetch(process.env.ENDPOINT + '/activity', {
+      fetch(`${Meteor.settings.public.endpoint}/activity`, {
         method: "GET",
         headers: {
           "X-API-KEY": this.props.api

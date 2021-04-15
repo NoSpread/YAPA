@@ -9,8 +9,7 @@ class Joke extends Component {
     const displayJoke = (data) => {
         // Gibt es eine Punchline?
         if(data["joke"] == null) {
-            var lenghtToWait = 0;
-          
+         
             Meteor.call("synthesiseText", data["setup"], (err, res) => {
               if (err) console.error(err)
       
@@ -62,7 +61,7 @@ class Joke extends Component {
     }
 
     const fetchSettings = () => {
-      fetch(process.env.ENDPOINT + '/joke', {
+      fetch(`${Meteor.settings.public.endpoint}/joke`, {
         method: "GET",
         headers: {
           "X-API-KEY": this.props.api

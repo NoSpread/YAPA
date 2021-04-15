@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Meteor } from 'meteor/meteor';
 
 class Login extends Component {
     constructor(props) {
@@ -22,7 +23,7 @@ class Login extends Component {
             var loginInput = document.getElementById("login");
             var passwordInput = document.getElementById("password");
             
-            fetch(process.env.ENDPOINT + '/user/register', {
+            fetch(`${Meteor.settings.public.endpoint}/user/register`, {
                 method: "POST",
                 headers: {
                     "accept": "application/json",
@@ -42,7 +43,7 @@ class Login extends Component {
 
         const fetchSettings = (apiKey) => {
             return new Promise((resolve, reject) => {
-              fetch(process.env.ENDPOINT + '/user', {
+              fetch(`${Meteor.settings.public.endpoint}/user`, {
                 method: "GET",
                 headers: {
                   "X-API-KEY": apiKey
@@ -94,7 +95,7 @@ class Login extends Component {
             var loginInput = document.getElementById("login");
             var passwordInput = document.getElementById("password");
     
-            fetch(process.env.ENDPOINT + '/user/login', {
+            fetch(`${Meteor.settings.public.endpoint}/user/login`, {
                 method: "POST",
                 headers: {
                     "accept": "application/json",

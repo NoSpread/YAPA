@@ -10,7 +10,7 @@ class Quiz extends Component {
 
   render() {
     const translate = (elementId, isLast) => {
-      fetch(process.env.ENDPOINT + '/translate', {
+      fetch(`${Meteor.settings.public.endpoint}/translate`, {
         method: "POST",
         headers: {
           "X-API-KEY": this.props.api,
@@ -95,7 +95,7 @@ class Quiz extends Component {
     }
     
     const getQuiz = () => {
-      fetch(process.env.ENDPOINT + '/quiz', {
+      fetch(`${Meteor.settings.public.endpoint}/quiz`, {
         method: "POST",
         headers: {
           "X-API-KEY": this.props.api,

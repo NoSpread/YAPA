@@ -7,7 +7,7 @@ class Stocks extends Component {
 
   render() {
     const fetchSettings = () => {
-      fetch(process.env.ENDPOINT + '/user', {
+      fetch(`${Meteor.settings.public.endpoint}/user`, {
         method: "GET",
         headers: {
           "X-API-KEY": this.props.api
@@ -25,7 +25,7 @@ class Stocks extends Component {
 
     const getStockData = (stockName) => {
       // Stock name must be stock symbol
-      fetch(process.env.ENDPOINT + '/stock', {
+      fetch(`${Meteor.settings.public.endpoint}/stock`, {
         method: "POST",
         headers: {
           "X-API-KEY": this.props.api,
