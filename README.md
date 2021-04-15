@@ -30,7 +30,7 @@ SQL_USER=yapa
 ## Docker
 
 ```yaml
-version: '3'
+version: '3.3'
 services: 
   mysql:
     hostname: 'mysql'
