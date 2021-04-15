@@ -62,7 +62,7 @@ class Joke extends Component {
     }
 
     const fetchSettings = () => {
-      fetch('https://api.nospread.xyz/yapa/v1/joke', {
+      fetch(process.env.ENDPOINT + '/joke', {
         method: "GET",
         headers: {
           "X-API-KEY": this.props.api

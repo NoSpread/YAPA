@@ -7,7 +7,7 @@ class Activity extends Component {
 
   render() {
     const translate = (word, elementId, isLast) => {
-      fetch('https://api.nospread.xyz/yapa/v1/translate', {
+      fetch(process.env.ENDPOINT + '/translate', {
         method: "POST",
         headers: {
           "X-API-KEY": this.props.api,
@@ -44,7 +44,7 @@ class Activity extends Component {
     }
     
     const getActivity = () => {
-      fetch('https://api.nospread.xyz/yapa/v1/activity', {
+      fetch(process.env.ENDPOINT + '/activity', {
         method: "GET",
         headers: {
           "X-API-KEY": this.props.api

@@ -7,7 +7,7 @@ class Stocks extends Component {
 
   render() {
     const fetchSettings = () => {
-      fetch('https://api.nospread.xyz/yapa/v1/user', {
+      fetch(process.env.ENDPOINT + '/user', {
         method: "GET",
         headers: {
           "X-API-KEY": this.props.api
@@ -25,7 +25,7 @@ class Stocks extends Component {
 
     const getStockData = (stockName) => {
       // Stock name must be stock symbol
-      fetch('https://api.nospread.xyz/yapa/v1/stock', {
+      fetch(process.env.ENDPOINT + '/stock', {
         method: "POST",
         headers: {
           "X-API-KEY": this.props.api,

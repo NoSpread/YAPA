@@ -10,7 +10,7 @@ class Quiz extends Component {
 
   render() {
     const translate = (elementId, isLast) => {
-      fetch('https://api.nospread.xyz/yapa/v1/translate', {
+      fetch(process.env.ENDPOINT + '/translate', {
         method: "POST",
         headers: {
           "X-API-KEY": this.props.api,
@@ -95,7 +95,7 @@ class Quiz extends Component {
     }
     
     const getQuiz = () => {
-      fetch('https://api.nospread.xyz/yapa/v1/quiz', {
+      fetch(process.env.ENDPOINT + '/quiz', {
         method: "POST",
         headers: {
           "X-API-KEY": this.props.api,

@@ -22,7 +22,7 @@ class Login extends Component {
             var loginInput = document.getElementById("login");
             var passwordInput = document.getElementById("password");
             
-            fetch('https://api.nospread.xyz/yapa/v1/user/register', {
+            fetch(process.env.ENDPOINT + '/user/register', {
                 method: "POST",
                 headers: {
                     "accept": "application/json",
@@ -42,7 +42,7 @@ class Login extends Component {
 
         const fetchSettings = (apiKey) => {
             return new Promise((resolve, reject) => {
-              fetch('https://api.nospread.xyz/yapa/v1/user', {
+              fetch(process.env.ENDPOINT + '/user', {
                 method: "GET",
                 headers: {
                   "X-API-KEY": apiKey
@@ -94,7 +94,7 @@ class Login extends Component {
             var loginInput = document.getElementById("login");
             var passwordInput = document.getElementById("password");
     
-            fetch('https://api.nospread.xyz/yapa/v1/user/login', {
+            fetch(process.env.ENDPOINT + '/user/login', {
                 method: "POST",
                 headers: {
                     "accept": "application/json",

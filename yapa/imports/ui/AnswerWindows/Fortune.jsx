@@ -8,7 +8,7 @@ class Fortune extends Component {
 
   render() {
     const translate = (word, elementId, isLast) => {
-        fetch('https://api.nospread.xyz/yapa/v1/translate', {
+        fetch(process.env.ENDPOINT + '/translate', {
           method: "POST",
           headers: {
             "X-API-KEY": this.props.api,
@@ -42,7 +42,7 @@ class Fortune extends Component {
       }
 
     const getFortune = () => {
-        fetch('https://api.nospread.xyz/yapa/v1/fortune', {
+        fetch(process.env.ENDPOINT + '/fortune', {
         method: "GET",
         headers: {
           "X-API-KEY": this.props.api
